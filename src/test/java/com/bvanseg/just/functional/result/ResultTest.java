@@ -2,7 +2,7 @@ package com.bvanseg.just.functional.result;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.function.Supplier;
+import com.bvanseg.just.CheckedSupplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -13,9 +13,9 @@ class ResultTest {
     @Test
     void tryCatch_NoException() {
         // Arrange
-        Supplier<Integer> dangerousTask = () -> Integer.parseInt("2");
+        CheckedSupplier<Integer> dangerousTask = () -> Integer.parseInt("2");
         // Act
-        var result = Result.tryCatch(dangerousTask);
+        var result = Result.trySupply(dangerousTask);
         // Assert
         assertTrue(result.isOk());
         assertEquals(2, result.unwrap());
@@ -24,9 +24,9 @@ class ResultTest {
     @Test
     void tryCatch_ThrowsNumberFormatException() {
         // Arrange
-        Supplier<Integer> dangerousTask = () -> Integer.parseInt("a");
+        CheckedSupplier<Integer> dangerousTask = () -> Integer.parseInt("a");
         // Act
-        var result = Result.tryCatch(dangerousTask);
+        var result = Result.trySupply(dangerousTask);
         // Assert
         assertTrue(result.isErr());
         assertInstanceOf(NumberFormatException.class, result.unwrapErr());

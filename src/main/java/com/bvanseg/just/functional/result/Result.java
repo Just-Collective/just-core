@@ -5,8 +5,9 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
+import com.bvanseg.just.CheckedRunnable;
+import com.bvanseg.just.CheckedSupplier;
 import com.bvanseg.just.functional.option.Option;
 
 public sealed abstract class Result<T, E> permits Ok, Err {
@@ -19,12 +20,23 @@ public sealed abstract class Result<T, E> permits Ok, Err {
         return new Err<>(error);
     }
 
-    public static <T, E extends Exception> Result<T, E> tryCatch(Supplier<T> supplier) {
+    public static <E extends Exception> Result<Void, E> tryRun(CheckedRunnable runnable) {
         try {
-            return ok(supplier.get());
+            runnable.run();
+            return ok(null);
         } catch (Exception e) {
             @SuppressWarnings("unchecked")
-            var err = (Result<T, E>) Result.err((E) e);
+            var err = Result.<Void, E>err((E) e);
+            return err;
+        }
+    }
+
+    public static <T, E extends Throwable> Result<T, E> trySupply(CheckedSupplier<T> supplier) {
+        try {
+            return ok(supplier.get());
+        } catch (Throwable throwable) {
+            @SuppressWarnings("unchecked")
+            var err = (Result<T, E>) Result.err((E) throwable);
             return err;
         }
     }
