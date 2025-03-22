@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import com.bvanseg.just.functional.option.Option;
 
@@ -16,6 +17,16 @@ public sealed abstract class Result<T, E> permits Ok, Err {
 
     public static <T, E> Result<T, E> err(E error) {
         return new Err<>(error);
+    }
+
+    public static <T, E extends Exception> Result<T, E> tryCatch(Supplier<T> supplier) {
+        try {
+            return ok(supplier.get());
+        } catch (Exception e) {
+            @SuppressWarnings("unchecked")
+            var err = (Result<T, E>) Result.err((E) e);
+            return err;
+        }
     }
 
     public abstract <U> Result<U, E> and(Result<U, E> other);
