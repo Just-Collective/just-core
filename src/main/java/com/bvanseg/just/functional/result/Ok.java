@@ -1,8 +1,10 @@
 package com.bvanseg.just.functional.result;
 
 import com.bvanseg.just.functional.option.Option;
+import com.bvanseg.just.functional.option.Some;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -125,5 +127,28 @@ public final class Ok<T, E> extends Result<T, E> {
     @Override
     public E unwrapErr() {
         throw new NoSuchElementException("No error present.");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Ok<?, ?> other)) {
+            return false;
+        }
+
+        return Objects.equals(this.value, other.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(value);
+    }
+
+    @Override
+    public String toString() {
+        return "Ok(" + value + ")";
     }
 }
