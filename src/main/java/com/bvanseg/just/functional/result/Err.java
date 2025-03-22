@@ -3,6 +3,7 @@ package com.bvanseg.just.functional.result;
 import com.bvanseg.just.functional.option.Option;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -126,5 +127,28 @@ public final class Err<T, E> extends Result<T, E> {
     @Override
     public E unwrapErr() {
         return error;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Err<?, ?> other)) {
+            return false;
+        }
+
+        return Objects.equals(this.error, other.error);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(error);
+    }
+
+    @Override
+    public String toString() {
+        return "Err(" + error + ")";
     }
 }
