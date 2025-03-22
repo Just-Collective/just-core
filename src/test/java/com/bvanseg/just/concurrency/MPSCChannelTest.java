@@ -14,7 +14,7 @@ public class MPSCChannelTest {
         // Act
         var thread1 = new Thread(() -> {
             try {
-                Thread.sleep(Duration.ofSeconds(3));
+                Thread.sleep(Duration.ofSeconds(1));
                 channel.send("Hello, thread!");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
