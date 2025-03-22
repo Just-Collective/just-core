@@ -1,6 +1,5 @@
 package com.bvanseg.just.functional.result;
 
-import com.bvanseg.just.functional.option.Option;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;

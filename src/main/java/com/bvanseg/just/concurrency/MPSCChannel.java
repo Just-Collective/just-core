@@ -1,9 +1,9 @@
 package com.bvanseg.just.concurrency;
 
-import com.bvanseg.just.functional.option.Option;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import com.bvanseg.just.functional.option.Option;
 
 public class MPSCChannel<T> {
 

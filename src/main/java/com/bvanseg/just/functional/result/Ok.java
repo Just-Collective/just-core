@@ -1,14 +1,13 @@
 package com.bvanseg.just.functional.result;
 
-import com.bvanseg.just.functional.option.Option;
-import com.bvanseg.just.functional.option.Some;
-
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import com.bvanseg.just.functional.option.Option;
 
 public final class Ok<T, E> extends Result<T, E> {
 
