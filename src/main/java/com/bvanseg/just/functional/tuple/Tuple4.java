@@ -1,4 +1,4 @@
-package com.bvanseg.just;
+package com.bvanseg.just.functional.tuple;
 
 public record Tuple4<A, B, C, D>(
     A first,

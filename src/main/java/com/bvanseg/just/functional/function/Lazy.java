@@ -1,4 +1,4 @@
-package com.bvanseg.just;
+package com.bvanseg.just.functional.function;
 
 import java.util.function.Supplier;
 

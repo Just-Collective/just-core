@@ -6,8 +6,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import com.bvanseg.just.CheckedRunnable;
-import com.bvanseg.just.CheckedSupplier;
+import com.bvanseg.just.functional.function.CheckedRunnable;
+import com.bvanseg.just.functional.function.CheckedSupplier;
 import com.bvanseg.just.functional.option.Option;
 
 public sealed abstract class Result<T, E> permits Ok, Err {

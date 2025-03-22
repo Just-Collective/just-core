@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import com.bvanseg.just.functional.TriFunction;
+import com.bvanseg.just.functional.function.TriFunction;
 
 public sealed abstract class Option<T> permits Some, None {
 

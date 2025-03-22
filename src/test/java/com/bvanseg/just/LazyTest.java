@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.bvanseg.just.functional.function.Lazy;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class LazyTest {

@@ -1,4 +1,4 @@
-package com.bvanseg.just.functional;
+package com.bvanseg.just.functional.function;
 
 @FunctionalInterface
 public interface TriFunction<A, B, C, R> {

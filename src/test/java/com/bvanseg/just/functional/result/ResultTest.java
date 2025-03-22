@@ -2,7 +2,7 @@ package com.bvanseg.just.functional.result;
 
 import org.junit.jupiter.api.Test;
 
-import com.bvanseg.just.CheckedSupplier;
+import com.bvanseg.just.functional.function.CheckedSupplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
