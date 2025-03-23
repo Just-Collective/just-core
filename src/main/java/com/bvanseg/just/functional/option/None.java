@@ -67,6 +67,11 @@ public final class None<T> extends Option<T> {
     }
 
     @Override
+    public boolean isNoneOr(Predicate<T> predicate) {
+        return true;
+    }
+
+    @Override
     public boolean isSome() {
         return false;
     }

@@ -67,6 +67,11 @@ public final class Some<T> extends Option<T> {
     }
 
     @Override
+    public boolean isNoneOr(Predicate<T> predicate) {
+        return predicate.test(value);
+    }
+
+    @Override
     public boolean isSome() {
         return true;
     }

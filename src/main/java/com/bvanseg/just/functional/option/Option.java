@@ -83,6 +83,8 @@ public sealed abstract class Option<T> permits Some, None {
 
     public abstract boolean isNone();
 
+    public abstract boolean isNoneOr(Predicate<T> predicate);
+
     public abstract boolean isSome();
 
     public abstract boolean isSomeAnd(Predicate<? super T> predicate);
