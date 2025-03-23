@@ -65,6 +65,8 @@ public sealed abstract class Option<T> permits Some, None {
 
     public abstract <R> Option<R> and(Option<R> other);
 
+    public abstract <R> Option<R> andThen(Function<T, Option<R>> other);
+
     public abstract boolean contains(T value);
 
     public abstract T expect(String errorMessage);

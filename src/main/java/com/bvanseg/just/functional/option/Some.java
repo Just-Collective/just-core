@@ -23,6 +23,11 @@ public final class Some<T> extends Option<T> {
     }
 
     @Override
+    public <R> Option<R> andThen(Function<T, Option<R>> other) {
+        return other.apply(value);
+    }
+
+    @Override
     public boolean contains(T value) {
         return Objects.equals(this.value, value);
     }

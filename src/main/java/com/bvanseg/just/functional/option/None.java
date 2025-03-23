@@ -24,6 +24,11 @@ public final class None<T> extends Option<T> {
     }
 
     @Override
+    public <R> Option<R> andThen(Function<T, Option<R>> other) {
+        return Option.none();
+    }
+
+    @Override
     public boolean contains(T value) {
         return false;
     }
