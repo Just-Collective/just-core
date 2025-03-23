@@ -91,6 +91,10 @@ public sealed abstract class Option<T> permits Some, None {
 
     public abstract <R> Option<R> map(Function<? super T, ? extends R> f);
 
+    public abstract <R> R mapOr(Function<? super T, ? extends R> f, R fallbackValue);
+
+    public abstract <R> R mapOrElse(Function<? super T, ? extends R> f, Supplier<R> supplier);
+
     public abstract <R> R match(Function<? super T, ? extends R> ifSome, Supplier<? extends R> ifNone);
 
     public abstract Optional<T> toOptional();

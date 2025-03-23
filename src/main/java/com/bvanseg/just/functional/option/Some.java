@@ -87,6 +87,16 @@ public final class Some<T> extends Option<T> {
     }
 
     @Override
+    public <R> R mapOr(Function<? super T, ? extends R> f, R fallbackValue) {
+        return f.apply(value);
+    }
+
+    @Override
+    public <R> R mapOrElse(Function<? super T, ? extends R> f, Supplier<R> supplier) {
+        return f.apply(value);
+    }
+
+    @Override
     public <R> R match(Function<? super T, ? extends R> ifSome, Supplier<? extends R> ifNone) {
         return ifSome.apply(value);
     }
