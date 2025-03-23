@@ -9,6 +9,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import com.bvanseg.just.functional.result.Result;
+
 public final class None<T> extends Option<T> {
 
     private static final None<?> INSTANCE = new None<>();
@@ -99,6 +101,21 @@ public final class None<T> extends Option<T> {
     @Override
     public <R> R match(Function<? super T, ? extends R> ifSome, Supplier<? extends R> ifNone) {
         return ifNone.get();
+    }
+
+    @Override
+    public <R> Result<T, R> okOr(R fallbackValue) {
+        return Result.err(fallbackValue);
+    }
+
+    @Override
+    public <R> Option<R> or(Option<R> other) {
+        return other;
+    }
+
+    @Override
+    public <R> Option<R> orElse(Supplier<Option<R>> other) {
+        return other.get();
     }
 
     @Override

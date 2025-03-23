@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import com.bvanseg.just.functional.function.TriFunction;
+import com.bvanseg.just.functional.result.Result;
 
 public sealed abstract class Option<T> permits Some, None {
 
@@ -96,6 +97,12 @@ public sealed abstract class Option<T> permits Some, None {
     public abstract <R> R mapOrElse(Function<? super T, ? extends R> f, Supplier<R> supplier);
 
     public abstract <R> R match(Function<? super T, ? extends R> ifSome, Supplier<? extends R> ifNone);
+
+    public abstract <R> Result<T, R> okOr(R fallbackValue);
+
+    public abstract <R> Option<R> or(Option<R> other);
+
+    public abstract <R> Option<R> orElse(Supplier<Option<R>> other);
 
     public abstract Optional<T> toOptional();
 

@@ -9,6 +9,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import com.bvanseg.just.functional.result.Result;
+
 public final class Some<T> extends Option<T> {
 
     private final T value;
@@ -99,6 +101,23 @@ public final class Some<T> extends Option<T> {
     @Override
     public <R> R match(Function<? super T, ? extends R> ifSome, Supplier<? extends R> ifNone) {
         return ifSome.apply(value);
+    }
+
+    @Override
+    public <R> Result<T, R> okOr(R fallbackValue) {
+        return Result.ok(value);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R> Option<R> or(Option<R> other) {
+        return (Option<R>) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R> Option<R> orElse(Supplier<Option<R>> other) {
+        return (Option<R>) this;
     }
 
     @Override
