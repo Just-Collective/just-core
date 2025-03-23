@@ -31,7 +31,7 @@ public sealed abstract class Result<T, E> permits Ok, Err {
         }
     }
 
-    public static <T, E extends Throwable> Result<T, E> trySupply(CheckedSupplier<T> supplier) {
+    public static <T, E extends Throwable> Result<T, E> trySupply(CheckedSupplier<? extends T> supplier) {
         try {
             return ok(supplier.get());
         } catch (Throwable throwable) {
@@ -43,7 +43,7 @@ public sealed abstract class Result<T, E> permits Ok, Err {
 
     public abstract <U> Result<U, E> and(Result<U, E> other);
 
-    public abstract <U> Result<U, E> andThen(Function<T, Result<U, E>> f);
+    public abstract <U> Result<U, E> andThen(Function<? super T, ? extends Result<U, E>> f);
 
     public abstract Option<E> err();
 
@@ -61,15 +61,15 @@ public sealed abstract class Result<T, E> permits Ok, Err {
 
     public abstract boolean isErr();
 
-    public abstract boolean isErrAnd(Predicate<E> predicate);
+    public abstract boolean isErrAnd(Predicate<? super E> predicate);
 
     public abstract boolean isOk();
 
-    public abstract boolean isOkAnd(Predicate<T> predicate);
+    public abstract boolean isOkAnd(Predicate<? super T> predicate);
 
-    public abstract <U> Result<U, E> map(Function<T, U> f);
+    public abstract <U> Result<U, E> map(Function<? super T, ? extends U> f);
 
-    public abstract <U> Result<T, U> mapErr(Function<E, U> f);
+    public abstract <U> Result<T, U> mapErr(Function<? super E, ? extends U> f);
 
     public abstract <R> R match(Function<? super T, ? extends R> isOk, Function<? super E, ? extends R> isErr);
 
@@ -77,7 +77,7 @@ public sealed abstract class Result<T, E> permits Ok, Err {
 
     public abstract <U> Result<T, U> or(Result<T, U> other);
 
-    public abstract <U> Result<T, U> orElse(Function<E, Result<T, U>> f);
+    public abstract <U> Result<T, U> orElse(Function<? super E, ? extends Result<T, U>> f);
 
     public abstract Optional<T> toOptional();
 

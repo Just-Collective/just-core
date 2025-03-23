@@ -25,7 +25,7 @@ public final class Err<T, E> extends Result<T, E> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <U> Result<U, E> andThen(Function<T, Result<U, E>> f) {
+    public <U> Result<U, E> andThen(Function<? super T, ? extends Result<U, E>> f) {
         return (Result<U, E>) this;
     }
 
@@ -69,7 +69,7 @@ public final class Err<T, E> extends Result<T, E> {
     }
 
     @Override
-    public boolean isErrAnd(Predicate<E> predicate) {
+    public boolean isErrAnd(Predicate<? super E> predicate) {
         return predicate.test(error);
     }
 
@@ -79,18 +79,18 @@ public final class Err<T, E> extends Result<T, E> {
     }
 
     @Override
-    public boolean isOkAnd(Predicate<T> predicate) {
+    public boolean isOkAnd(Predicate<? super T> predicate) {
         return false;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <U> Result<U, E> map(Function<T, U> f) {
+    public <U> Result<U, E> map(Function<? super T, ? extends U> f) {
         return (Result<U, E>) this;
     }
 
     @Override
-    public <U> Result<T, U> mapErr(Function<E, U> f) {
+    public <U> Result<T, U> mapErr(Function<? super E, ? extends U> f) {
         return Result.err(f.apply(error));
     }
 
@@ -110,7 +110,7 @@ public final class Err<T, E> extends Result<T, E> {
     }
 
     @Override
-    public <U> Result<T, U> orElse(Function<E, Result<T, U>> f) {
+    public <U> Result<T, U> orElse(Function<? super E, ? extends Result<T, U>> f) {
         return f.apply(error);
     }
 
