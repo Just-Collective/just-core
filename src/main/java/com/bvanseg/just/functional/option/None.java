@@ -26,7 +26,7 @@ public final class None<T> extends Option<T> {
     }
 
     @Override
-    public <R> Option<R> andThen(Function<T, Option<R>> other) {
+    public <R> Option<R> andThen(Function<? super T, ? extends Option<R>> other) {
         return Option.none();
     }
 
@@ -69,7 +69,7 @@ public final class None<T> extends Option<T> {
     }
 
     @Override
-    public boolean isNoneOr(Predicate<T> predicate) {
+    public boolean isNoneOr(Predicate<? super T> predicate) {
         return true;
     }
 
@@ -94,7 +94,7 @@ public final class None<T> extends Option<T> {
     }
 
     @Override
-    public <R> R mapOrElse(Function<? super T, ? extends R> f, Supplier<R> supplier) {
+    public <R> R mapOrElse(Function<? super T, ? extends R> f, Supplier<? extends R> supplier) {
         return supplier.get();
     }
 
@@ -114,7 +114,7 @@ public final class None<T> extends Option<T> {
     }
 
     @Override
-    public <R> Option<R> orElse(Supplier<Option<R>> other) {
+    public <R> Option<R> orElse(Supplier<? extends Option<R>> other) {
         return other.get();
     }
 

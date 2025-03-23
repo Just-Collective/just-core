@@ -33,7 +33,7 @@ public sealed abstract class Option<T> permits Some, None {
         return condition ? Option.some(value) : Option.none();
     }
 
-    public static <T> Option<T> when(boolean condition, Supplier<Option<T>> supplier) {
+    public static <T> Option<T> when(boolean condition, Supplier<? extends Option<T>> supplier) {
         return condition ? supplier.get() : Option.none();
     }
 
@@ -66,7 +66,7 @@ public sealed abstract class Option<T> permits Some, None {
 
     public abstract <R> Option<R> and(Option<R> other);
 
-    public abstract <R> Option<R> andThen(Function<T, Option<R>> other);
+    public abstract <R> Option<R> andThen(Function<? super T, ? extends Option<R>> other);
 
     public abstract boolean contains(T value);
 
@@ -84,7 +84,7 @@ public sealed abstract class Option<T> permits Some, None {
 
     public abstract boolean isNone();
 
-    public abstract boolean isNoneOr(Predicate<T> predicate);
+    public abstract boolean isNoneOr(Predicate<? super T> predicate);
 
     public abstract boolean isSome();
 
@@ -94,7 +94,7 @@ public sealed abstract class Option<T> permits Some, None {
 
     public abstract <R> R mapOr(Function<? super T, ? extends R> f, R fallbackValue);
 
-    public abstract <R> R mapOrElse(Function<? super T, ? extends R> f, Supplier<R> supplier);
+    public abstract <R> R mapOrElse(Function<? super T, ? extends R> f, Supplier<? extends R> supplier);
 
     public abstract <R> R match(Function<? super T, ? extends R> ifSome, Supplier<? extends R> ifNone);
 
@@ -102,7 +102,7 @@ public sealed abstract class Option<T> permits Some, None {
 
     public abstract <R> Option<R> or(Option<R> other);
 
-    public abstract <R> Option<R> orElse(Supplier<Option<R>> other);
+    public abstract <R> Option<R> orElse(Supplier<? extends Option<R>> other);
 
     public abstract Optional<T> toOptional();
 
