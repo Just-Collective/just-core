@@ -45,11 +45,6 @@ public final class Some<T> extends Option<T> {
     }
 
     @Override
-    public <R> Option<R> flatMap(Function<? super T, ? extends Option<R>> f) {
-        return f.apply(value);
-    }
-
-    @Override
     public void ifSome(Consumer<? super T> action) {
         action.accept(value);
     }

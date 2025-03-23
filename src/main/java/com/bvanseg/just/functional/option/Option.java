@@ -42,7 +42,7 @@ public sealed abstract class Option<T> permits Some, None {
         Option<B> b,
         BiFunction<A, B, R> combiner
     ) {
-        return a.flatMap(
+        return a.andThen(
             va -> b.map(
                 vb -> combiner.apply(va, vb)
             )
@@ -73,8 +73,6 @@ public sealed abstract class Option<T> permits Some, None {
     public abstract T expect(String errorMessage);
 
     public abstract Option<T> filter(Predicate<? super T> predicate);
-
-    public abstract <R> Option<R> flatMap(Function<? super T, ? extends Option<R>> f);
 
     public abstract void ifSome(Consumer<? super T> action);
 

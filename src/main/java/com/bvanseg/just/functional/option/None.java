@@ -46,11 +46,6 @@ public final class None<T> extends Option<T> {
     }
 
     @Override
-    public <R> Option<R> flatMap(Function<? super T, ? extends Option<R>> f) {
-        return Option.none();
-    }
-
-    @Override
     public void ifSome(Consumer<? super T> action) { /* NO-OP */ }
 
     @Override
