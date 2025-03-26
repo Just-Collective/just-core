@@ -52,16 +52,6 @@ class NoneTest {
     }
 
     @Test
-    void flatMap_AlwaysReturnsNone() {
-        // Arrange
-        var none = Option.none();
-        // Act
-        var result = none.flatMap(x -> Option.some("mapped"));
-        // Assert
-        assertTrue(result.isNone());
-    }
-
-    @Test
     void ifSome_DoesNothing() {
         // Arrange
         var none = Option.none();

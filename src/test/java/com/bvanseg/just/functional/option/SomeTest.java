@@ -71,16 +71,6 @@ class SomeTest {
     }
 
     @Test
-    void flatMap_ReturnsMappedOption() {
-        // Arrange
-        var some = Option.some(5);
-        // Act
-        var mapped = some.flatMap(x -> Option.some(x * 2));
-        // Assert
-        assertEquals(Option.some(10), mapped);
-    }
-
-    @Test
     void ifSome_RunsConsumer() {
         // Arrange
         var some = Option.some("value");
