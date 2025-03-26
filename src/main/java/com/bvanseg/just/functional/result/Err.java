@@ -45,6 +45,15 @@ public final class Err<T, E> extends Result<T, E> {
     }
 
     @Override
+    public <U> Result<T, U> filterOrElse(
+        Predicate<? super T> predicate,
+        Function<? super T, ? extends U> invalidValueMapper,
+        Function<? super E, ? extends U> originalErrorMapper
+    ) {
+        return Result.err(originalErrorMapper.apply(error));
+    }
+
+    @Override
     public void ifOk(Consumer<? super T> action) { /* NO-OP */ }
 
     @Override

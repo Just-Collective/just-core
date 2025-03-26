@@ -43,6 +43,21 @@ public final class Ok<T, E> extends Result<T, E> {
     }
 
     @Override
+    public <U> Result<T, U> filterOrElse(
+        Predicate<? super T> predicate,
+        Function<? super T, ? extends U> invalidValueMapper,
+        Function<? super E, ? extends U> originalErrorMapper
+    ) {
+        if (predicate.test(value)) {
+            @SuppressWarnings("unchecked")
+            var self = (Result<T, U>) this;
+            return self;
+        }
+
+        return Result.err(invalidValueMapper.apply(value));
+    }
+
+    @Override
     public void ifOk(Consumer<? super T> action) {
         action.accept(value);
     }

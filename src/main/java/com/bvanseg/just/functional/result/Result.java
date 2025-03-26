@@ -51,6 +51,12 @@ public sealed abstract class Result<T, E> permits Ok, Err {
 
     public abstract E expectErr(String errorMessage);
 
+    public abstract <U> Result<T, U> filterOrElse(
+        Predicate<? super T> predicate,
+        Function<? super T, ? extends U> invalidValueMapper,
+        Function<? super E, ? extends U> originalErrorMapper
+    );
+
     public abstract void ifOk(Consumer<? super T> action);
 
     public abstract void ifErr(Consumer<? super E> action);
