@@ -21,7 +21,7 @@ public sealed abstract class Option<T> permits Some, None {
         return new Some<>(value);
     }
 
-    public static <T> Option<T> none() {
+    public static <T> None<T> none() {
         return None.instance();
     }
 
