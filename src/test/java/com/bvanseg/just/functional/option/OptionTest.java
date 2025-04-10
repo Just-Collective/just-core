@@ -119,7 +119,7 @@ class OptionTest {
         var a = Option.some(2);
         var b = Option.<Integer>none();
         // Act
-        var result = Option.map2(a, b, (x, y) -> x + y);
+        var result = Option.map2(a, b, Integer::sum);
         // Assert
         assertTrue(result.isNone());
     }

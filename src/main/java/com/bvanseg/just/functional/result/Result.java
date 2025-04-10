@@ -20,11 +20,11 @@ public sealed abstract class Result<T, E> permits Ok, Err {
         return new Err<>(error);
     }
 
-    public static <E extends Exception> Result<Void, E> tryRun(CheckedRunnable runnable) {
+    public static <E extends Throwable> Result<Void, E> tryRun(CheckedRunnable runnable) {
         try {
             runnable.run();
             return ok(null);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             @SuppressWarnings("unchecked")
             var err = Result.<Void, E>err((E) e);
             return err;
