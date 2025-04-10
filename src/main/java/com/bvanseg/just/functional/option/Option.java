@@ -25,7 +25,7 @@ public sealed abstract class Option<T> permits Some, None {
         return None.instance();
     }
 
-    public static <T> Option<T> flatten(Option<Option<T>> nested) {
+    public static <T> Option<T> flatten(Option<? extends Option<T>> nested) {
         return nested.match(Function.identity(), Option::none);
     }
 
