@@ -1,5 +1,7 @@
 package com.bvanseg.just.functional.result;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -12,15 +14,15 @@ import com.bvanseg.just.functional.option.Option;
 
 public sealed abstract class Result<T, E> permits Ok, Err {
 
-    public static <T, E> Result<T, E> ok(T value) {
+    public static <T, E> @NotNull Result<T, E> ok(T value) {
         return new Ok<>(value);
     }
 
-    public static <T, E> Result<T, E> err(E error) {
+    public static <T, E> @NotNull Result<T, E> err(E error) {
         return new Err<>(error);
     }
 
-    public static <E extends Throwable> Result<Void, E> tryRun(CheckedRunnable runnable) {
+    public static <E extends Throwable> @NotNull Result<Void, E> tryRun(@NotNull CheckedRunnable runnable) {
         try {
             runnable.run();
             return ok(null);
@@ -31,7 +33,9 @@ public sealed abstract class Result<T, E> permits Ok, Err {
         }
     }
 
-    public static <T, E extends Throwable> Result<T, E> trySupply(CheckedSupplier<? extends T> supplier) {
+    public static <T, E extends Throwable> @NotNull Result<T, E> trySupply(
+        @NotNull CheckedSupplier<? extends T> supplier
+    ) {
         try {
             return ok(supplier.get());
         } catch (Throwable throwable) {
@@ -41,53 +45,56 @@ public sealed abstract class Result<T, E> permits Ok, Err {
         }
     }
 
-    public abstract <U> Result<U, E> and(Result<U, E> other);
+    public abstract <U> @NotNull Result<U, E> and(@NotNull Result<U, E> other);
 
-    public abstract <U> Result<U, E> andThen(Function<? super T, ? extends Result<U, E>> f);
+    public abstract <U> @NotNull Result<U, E> andThen(@NotNull Function<? super @NotNull T, ? extends Result<U, E>> f);
 
-    public abstract Option<E> err();
+    public abstract @NotNull Option<E> err();
 
-    public abstract T expect(String errorMessage) throws NoSuchElementException;
+    public abstract @NotNull T expect(@NotNull String errorMessage) throws NoSuchElementException;
 
-    public abstract E expectErr(String errorMessage);
+    public abstract @NotNull E expectErr(@NotNull String errorMessage);
 
     public abstract <U> Result<T, U> filterOrElse(
-        Predicate<? super T> predicate,
-        Function<? super T, ? extends U> invalidValueMapper,
-        Function<? super E, ? extends U> originalErrorMapper
+        @NotNull Predicate<? super @NotNull T> predicate,
+        @NotNull Function<? super @NotNull T, ? extends U> invalidValueMapper,
+        @NotNull Function<? super @NotNull E, ? extends U> originalErrorMapper
     );
 
-    public abstract void ifOk(Consumer<? super T> action);
+    public abstract void ifOk(@NotNull Consumer<? super @NotNull T> action);
 
-    public abstract void ifErr(Consumer<? super E> action);
+    public abstract void ifErr(@NotNull Consumer<? super @NotNull E> action);
 
-    public abstract Result<T, E> inspect(Consumer<? super T> action);
+    public abstract @NotNull Result<T, E> inspect(@NotNull Consumer<? super @NotNull T> action);
 
-    public abstract Result<T, E> inspectErr(Consumer<? super E> action);
+    public abstract @NotNull Result<T, E> inspectErr(@NotNull Consumer<? super @NotNull E> action);
 
     public abstract boolean isErr();
 
-    public abstract boolean isErrAnd(Predicate<? super E> predicate);
+    public abstract boolean isErrAnd(@NotNull Predicate<? super @NotNull E> predicate);
 
     public abstract boolean isOk();
 
-    public abstract boolean isOkAnd(Predicate<? super T> predicate);
+    public abstract boolean isOkAnd(@NotNull Predicate<? super @NotNull T> predicate);
 
-    public abstract <U> Result<U, E> map(Function<? super T, ? extends U> f);
+    public abstract <U> @NotNull Result<U, E> map(@NotNull Function<? super @NotNull T, ? extends U> f);
 
-    public abstract <U> Result<T, U> mapErr(Function<? super E, ? extends U> f);
+    public abstract <U> @NotNull Result<T, U> mapErr(@NotNull Function<? super @NotNull E, ? extends U> f);
 
-    public abstract <R> R match(Function<? super T, ? extends R> isOk, Function<? super E, ? extends R> isErr);
+    public abstract <R> R match(
+        @NotNull Function<? super @NotNull T, ? extends R> isOk,
+        @NotNull Function<? super @NotNull E, ? extends R> isErr
+    );
 
-    public abstract Option<T> ok();
+    public abstract @NotNull Option<T> ok();
 
-    public abstract <U> Result<T, U> or(Result<T, U> other);
+    public abstract <U> @NotNull Result<T, U> or(@NotNull Result<T, U> other);
 
-    public abstract <U> Result<T, U> orElse(Function<? super E, ? extends Result<T, U>> f);
+    public abstract <U> @NotNull Result<T, U> orElse(@NotNull Function<? super @NotNull E, ? extends Result<T, U>> f);
 
-    public abstract Optional<T> toOptional();
+    public abstract @NotNull Optional<T> toOptional();
 
-    public abstract T unwrap() throws NoSuchElementException;
+    public abstract @NotNull T unwrap() throws NoSuchElementException;
 
-    public abstract E unwrapErr();
+    public abstract @NotNull E unwrapErr();
 }

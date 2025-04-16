@@ -1,5 +1,7 @@
 package com.bvanseg.just.functional.option;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -15,45 +17,45 @@ public final class Some<T> extends Option<T> {
 
     private final T value;
 
-    Some(T value) {
+    Some(@NotNull T value) {
         this.value = value;
     }
 
     @Override
-    public <R> Option<R> and(Option<R> other) {
+    public <R> @NotNull Option<R> and(@NotNull Option<R> other) {
         return other;
     }
 
     @Override
-    public <R> Option<R> andThen(Function<? super T, ? extends Option<R>> other) {
+    public <R> @NotNull Option<R> andThen(@NotNull Function<? super @NotNull T, ? extends @NotNull Option<R>> other) {
         return other.apply(value);
     }
 
     @Override
-    public boolean contains(T value) {
+    public boolean contains(@NotNull T value) {
         return Objects.equals(this.value, value);
     }
 
     @Override
-    public T expect(String errorMessage) {
+    public @NotNull T expect(@NotNull String errorMessage) {
         return value;
     }
 
     @Override
-    public Option<T> filter(Predicate<? super T> predicate) {
+    public @NotNull Option<T> filter(@NotNull Predicate<? super @NotNull T> predicate) {
         return predicate.test(value) ? this : Option.none();
     }
 
     @Override
-    public void ifSome(Consumer<? super T> action) {
+    public void ifSome(@NotNull Consumer<? super @NotNull T> action) {
         action.accept(value);
     }
 
     @Override
-    public void ifNone(Runnable action) { /* NO-OP */ }
+    public void ifNone(@NotNull Runnable action) { /* NO-OP */ }
 
     @Override
-    public Option<T> inspect(Consumer<? super T> action) {
+    public @NotNull Option<T> inspect(@NotNull Consumer<? super @NotNull T> action) {
         action.accept(value);
         return this;
     }
@@ -64,7 +66,7 @@ public final class Some<T> extends Option<T> {
     }
 
     @Override
-    public boolean isNoneOr(Predicate<? super T> predicate) {
+    public boolean isNoneOr(@NotNull Predicate<? super @NotNull T> predicate) {
         return predicate.test(value);
     }
 
@@ -74,59 +76,65 @@ public final class Some<T> extends Option<T> {
     }
 
     @Override
-    public boolean isSomeAnd(Predicate<? super T> predicate) {
+    public boolean isSomeAnd(@NotNull Predicate<? super @NotNull T> predicate) {
         return predicate.test(value);
     }
 
     @Override
-    public <R> Option<R> map(Function<? super T, ? extends R> f) {
+    public <R> @NotNull Option<R> map(@NotNull Function<? super @NotNull T, ? extends R> f) {
         return Option.some(f.apply(value));
     }
 
     @Override
-    public <R> R mapOr(Function<? super T, ? extends R> f, R fallbackValue) {
+    public <R> R mapOr(@NotNull Function<? super @NotNull T, ? extends R> f, R fallbackValue) {
         return f.apply(value);
     }
 
     @Override
-    public <R> R mapOrElse(Function<? super T, ? extends R> f, Supplier<? extends R> supplier) {
+    public <R> R mapOrElse(
+        @NotNull Function<? super @NotNull T, ? extends R> f,
+        @NotNull Supplier<? extends R> supplier
+    ) {
         return f.apply(value);
     }
 
     @Override
-    public <R> R match(Function<? super T, ? extends R> ifSome, Supplier<? extends R> ifNone) {
+    public <R> R match(
+        @NotNull Function<? super @NotNull T, ? extends R> ifSome,
+        @NotNull Supplier<? extends R> ifNone
+    ) {
         return ifSome.apply(value);
     }
 
     @Override
-    public <R> Result<T, R> okOr(R fallbackValue) {
+    public <R> @NotNull Result<T, R> okOr(R fallbackValue) {
         return Result.ok(value);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <R> Option<R> or(Option<R> other) {
+    public <R> @NotNull Option<R> or(@NotNull Option<R> other) {
         return (Option<R>) this;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <R> Option<R> orElse(Supplier<? extends Option<R>> other) {
+    public <R> @NotNull Option<R> orElse(@NotNull Supplier<? extends @NotNull Option<R>> other) {
         return (Option<R>) this;
     }
 
     @Override
-    public Optional<T> toOptional() {
+    public @NotNull Optional<T> toOptional() {
         return Optional.of(value);
     }
 
     @Override
-    public Stream<T> toStream() {
+    public @NotNull Stream<T> toStream() {
         return Stream.of(value);
     }
 
     @Override
-    public T unwrap() {
+    public @NotNull T unwrap() {
         return value;
     }
 
@@ -136,17 +144,20 @@ public final class Some<T> extends Option<T> {
     }
 
     @Override
-    public T unwrapOrElse(Supplier<? extends T> supplier) {
+    public T unwrapOrElse(@NotNull Supplier<? extends T> supplier) {
         return value;
     }
 
     @Override
-    public <X extends Throwable> T unwrapOrThrow(Supplier<? extends X> exceptionSupplier) throws X {
+    public <X extends Throwable> T unwrapOrThrow(@NotNull Supplier<? extends X> exceptionSupplier) throws X {
         return value;
     }
 
     @Override
-    public <U, R> Option<R> zip(Option<U> other, BiFunction<? super T, ? super U, ? extends R> combiner) {
+    public <U, R> @NotNull Option<R> zip(
+        @NotNull Option<U> other,
+        @NotNull BiFunction<? super @NotNull T, ? super U, ? extends R> combiner
+    ) {
         return other.match(
             u -> Option.some(combiner.apply(value, u)),
             Option::none

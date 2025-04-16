@@ -1,5 +1,7 @@
 package com.bvanseg.just.functional.result;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,35 +20,35 @@ public final class Ok<T, E> extends Result<T, E> {
     }
 
     @Override
-    public <U> Result<U, E> and(Result<U, E> other) {
+    public <U> @NotNull Result<U, E> and(@NotNull Result<U, E> other) {
         return other;
     }
 
     @Override
-    public <U> Result<U, E> andThen(Function<? super T, ? extends Result<U, E>> f) {
+    public <U> @NotNull Result<U, E> andThen(@NotNull Function<? super @NotNull T, ? extends Result<U, E>> f) {
         return f.apply(value);
     }
 
     @Override
-    public Option<E> err() {
+    public @NotNull Option<E> err() {
         return Option.none();
     }
 
     @Override
-    public T expect(String errorMessage) {
+    public @NotNull T expect(@NotNull String errorMessage) {
         return value;
     }
 
     @Override
-    public E expectErr(String errorMessage) throws NoSuchElementException {
+    public @NotNull E expectErr(@NotNull String errorMessage) throws NoSuchElementException {
         throw new NoSuchElementException("No error present.");
     }
 
     @Override
     public <U> Result<T, U> filterOrElse(
-        Predicate<? super T> predicate,
-        Function<? super T, ? extends U> invalidValueMapper,
-        Function<? super E, ? extends U> originalErrorMapper
+        @NotNull Predicate<? super @NotNull T> predicate,
+        @NotNull Function<? super @NotNull T, ? extends U> invalidValueMapper,
+        @NotNull Function<? super @NotNull E, ? extends U> originalErrorMapper
     ) {
         if (predicate.test(value)) {
             @SuppressWarnings("unchecked")
@@ -58,21 +60,21 @@ public final class Ok<T, E> extends Result<T, E> {
     }
 
     @Override
-    public void ifOk(Consumer<? super T> action) {
+    public void ifOk(@NotNull Consumer<? super @NotNull T> action) {
         action.accept(value);
     }
 
     @Override
-    public void ifErr(Consumer<? super E> action) { /* NO-OP */ }
+    public void ifErr(@NotNull Consumer<? super @NotNull E> action) { /* NO-OP */ }
 
     @Override
-    public Result<T, E> inspect(Consumer<? super T> action) {
+    public @NotNull Result<T, E> inspect(@NotNull Consumer<? super @NotNull T> action) {
         action.accept(value);
         return this;
     }
 
     @Override
-    public Result<T, E> inspectErr(Consumer<? super E> action) {
+    public @NotNull Result<T, E> inspectErr(@NotNull Consumer<? super @NotNull E> action) {
         return this;
     }
 
@@ -82,7 +84,7 @@ public final class Ok<T, E> extends Result<T, E> {
     }
 
     @Override
-    public boolean isErrAnd(Predicate<? super E> predicate) {
+    public boolean isErrAnd(@NotNull Predicate<? super @NotNull E> predicate) {
         return false;
     }
 
@@ -92,54 +94,57 @@ public final class Ok<T, E> extends Result<T, E> {
     }
 
     @Override
-    public boolean isOkAnd(Predicate<? super T> predicate) {
+    public boolean isOkAnd(@NotNull Predicate<? super @NotNull T> predicate) {
         return predicate.test(value);
     }
 
     @Override
-    public <U> Result<U, E> map(Function<? super T, ? extends U> f) {
+    public <U> @NotNull Result<U, E> map(@NotNull Function<? super @NotNull T, ? extends U> f) {
         return Result.ok(f.apply(value));
     }
 
     @Override
-    public <U> Result<T, U> mapErr(Function<? super E, ? extends U> f) {
+    public <U> @NotNull Result<T, U> mapErr(@NotNull Function<? super @NotNull E, ? extends U> f) {
         return Result.ok(value);
     }
 
     @Override
-    public <R> R match(Function<? super T, ? extends R> isOk, Function<? super E, ? extends R> isErr) {
+    public <R> R match(
+        @NotNull Function<? super @NotNull T, ? extends R> isOk,
+        @NotNull Function<? super @NotNull E, ? extends R> isErr
+    ) {
         return isOk.apply(value);
     }
 
     @Override
-    public Option<T> ok() {
+    public @NotNull Option<T> ok() {
         return Option.some(value);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <U> Result<T, U> or(Result<T, U> other) {
+    public <U> @NotNull Result<T, U> or(@NotNull Result<T, U> other) {
         return (Result<T, U>) this;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <U> Result<T, U> orElse(Function<? super E, ? extends Result<T, U>> f) {
+    public <U> @NotNull Result<T, U> orElse(@NotNull Function<? super @NotNull E, ? extends Result<T, U>> f) {
         return (Result<T, U>) this;
     }
 
     @Override
-    public Optional<T> toOptional() {
+    public @NotNull Optional<T> toOptional() {
         return Optional.of(value);
     }
 
     @Override
-    public T unwrap() {
+    public @NotNull T unwrap() {
         return value;
     }
 
     @Override
-    public E unwrapErr() {
+    public @NotNull E unwrapErr() {
         throw new NoSuchElementException("No error present.");
     }
 
