@@ -57,7 +57,7 @@ class OkTest {
         Result<String, String> ok = Result.ok("fine");
         // Act & Assert
         var ex = assertThrows(NoSuchElementException.class, () -> ok.expectErr("boom"));
-        assertEquals("No error present.", ex.getMessage());
+        assertEquals("boom", ex.getMessage());
     }
 
     @Test

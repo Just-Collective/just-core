@@ -41,7 +41,7 @@ public final class Ok<T, E> extends Result<T, E> {
 
     @Override
     public @NotNull E expectErr(@NotNull String errorMessage) throws NoSuchElementException {
-        throw new NoSuchElementException("No error present.");
+        throw new NoSuchElementException(errorMessage);
     }
 
     @Override
