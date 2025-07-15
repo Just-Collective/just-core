@@ -47,7 +47,7 @@ class ErrTest {
         Result<String, String> err = Result.err("nope");
         // Act & Assert
         var ex = assertThrows(NoSuchElementException.class, () -> err.expect("boom"));
-        assertEquals("No value present.", ex.getMessage());
+        assertEquals("boom", ex.getMessage());
     }
 
     @Test

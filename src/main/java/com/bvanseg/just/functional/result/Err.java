@@ -38,7 +38,7 @@ public final class Err<T, E> extends Result<T, E> {
 
     @Override
     public @NotNull T expect(@NotNull String errorMessage) throws NoSuchElementException {
-        throw new NoSuchElementException("No value present.");
+        throw new NoSuchElementException(errorMessage);
     }
 
     @Override
