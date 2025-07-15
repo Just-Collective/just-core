@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import com.bvanseg.just.functional.either.Either;
 import com.bvanseg.just.functional.function.CheckedRunnable;
 import com.bvanseg.just.functional.function.CheckedSupplier;
 import com.bvanseg.just.functional.option.Option;
@@ -48,6 +49,8 @@ public sealed abstract class Result<T, E> permits Ok, Err {
     public abstract <U> @NotNull Result<U, E> and(@NotNull Result<U, E> other);
 
     public abstract <U> @NotNull Result<U, E> andThen(@NotNull Function<? super @NotNull T, ? extends Result<U, E>> f);
+
+    public abstract Either<T, E> either();
 
     public abstract @NotNull Option<E> err();
 

@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import com.bvanseg.just.functional.either.Either;
 import com.bvanseg.just.functional.option.Option;
 
 public final class Err<T, E> extends Result<T, E> {
@@ -29,6 +30,11 @@ public final class Err<T, E> extends Result<T, E> {
     @Override
     public <U> @NotNull Result<U, E> andThen(@NotNull Function<? super @NotNull T, ? extends Result<U, E>> f) {
         return (Result<U, E>) this;
+    }
+
+    @Override
+    public Either<T, E> either() {
+        return Either.right(error);
     }
 
     @Override
