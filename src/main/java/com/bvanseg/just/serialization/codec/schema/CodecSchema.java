@@ -18,6 +18,18 @@ public interface CodecSchema<T> {
 
     Result<Stream<T>, T> getStream(T input);
 
+    default Result<IntStream, T> getIntStream(final T input) {
+        return getStream(input).andThen(stream -> {
+            var list = stream.toList();
+
+            if (list.stream().allMatch(element -> getNumberValue(element).isOk())) {
+                return Result.ok(list.stream().mapToInt(element -> getNumberValue(element).unwrap().intValue()));
+            }
+
+            return Result.err(input);
+        });
+    }
+
     default Result<Consumer<Consumer<T>>, T> getList(T input) {
         return getStream(input).map(stream -> stream::forEach);
     }
