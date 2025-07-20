@@ -28,8 +28,8 @@ public class Memo<A, R> implements Function<A, R> {
             return cachedResult;
         }
 
-        cachedResult = function.apply(a);
-        aRef = a;
+        this.cachedResult = function.apply(a);
+        this.aRef = a;
 
         return cachedResult;
     }

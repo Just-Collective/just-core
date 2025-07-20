@@ -37,9 +37,9 @@ public class Memo2<A, B, R> implements BiFunction<A, B, R> {
             return cachedResult;
         }
 
-        cachedResult = biFunction.apply(a, b);
-        aRef = a;
-        bRef = b;
+        this.cachedResult = biFunction.apply(a, b);
+        this.aRef = a;
+        this.bRef = b;
 
         return cachedResult;
     }

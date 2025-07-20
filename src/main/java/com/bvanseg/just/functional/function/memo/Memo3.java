@@ -51,10 +51,10 @@ public class Memo3<A, B, C, R> implements Function3<A, B, C, R> {
             return cachedResult;
         }
 
-        cachedResult = function3.apply(a, b, c);
-        aRef = a;
-        bRef = b;
-        cRef = c;
+        this.cachedResult = function3.apply(a, b, c);
+        this.aRef = a;
+        this.bRef = b;
+        this.cRef = c;
 
         return cachedResult;
     }
