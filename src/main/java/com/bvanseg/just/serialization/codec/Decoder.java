@@ -23,4 +23,20 @@ public interface Decoder<A> {
             }
         };
     }
+
+    default <B> Decoder<B> flatMap(Function<? super A, ? extends B> function) {
+        return new Decoder<>() {
+
+            @Override
+            public <T> Result<B, T> decode(CodecSchema<T> codecSchema, T input) {
+                return Decoder.this.decode(codecSchema, input)
+                    .andThen(a -> Result.ok(function.apply(a)));
+            }
+
+            @Override
+            public String toString() {
+                return Decoder.this + "[flatMapped]";
+            }
+        };
+    }
 }
