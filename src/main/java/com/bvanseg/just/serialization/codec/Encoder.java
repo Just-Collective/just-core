@@ -8,7 +8,7 @@ public interface Encoder<A> {
 
     <T> T encode(CodecSchema<T> codecSchema, A value);
 
-    default <B> Encoder<B> contravariantMap(Function<? super B, ? extends A> function) {
+    default <B> Encoder<B> contraMap(Function<? super B, ? extends A> function) {
         return new Encoder<>() {
 
             @Override
@@ -18,7 +18,7 @@ public interface Encoder<A> {
 
             @Override
             public String toString() {
-                return Encoder.this + "[contravariantMapped]";
+                return Encoder.this + "[contraMapped]";
             }
         };
     }
