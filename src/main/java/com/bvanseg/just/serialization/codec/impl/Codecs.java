@@ -130,6 +130,11 @@ public class Codecs {
 
     public static final Codec<UUID> UUID = new UUIDCodec();
 
+    public static final Codec<UUID> UUID_STRING = STRING.contraMapFlatMap(
+        java.util.UUID::fromString,
+        java.util.UUID::toString
+    );
+
     Codecs() {
         throw new UnsupportedOperationException();
     }
