@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 
-import com.bvanseg.just.functional.function.TriFunction;
+import com.bvanseg.just.functional.function.Function3;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,12 +17,12 @@ class TriMemoTest {
         // Arrange
         var callCount = new AtomicInteger(0);
 
-        TriFunction<String, Integer, Boolean, String> f = (s, i, b) -> {
+        Function3<String, Integer, Boolean, String> f = (s, i, b) -> {
             callCount.incrementAndGet();
             return s + "-" + i + "-" + b;
         };
 
-        var memo = new TriMemo<>(f);
+        var memo = new Memo3<>(f);
 
         var s1 = "ref";
         var s2 = new String("ref");
@@ -45,7 +45,7 @@ class TriMemoTest {
         // Arrange
         var callCount = new AtomicInteger(0);
 
-        TriFunction<String, Integer, Boolean, String> f = (s, i, b) -> {
+        Function3<String, Integer, Boolean, String> f = (s, i, b) -> {
             callCount.incrementAndGet();
             return s + "|" + i + "|" + b;
         };
@@ -54,7 +54,7 @@ class TriMemoTest {
         BiPredicate<Integer, Integer> bEq = Integer::equals;
         BiPredicate<Boolean, Boolean> cEq = Boolean::equals;
 
-        var memo = new TriMemo<>(f, aEq, bEq, cEq);
+        var memo = new Memo3<>(f, aEq, bEq, cEq);
 
         var a1 = new String("key");
         var a2 = new String("key");
@@ -73,7 +73,7 @@ class TriMemoTest {
         // Arrange
         var callCount = new AtomicInteger(0);
 
-        TriMemo<String, Integer, Double, String> memo = new TriMemo<>(
+        Memo3<String, Integer, Double, String> memo = new Memo3<>(
             (a, b, c) -> {
                 callCount.incrementAndGet();
                 return a + ":" + b + ":" + c;
@@ -94,7 +94,7 @@ class TriMemoTest {
         // Arrange
         var callCount = new AtomicInteger(0);
 
-        TriMemo<String, Integer, Double, String> memo = new TriMemo<>(
+        Memo3<String, Integer, Double, String> memo = new Memo3<>(
             (a, b, c) -> {
                 callCount.incrementAndGet();
                 return a + ":" + b + ":" + c;
@@ -115,7 +115,7 @@ class TriMemoTest {
         // Arrange
         var callCount = new AtomicInteger(0);
 
-        TriMemo<String, Integer, Double, String> memo = new TriMemo<>(
+        Memo3<String, Integer, Double, String> memo = new Memo3<>(
             (a, b, c) -> {
                 callCount.incrementAndGet();
                 return a + ":" + b + ":" + c;
@@ -136,7 +136,7 @@ class TriMemoTest {
         // Arrange
         var callCount = new AtomicInteger(0);
 
-        TriMemo<Integer, Integer, Integer, Integer> memo = new TriMemo<>(
+        Memo3<Integer, Integer, Integer, Integer> memo = new Memo3<>(
             (a, b, c) -> {
                 callCount.incrementAndGet();
                 return a + b + c;

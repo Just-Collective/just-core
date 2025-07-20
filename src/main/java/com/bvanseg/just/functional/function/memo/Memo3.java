@@ -2,9 +2,9 @@ package com.bvanseg.just.functional.function.memo;
 
 import java.util.function.BiPredicate;
 
-import com.bvanseg.just.functional.function.TriFunction;
+import com.bvanseg.just.functional.function.Function3;
 
-public class TriMemo<A, B, C, R> implements TriFunction<A, B, C, R> {
+public class Memo3<A, B, C, R> implements Function3<A, B, C, R> {
 
     private A aRef;
 
@@ -14,7 +14,7 @@ public class TriMemo<A, B, C, R> implements TriFunction<A, B, C, R> {
 
     private R cachedResult;
 
-    private final TriFunction<A, B, C, R> triFunction;
+    private final Function3<A, B, C, R> function3;
 
     private final BiPredicate<A, A> aEq;
 
@@ -22,22 +22,22 @@ public class TriMemo<A, B, C, R> implements TriFunction<A, B, C, R> {
 
     private final BiPredicate<C, C> cEq;
 
-    public TriMemo(TriFunction<A, B, C, R> triFunction) {
+    public Memo3(Function3<A, B, C, R> function3) {
         this(
-            triFunction,
+            function3,
             (oldRef, newRef) -> newRef == oldRef,
             (oldRef, newRef) -> newRef == oldRef,
             (oldRef, newRef) -> newRef == oldRef
         );
     }
 
-    public TriMemo(
-        TriFunction<A, B, C, R> triFunction,
+    public Memo3(
+        Function3<A, B, C, R> function3,
         BiPredicate<A, A> aEq,
         BiPredicate<B, B> bEq,
         BiPredicate<C, C> cEq
     ) {
-        this.triFunction = triFunction;
+        this.function3 = function3;
         this.aEq = aEq;
         this.bEq = bEq;
         this.cEq = cEq;
@@ -51,7 +51,7 @@ public class TriMemo<A, B, C, R> implements TriFunction<A, B, C, R> {
             return cachedResult;
         }
 
-        cachedResult = triFunction.apply(a, b, c);
+        cachedResult = function3.apply(a, b, c);
         aRef = a;
         bRef = b;
         cRef = c;

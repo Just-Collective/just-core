@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import com.bvanseg.just.functional.function.TriFunction;
+import com.bvanseg.just.functional.function.Function3;
 import com.bvanseg.just.functional.result.Result;
 
 public sealed abstract class Option<T> permits Some, None {
@@ -59,7 +59,7 @@ public sealed abstract class Option<T> permits Some, None {
         @NotNull Option<A> a,
         @NotNull Option<B> b,
         @NotNull Option<C> c,
-        @NotNull TriFunction<A, B, C, R> combiner
+        @NotNull Function3<A, B, C, R> combiner
     ) {
         return flatten(
             map2(

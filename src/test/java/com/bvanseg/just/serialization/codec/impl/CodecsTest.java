@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -114,6 +115,14 @@ public class CodecsTest {
             ),
             Arguments.of(
                 new CodecQueryContainer<>(Codecs.STRING, "Hello, world!", JsonNode::isTextual, JsonNode::asText)
+            ),
+            Arguments.of(
+                new CodecQueryContainer<>(
+                    Codecs.UUID_STRING,
+                    UUID.randomUUID(),
+                    JsonNode::isTextual,
+                    jsonNode -> UUID.fromString(jsonNode.asText())
+                )
             )
         );
     }

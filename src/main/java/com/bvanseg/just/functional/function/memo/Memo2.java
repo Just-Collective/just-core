@@ -3,7 +3,7 @@ package com.bvanseg.just.functional.function.memo;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
-public class BiMemo<A, B, R> implements BiFunction<A, B, R> {
+public class Memo2<A, B, R> implements BiFunction<A, B, R> {
 
     private A aRef;
 
@@ -17,7 +17,7 @@ public class BiMemo<A, B, R> implements BiFunction<A, B, R> {
 
     private final BiPredicate<B, B> bEq;
 
-    public BiMemo(BiFunction<A, B, R> biFunction) {
+    public Memo2(BiFunction<A, B, R> biFunction) {
         this(
             biFunction,
             (oldRef, newRef) -> newRef == oldRef,
@@ -25,7 +25,7 @@ public class BiMemo<A, B, R> implements BiFunction<A, B, R> {
         );
     }
 
-    public BiMemo(BiFunction<A, B, R> biFunction, BiPredicate<A, A> aEq, BiPredicate<B, B> bEq) {
+    public Memo2(BiFunction<A, B, R> biFunction, BiPredicate<A, A> aEq, BiPredicate<B, B> bEq) {
         this.biFunction = biFunction;
         this.aEq = aEq;
         this.bEq = bEq;

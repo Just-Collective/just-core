@@ -8,7 +8,7 @@ import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BiMemoTest {
+class Memo2Test {
 
     @Test
     void testReferenceEqualityMemoization() {
@@ -19,7 +19,7 @@ class BiMemoTest {
             return s + i;
         };
 
-        var memo = new BiMemo<>(concat);
+        var memo = new Memo2<>(concat);
 
         var str1 = "item";
         var str2 = new String("item"); // different reference, same value
@@ -43,7 +43,7 @@ class BiMemoTest {
             return s + "-" + i;
         };
 
-        var memo = new BiMemo<>(concat, Objects::equals, Objects::equals);
+        var memo = new Memo2<>(concat, Objects::equals, Objects::equals);
 
         var s1 = new String("key");
         var s2 = new String("key");
@@ -59,7 +59,7 @@ class BiMemoTest {
     void testCacheInvalidatesOnFirstArgChange() {
         AtomicInteger callCount = new AtomicInteger(0);
 
-        BiMemo<String, Integer, String> memo = new BiMemo<>(
+        Memo2<String, Integer, String> memo = new Memo2<>(
             (s, i) -> {
                 callCount.incrementAndGet();
                 return s + ":" + i;
@@ -77,7 +77,7 @@ class BiMemoTest {
     void testCacheInvalidatesOnSecondArgChange() {
         AtomicInteger callCount = new AtomicInteger(0);
 
-        BiMemo<String, Integer, String> memo = new BiMemo<>(
+        Memo2<String, Integer, String> memo = new Memo2<>(
             (s, i) -> {
                 callCount.incrementAndGet();
                 return s + ":" + i;
@@ -95,7 +95,7 @@ class BiMemoTest {
     void testRepeatedCallWithSameArgs() {
         AtomicInteger callCount = new AtomicInteger(0);
 
-        BiMemo<Integer, Integer, Integer> memo = new BiMemo<>(
+        Memo2<Integer, Integer, Integer> memo = new Memo2<>(
             (a, b) -> {
                 callCount.incrementAndGet();
                 return a * b;
