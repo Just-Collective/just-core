@@ -1,5 +1,7 @@
 package com.bvanseg.just.serialization.codec.impl;
 
+import java.util.UUID;
+
 import com.bvanseg.just.functional.result.Result;
 import com.bvanseg.just.serialization.codec.Codec;
 import com.bvanseg.just.serialization.codec.Decoder;
@@ -125,6 +127,8 @@ public class Codecs {
             return codecSchema.createStringValue(value);
         }
     });
+
+    public static final Codec<UUID> UUID = new UUIDCodec();
 
     Codecs() {
         throw new UnsupportedOperationException();
