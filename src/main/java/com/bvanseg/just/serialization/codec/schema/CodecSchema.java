@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import com.bvanseg.just.functional.result.Result;
+import com.bvanseg.just.functional.tuple.Tuple2;
 
 public interface CodecSchema<T> {
 
@@ -17,6 +18,12 @@ public interface CodecSchema<T> {
 
     Result<Stream<T>, T> getStream(T input);
 
+    default Result<Consumer<Consumer<T>>, T> getList(T input) {
+        return getStream(input).map(stream -> stream::forEach);
+    }
+
+    Result<Stream<Tuple2<T, T>>, T> getMap(T input);
+
     T createBooleanValue(boolean value);
 
     T createNumber(Number value);
@@ -25,9 +32,7 @@ public interface CodecSchema<T> {
 
     T createList(Stream<T> elements);
 
-    default Result<Consumer<Consumer<T>>, T> getList(T input) {
-        return getStream(input).map(stream -> stream::forEach);
-    }
+    T createMap(Stream<Tuple2<T, T>> entries);
 
     default T createByteValue(byte value) {
         return createNumber(value);

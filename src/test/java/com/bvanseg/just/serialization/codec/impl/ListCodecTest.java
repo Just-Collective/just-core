@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ListCodecTest {
 
-    private static final Codec<List<Integer>> INTEGER_LIST_CODEC = Codec.list(Codecs.INT);
+    private static final Codec<List<Integer>> CODEC = Codec.list(Codecs.INT);
 
     private static final List<Integer> INTEGERS = List.of(1, 2, 3, 4, 5);
 
@@ -26,7 +26,7 @@ public class ListCodecTest {
         INTEGERS.forEach(arrayNode::add);
 
         // Act
-        var result = INTEGER_LIST_CODEC.decode(CodecTestUtils.JACKSON_CODEC_SCHEMA, arrayNode);
+        var result = CODEC.decode(CodecTestUtils.JACKSON_SCHEMA, arrayNode);
 
         // Assert
         assertTrue(result.isOk());
@@ -39,7 +39,7 @@ public class ListCodecTest {
     @Test
     void encode_Success() {
         // Act
-        var jsonNode = INTEGER_LIST_CODEC.encode(CodecTestUtils.JACKSON_CODEC_SCHEMA, INTEGERS);
+        var jsonNode = CODEC.encode(CodecTestUtils.JACKSON_SCHEMA, INTEGERS);
 
         // Assert
         assertTrue(jsonNode.isArray());

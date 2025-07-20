@@ -34,7 +34,7 @@ public class CodecsTest {
         var jsonNode = CodecTestUtils.OBJECT_MAPPER.valueToTree(value);
 
         // Act
-        var result = codec.decode(CodecTestUtils.JACKSON_CODEC_SCHEMA, jsonNode);
+        var result = codec.decode(CodecTestUtils.JACKSON_SCHEMA, jsonNode);
 
         // Assert
         assertTrue(result.isOk());
@@ -47,7 +47,7 @@ public class CodecsTest {
         // Act
         var codec = codecQueryContainer.codec;
         var value = codecQueryContainer.testValue;
-        var jsonNode = codec.encode(CodecTestUtils.JACKSON_CODEC_SCHEMA, value);
+        var jsonNode = codec.encode(CodecTestUtils.JACKSON_SCHEMA, value);
 
         // Assert
         assertTrue(codecQueryContainer.predicate.test(jsonNode));
