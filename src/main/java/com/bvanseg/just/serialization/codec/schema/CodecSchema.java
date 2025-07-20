@@ -1,6 +1,7 @@
 package com.bvanseg.just.serialization.codec.schema;
 
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.bvanseg.just.functional.result.Result;
@@ -68,5 +69,9 @@ public interface CodecSchema<T> {
 
     default T createDoubleValue(double value) {
         return createNumber(value);
+    }
+
+    default T createIntList(final IntStream input) {
+        return createList(input.mapToObj(this::createIntValue));
     }
 }
