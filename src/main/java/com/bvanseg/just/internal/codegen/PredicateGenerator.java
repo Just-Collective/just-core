@@ -17,32 +17,48 @@ public class PredicateGenerator {
             throw new IOException("Could not create output directory: " + outputDir);
         }
 
-        for (int i = 2; i <= 16; i++) {
+        for (int i = 1; i <= 16; i++) {
             var n = i;
             var prev = n - 1;
-            var thisName = "Predicate" + n;
-            var functionName = "Function" + n;
+            var thisName = n > 1 ? "Predicate" + n : "Predicate";
+            var functionName = n > 1 ? "Function" + n : "Function";
             var precedingName = prev > 1 ? "Predicate" + prev : "Predicate";
 
             var codeGenerator = new CodeGenerator()
                 .packageLine("com.bvanseg.just.functional.function.predicate")
                 .apply(acg -> {
-                    if (n == 2) {
-                        acg.importLine("java.util.function.Predicate");
+                    if (n == 1 || n == 2) {
+                        acg.importLine("org.jetbrains.annotations.NotNull");
                         acg.newLine();
                     }
                 })
-                .importLine("com.bvanseg.just.functional.function.Function" + n)
+                .importLine("com.bvanseg.just.functional.function." + functionName)
                 .newLine()
                 .appendAnnotation(FunctionalInterface.class, false)
                 .append("public interface ", thisName)
                 .appendTypeParams(n, true)
-                .append(" extends ", functionName)
-                .appendTypeParams(n, false)
-                .append(", Boolean>")
+                .append(" extends ")
+                .apply(acg -> {
+                    acg.append(functionName)
+                        .appendTypeParams(n, false)
+                        .append(", Boolean>");
+
+                    if (n == 1) {
+                        acg.append(", java.util.function.Predicate")
+                            .appendTypeParams(n, true);
+                    } else if (n == 2) {
+                        acg.append(", java.util.function.BiPredicate")
+                            .appendTypeParams(n, true);
+                    }
+                })
                 .body(
                     cg -> cg
                         .newLine()
+                        .apply(acg -> {
+                            if (n == 1 || n == 2) {
+                                acg.appendAnnotation(Override.class, false);
+                            }
+                        })
                         .append("boolean test(")
                         .appendArgsWithNames(n)
                         .append(");")
@@ -54,17 +70,17 @@ public class PredicateGenerator {
                         // 'or' method
                         .apply(acg -> appendConditionMethod(acg, thisName, n, "or", "||"))
                         // 'negate' method
-                        .apply(acg -> appendNotMethod(acg, thisName, n))
+                        .apply(acg -> appendNegateMethod(acg, thisName, n))
                         // 'lift' method
-                        .apply(acg -> appendLiftMethod(acg, n, thisName, precedingName))
+                        .apply(acg -> appendLiftMethod(acg, thisName, n, precedingName))
                         // 'alwaysTrue' method
-                        .apply(acg -> appendAlwaysMethod(acg, n, thisName, true))
+                        .apply(acg -> appendAlwaysMethod(acg, thisName, n, true))
                         // 'alwaysFalse' method
-                        .apply(acg -> appendAlwaysMethod(acg, n, thisName, false))
+                        .apply(acg -> appendAlwaysMethod(acg, thisName, n, false))
                         // 'not' method
-                        .apply(acg -> appendNotMethod(acg, n, thisName))
+                        .apply(acg -> appendNotMethod(acg, thisName, n))
                         // 'named' method
-                        .apply(acg -> appendNamedMethod(acg, n, thisName))
+                        .apply(acg -> appendNamedMethod(acg, thisName, n))
                         .newLine()
                 );
 
@@ -79,7 +95,7 @@ public class PredicateGenerator {
         System.out.println("Generated Predicate3 to Predicate16 in: " + outputDir.getAbsolutePath());
     }
 
-    private static void appendNamedMethod(CodeGenerator acg, int n, String thisName) {
+    private static void appendNamedMethod(CodeGenerator acg, String thisName, int n) {
         acg.newLine(2)
             .append("static ")
             .appendTypeParams(n, true)
@@ -89,8 +105,7 @@ public class PredicateGenerator {
             .appendTypeParams(n, true)
             .append(" delegate)")
             .body(
-                cg2 -> cg2.append("return new Predicate")
-                    .append(n)
+                cg2 -> cg2.append("return new ", thisName)
                     .appendTypeParams(0, true)
                     .append("()")
                     .body(
@@ -114,7 +129,7 @@ public class PredicateGenerator {
             );
     }
 
-    private static void appendNotMethod(CodeGenerator acg, int n, String thisName) {
+    private static void appendNotMethod(CodeGenerator acg, String thisName, int n) {
         acg.newLine(2)
             .append("static ")
             .appendTypeParams(n, true)
@@ -132,7 +147,7 @@ public class PredicateGenerator {
             );
     }
 
-    private static void appendAlwaysMethod(CodeGenerator acg, int n, String thisName, boolean always) {
+    private static void appendAlwaysMethod(CodeGenerator acg, String thisName, int n, boolean always) {
         acg.newLine(2)
             .append("static ")
             .appendTypeParams(n, true)
@@ -146,7 +161,11 @@ public class PredicateGenerator {
             );
     }
 
-    private static void appendLiftMethod(CodeGenerator acg, int n, String thisName, String precedingName) {
+    private static void appendLiftMethod(CodeGenerator acg, String thisName, int n, String precedingName) {
+        if (n == 1) {
+            return;
+        }
+
         acg.newLine(2)
             .append("static ")
             .appendTypeParams(n, true)
@@ -164,9 +183,14 @@ public class PredicateGenerator {
             );
     }
 
-    private static void appendNotMethod(CodeGenerator acg, String thisName, int n) {
+    private static void appendNegateMethod(CodeGenerator acg, String thisName, int n) {
         acg.newLine(2)
-            .append("default ", thisName)
+            .apply(acg2 -> {
+                if (n == 1 || n == 2) {
+                    acg2.appendAnnotation(Override.class, false);
+                }
+            })
+            .append("default " + ((n == 1 || n == 2) ? "@NotNull " : ""), thisName)
             .appendTypeParams(n, true)
             .append(" negate()")
             .body(

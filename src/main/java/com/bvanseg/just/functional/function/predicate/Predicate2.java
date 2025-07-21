@@ -1,12 +1,13 @@
 package com.bvanseg.just.functional.function.predicate;
 
-import java.util.function.Predicate;
+import org.jetbrains.annotations.NotNull;
 
 import com.bvanseg.just.functional.function.Function2;
 
 @FunctionalInterface
-public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean> {
+public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean>, java.util.function.BiPredicate<A1, A2> {
 
+    @Override
     boolean test(A1 a1, A2 a2);
 
     @Override
@@ -22,7 +23,8 @@ public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean> {
         return (a1, a2) -> this.test(a1, a2) || other.test(a1, a2);
     }
 
-    default Predicate2<A1, A2> negate() {
+    @Override
+    default @NotNull Predicate2<A1, A2> negate() {
         return (a1, a2) -> !this.test(a1, a2);
     }
 
