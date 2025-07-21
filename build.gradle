@@ -48,6 +48,14 @@ tasks.register('generateFunctions', JavaExec) {
     args 'src/main/java'
 }
 
+tasks.register('generatePredicates', JavaExec) {
+    group = 'codegen'
+    description = 'Generate Predicate2-16 interfaces'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set('com.bvanseg.just.internal.codegen.PredicateGenerator')
+    args 'src/main/java'
+}
+
 tasks.register('generateTuples', JavaExec) {
     group = 'codegen'
     description = 'Generate Tuple2–16 records into src/main/java'
