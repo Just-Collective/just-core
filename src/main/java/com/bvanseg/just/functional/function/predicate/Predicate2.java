@@ -2,13 +2,17 @@ package com.bvanseg.just.functional.function.predicate;
 
 import java.util.function.Predicate;
 
-import com.bvanseg.just.functional.function.Function;
 import com.bvanseg.just.functional.function.Function2;
 
 @FunctionalInterface
-public interface Predicate2<A1, A2> {
+public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean> {
 
     boolean test(A1 a1, A2 a2);
+
+    @Override
+    default Boolean apply(A1 a1, A2 a2) {
+        return test(a1, a2);
+    }
 
     default Predicate2<A1, A2> and(Predicate2<? super A1, ? super A2> other) {
         return (a1, a2) -> this.test(a1, a2) && other.test(a1, a2);
@@ -20,14 +24,6 @@ public interface Predicate2<A1, A2> {
 
     default Predicate2<A1, A2> negate() {
         return (a1, a2) -> !this.test(a1, a2);
-    }
-
-    default Function2<A1, A2, Boolean> toFunction() {
-        return this::test;
-    }
-
-    default Function<A1, Function<A2, Boolean>> curried() {
-        return a1 -> a2 -> this.test(a1, a2);
     }
 
     static <A1, A2> Predicate2<A1, A2> lift(Predicate<A1> predicate) {
@@ -60,4 +56,5 @@ public interface Predicate2<A1, A2> {
             }
         };
     }
+
 }
