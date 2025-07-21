@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiFunction;
+
+import com.bvanseg.just.functional.function.Function2;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +15,7 @@ class Memo2Test {
     void testReferenceEqualityMemoization() {
         var callCount = new AtomicInteger(0);
 
-        BiFunction<String, Integer, String> concat = (s, i) -> {
+        Function2<String, Integer, String> concat = (s, i) -> {
             callCount.incrementAndGet();
             return s + i;
         };
@@ -38,7 +39,7 @@ class Memo2Test {
     void testValueEqualityMemoization() {
         var callCount = new AtomicInteger(0);
 
-        BiFunction<String, Integer, String> concat = (s, i) -> {
+        Function2<String, Integer, String> concat = (s, i) -> {
             callCount.incrementAndGet();
             return s + "-" + i;
         };

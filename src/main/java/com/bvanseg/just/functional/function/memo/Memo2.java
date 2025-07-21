@@ -1,46 +1,46 @@
 package com.bvanseg.just.functional.function.memo;
 
-import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
-public class Memo2<A, B, R> implements BiFunction<A, B, R> {
+import com.bvanseg.just.functional.function.Function2;
 
-    private A aRef;
+public class Memo2<A1, A2, R> implements Function2<A1, A2, R> {
 
-    private B bRef;
+    private A1 a1Ref;
+
+    private A2 a2Ref;
 
     private R cachedResult;
 
-    private final BiFunction<A, B, R> biFunction;
+    private final Function2<A1, A2, R> fn;
 
-    private final BiPredicate<A, A> aEq;
+    private final BiPredicate<A1, A1> eq1;
 
-    private final BiPredicate<B, B> bEq;
+    private final BiPredicate<A2, A2> eq2;
 
-    public Memo2(BiFunction<A, B, R> biFunction) {
+    public Memo2(Function2<A1, A2, R> fn) {
         this(
-            biFunction,
+            fn,
             (oldRef, newRef) -> newRef == oldRef,
             (oldRef, newRef) -> newRef == oldRef
         );
     }
 
-    public Memo2(BiFunction<A, B, R> biFunction, BiPredicate<A, A> aEq, BiPredicate<B, B> bEq) {
-        this.biFunction = biFunction;
-        this.aEq = aEq;
-        this.bEq = bEq;
+    public Memo2(Function2<A1, A2, R> fn, BiPredicate<A1, A1> eq1, BiPredicate<A2, A2> eq2) {
+        this.fn = fn;
+        this.eq1 = eq1;
+        this.eq2 = eq2;
     }
 
     @Override
-    public R apply(A a, B b) {
-        if (aEq.test(aRef, a) && bEq.test(bRef, b)) {
+    public R apply(A1 a1, A2 a2) {
+        if (eq1.test(a1Ref, a1) && eq2.test(a2Ref, a2)) {
             return cachedResult;
         }
 
-        this.cachedResult = biFunction.apply(a, b);
-        this.aRef = a;
-        this.bRef = b;
-
+        this.cachedResult = fn.apply(a1, a2);
+        this.a1Ref = a1;
+        this.a2Ref = a2;
         return cachedResult;
     }
 }

@@ -48,6 +48,14 @@ tasks.register('generateFunctions', JavaExec) {
     args 'src/main/java'
 }
 
+tasks.register('generateMemos', JavaExec) {
+    group = 'codegen'
+    description = 'Generate Memo3-16 types'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set('com.bvanseg.just.internal.codegen.MemoGenerator')
+    args 'src/main/java'
+}
+
 tasks.register('generatePredicates', JavaExec) {
     group = 'codegen'
     description = 'Generate Predicate2-16 interfaces'
