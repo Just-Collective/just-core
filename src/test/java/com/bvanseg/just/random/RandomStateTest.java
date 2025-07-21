@@ -28,8 +28,8 @@ class RandomStateTest {
             var custom = randomState.nextInt();
             var javaVal = random.nextInt();
 
-            assertEquals(javaVal, custom.first());
-            randomState = custom.second();
+            assertEquals(javaVal, custom.v1());
+            randomState = custom.v2();
         }
     }
 
@@ -41,8 +41,8 @@ class RandomStateTest {
             var next = randomState.nextInt(bound);
             var expected = random.nextInt(bound);
 
-            assertEquals(expected, next.first());
-            randomState = next.second();
+            assertEquals(expected, next.v1());
+            randomState = next.v2();
         }
     }
 
@@ -54,8 +54,8 @@ class RandomStateTest {
             var custom = randomState.nextInt(bound);
             var expected = random.nextInt(bound);
 
-            assertEquals(expected, custom.first());
-            randomState = custom.second();
+            assertEquals(expected, custom.v1());
+            randomState = custom.v2();
         }
     }
 
@@ -67,8 +67,8 @@ class RandomStateTest {
             var custom = randomState.nextInt(bound);
             var expected = random.nextInt(bound);
 
-            assertEquals(expected, custom.first());
-            randomState = custom.second();
+            assertEquals(expected, custom.v1());
+            randomState = custom.v2();
         }
     }
 
@@ -78,10 +78,10 @@ class RandomStateTest {
 
         for (var i = 0; i < 1000; i++) {
             var result = randState.nextInt(100);
-            var value = result.first();
+            var value = result.v1();
 
             assertTrue(value >= 0 && value < 100);
-            randState = result.second();
+            randState = result.v2();
         }
     }
 
@@ -98,8 +98,8 @@ class RandomStateTest {
             var custom = randomState.nextLong();
             var javaVal = random.nextLong();
 
-            assertEquals(javaVal, custom.first());
-            randomState = custom.second();
+            assertEquals(javaVal, custom.v1());
+            randomState = custom.v2();
         }
     }
 
@@ -109,8 +109,8 @@ class RandomStateTest {
             var custom = randomState.nextFloat();
             var javaVal = random.nextFloat();
 
-            assertEquals(javaVal, custom.first());
-            randomState = custom.second();
+            assertEquals(javaVal, custom.v1());
+            randomState = custom.v2();
         }
     }
 
@@ -120,8 +120,8 @@ class RandomStateTest {
             var custom = randomState.nextDouble();
             var javaVal = random.nextDouble();
 
-            assertEquals(javaVal, custom.first());
-            randomState = custom.second();
+            assertEquals(javaVal, custom.v1());
+            randomState = custom.v2();
         }
     }
 

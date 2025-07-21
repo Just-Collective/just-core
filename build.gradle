@@ -40,6 +40,14 @@ build {
     dependsOn spotlessApply
 }
 
+tasks.register('generateTuples', JavaExec) {
+    group = 'codegen'
+    description = 'Generate Tuple2–16 records into src/main/java'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set('com.bvanseg.just.internal.codegen.TupleGenerator')
+    args 'src/main/java'
+}
+
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport, jacocoTestCoverageVerification

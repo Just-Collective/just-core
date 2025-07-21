@@ -19,8 +19,8 @@ public interface BaseMapCodec<K, V> {
                 var map = new HashMap<K, V>();
 
                 for (var tuple2 : stream.toList()) {
-                    var keyResult = keyCodec().decode(schema, tuple2.first());
-                    var valueResult = valueCodec().decode(schema, tuple2.second());
+                    var keyResult = keyCodec().decode(schema, tuple2.v1());
+                    var valueResult = valueCodec().decode(schema, tuple2.v2());
 
                     if (keyResult.isErr())
                         return Result.err(keyResult.unwrapErr());

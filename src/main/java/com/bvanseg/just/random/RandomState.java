@@ -38,16 +38,16 @@ public final class RandomState {
 
     public Tuple2<Double, RandomState> nextDouble() {
         var firstState = next(Double.PRECISION - 27);
-        var secondState = firstState.second().next(27);
-        var value = (((long) (firstState.first()) << 27) + secondState.first()) * DOUBLE_UNIT;
+        var secondState = firstState.v2().next(27);
+        var value = (((long) (firstState.v1()) << 27) + secondState.v1()) * DOUBLE_UNIT;
 
-        return new Tuple2<>(value, secondState.second());
+        return new Tuple2<>(value, secondState.v2());
     }
 
     public Tuple2<Float, RandomState> nextFloat() {
         var firstState = next(Float.PRECISION);
 
-        return new Tuple2<>(firstState.first() * FLOAT_UNIT, firstState.second());
+        return new Tuple2<>(firstState.v1() * FLOAT_UNIT, firstState.v2());
     }
 
     public Tuple2<Integer, RandomState> nextInt() {
@@ -60,8 +60,8 @@ public final class RandomState {
         }
 
         var firstState = next(31);
-        var randomState = firstState.second();
-        var r = firstState.first();
+        var randomState = firstState.v2();
+        var r = firstState.v1();
         var m = bound - 1;
 
         // i.e., bound is a power of 2.
@@ -71,8 +71,8 @@ public final class RandomState {
             // reject over-represented candidates.
             for (int u = r; u - (r = u % bound) + m < 0;) {
                 var state = next(31);
-                u = state.first();
-                randomState = state.second();
+                u = state.v1();
+                randomState = state.v2();
             }
         }
 
@@ -81,10 +81,10 @@ public final class RandomState {
 
     public Tuple2<Long, RandomState> nextLong() {
         var firstState = next(32);
-        var secondState = firstState.second().next(32);
-        var value = ((long) (firstState.first()) << 32) + secondState.first();
+        var secondState = firstState.v2().next(32);
+        var value = ((long) (firstState.v1()) << 32) + secondState.v1();
 
-        return new Tuple2<>(value, secondState.second());
+        return new Tuple2<>(value, secondState.v2());
     }
 
     public long seed() {

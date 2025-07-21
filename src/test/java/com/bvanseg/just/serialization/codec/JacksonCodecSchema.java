@@ -98,8 +98,8 @@ public class JacksonCodecSchema implements CodecSchema<JsonNode> {
         var objectNode = objectMapper.createObjectNode();
 
         entries.forEach(pair -> {
-            var keyNode = pair.first();
-            var valueNode = pair.second();
+            var keyNode = pair.v1();
+            var valueNode = pair.v2();
 
             if (!keyNode.isTextual()) {
                 throw new IllegalArgumentException("JacksonCodecSchema map keys must be textual (string) values.");
