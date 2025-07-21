@@ -17,362 +17,197 @@ public class PredicateGenerator {
             throw new IOException("Could not create output directory: " + outputDir);
         }
 
-        for (int n = 2; n <= 16; n++) {
-            var sb = new StringBuilder();
-            generateHeader(sb, n);
-            generateTestMethod(sb, n);
-            generateAndMethod(sb, n);
-            generateOrMethod(sb, n);
-            generateNegateMethod(sb, n);
-            generateToFunctionMethod(sb, n);
-            generateCurriedMethod(sb, n);
-            generateLiftMethod(sb, n);
-            generateAlwaysMethods(sb, n);
-            generateNotMethod(sb, n);
-            generateNamedMethod(sb, n);
-            sb.append("}\n");
+        for (int i = 2; i <= 16; i++) {
+            var n = i;
+            var prev = n - 1;
+            var thisName = "Predicate" + n;
+            var functionName = "Function" + n;
+            var precedingName = prev > 1 ? "Predicate" + prev : "Predicate";
 
-            File file = new File(outputDir, "Predicate" + n + ".java");
+            var codeGenerator = new CodeGenerator()
+                .packageLine("com.bvanseg.just.functional.function.predicate")
+                .apply(acg -> {
+                    if (n == 2) {
+                        acg.importLine("java.util.function.Predicate");
+                        acg.newLine();
+                    }
+                })
+                .importLine("com.bvanseg.just.functional.function.Function" + n)
+                .newLine()
+                .appendAnnotation(FunctionalInterface.class, false)
+                .append("public interface ", thisName)
+                .appendTypeParams(n, true)
+                .append(" extends ", functionName)
+                .appendTypeParams(n, false)
+                .append(", Boolean>")
+                .body(
+                    cg -> cg
+                        .newLine()
+                        .append("boolean test(")
+                        .appendArgsWithNames(n)
+                        .append(");")
+                        .newLine()
+                        // 'apply' method
+                        .apply(acg -> appendApplyMethod(acg, n))
+                        // 'and' method
+                        .apply(acg -> appendConditionMethod(acg, thisName, n, "and", "&&"))
+                        // 'or' method
+                        .apply(acg -> appendConditionMethod(acg, thisName, n, "or", "||"))
+                        // 'negate' method
+                        .apply(acg -> appendNotMethod(acg, thisName, n))
+                        // 'lift' method
+                        .apply(acg -> appendLiftMethod(acg, n, thisName, precedingName))
+                        // 'alwaysTrue' method
+                        .apply(acg -> appendAlwaysMethod(acg, n, thisName, true))
+                        // 'alwaysFalse' method
+                        .apply(acg -> appendAlwaysMethod(acg, n, thisName, false))
+                        // 'not' method
+                        .apply(acg -> appendNotMethod(acg, n, thisName))
+                        // 'named' method
+                        .apply(acg -> appendNamedMethod(acg, n, thisName))
+                        .newLine()
+                );
+
+            var file = new File(outputDir, thisName + ".java");
+
             try (var writer = new FileWriter(file)) {
-                writer.write(sb.toString());
+                var content = codeGenerator.build();
+                writer.write(content);
             }
         }
 
         System.out.println("Generated Predicate3 to Predicate16 in: " + outputDir.getAbsolutePath());
     }
 
-    private static void generateHeader(StringBuilder sb, int n) {
-        sb.append("package com.bvanseg.just.functional.function.predicate;\n\n");
-        sb.append("import com.bvanseg.just.functional.function.Function;\n");
-
-        if (n > 1) {
-            sb.append("import com.bvanseg.just.functional.function.Function").append(n).append(";\n");
-        }
-
-        sb.append("\n");
-
-        sb.append("@FunctionalInterface\n");
-        sb.append("public interface Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> {\n\n");
+    private static void appendNamedMethod(CodeGenerator acg, int n, String thisName) {
+        acg.newLine(2)
+            .append("static ")
+            .appendTypeParams(n, true)
+            .append(" ", thisName)
+            .appendTypeParams(n, true)
+            .append(" named(String name, ", thisName)
+            .appendTypeParams(n, true)
+            .append(" delegate)")
+            .body(
+                cg2 -> cg2.append("return new Predicate")
+                    .append(n)
+                    .appendTypeParams(0, true)
+                    .append("()")
+                    .body(
+                        cg3 -> cg3
+                            // 'test' method
+                            .newLine()
+                            .appendAnnotation(Override.class, false)
+                            .append("public boolean test(")
+                            .appendArgsWithNames(n)
+                            .append(")")
+                            .body(
+                                cg4 -> cg4.append("return delegate.test(").appendNamesOnly(n).append(");")
+                            )
+                            // 'toString' method
+                            .newLine(2)
+                            .appendAnnotation(Override.class, false)
+                            .append("public String toString()")
+                            .body(cg4 -> cg4.append("return name;"))
+                    )
+                    .append(";")
+            );
     }
 
-    private static void generateTestMethod(StringBuilder sb, int n) {
-        sb.append("    boolean test(");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i).append(" a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(");\n\n");
+    private static void appendNotMethod(CodeGenerator acg, int n, String thisName) {
+        acg.newLine(2)
+            .append("static ")
+            .appendTypeParams(n, true)
+            .append(" ", thisName)
+            .appendTypeParams(n, true)
+            .append(" not(", thisName)
+            .appendTypeParams(n, true)
+            .append(" predicate)")
+            .body(
+                cg2 -> cg2.append("return (")
+                    .appendNamesOnly(n)
+                    .append(") -> !predicate.test(")
+                    .appendNamesOnly(n)
+                    .append(");")
+            );
     }
 
-    private static void generateAndMethod(StringBuilder sb, int n) {
-        sb.append("    default Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> and(Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("? super A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> other) {\n");
-        sb.append("        return (");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(") -> this.test(");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(") && other.test(");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(");\n    }\n\n");
+    private static void appendAlwaysMethod(CodeGenerator acg, int n, String thisName, boolean always) {
+        acg.newLine(2)
+            .append("static ")
+            .appendTypeParams(n, true)
+            .append(" ", thisName)
+            .appendTypeParams(n, true)
+            .append(" always" + (always ? "True" : "False") + "()")
+            .body(
+                cg2 -> cg2.append("return (")
+                    .appendWildcardArgs(n)
+                    .append(") -> " + (always ? "true" : "false") + ";")
+            );
     }
 
-    private static void generateOrMethod(StringBuilder sb, int n) {
-        sb.append("    default Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> or(Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("? super A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> other) {\n");
-        sb.append("        return (");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(") -> this.test(");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(") || other.test(");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(");\n    }\n\n");
+    private static void appendLiftMethod(CodeGenerator acg, int n, String thisName, String precedingName) {
+        acg.newLine(2)
+            .append("static ")
+            .appendTypeParams(n, true)
+            .append(" ", thisName)
+            .appendTypeParams(n, true)
+            .append(" lift(", precedingName)
+            .appendTypeParams(n - 1, true)
+            .append(" predicate)")
+            .body(
+                cg2 -> cg2.append("return (")
+                    .appendNamesOnly(n - 1)
+                    .append(", _) -> predicate.test(")
+                    .appendNamesOnly(n - 1)
+                    .append(");")
+            );
     }
 
-    private static void generateNegateMethod(StringBuilder sb, int n) {
-        sb.append("    default Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> negate() {\n");
-        sb.append("        return (");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(") -> !this.test(");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(");\n    }\n\n");
+    private static void appendNotMethod(CodeGenerator acg, String thisName, int n) {
+        acg.newLine(2)
+            .append("default ", thisName)
+            .appendTypeParams(n, true)
+            .append(" negate()")
+            .body(
+                cg2 -> cg2.append("return (")
+                    .appendNamesOnly(n)
+                    .append(") -> !this.test(")
+                    .appendNamesOnly(n)
+                    .append(");")
+            );
     }
 
-    private static void generateToFunctionMethod(StringBuilder sb, int n) {
-        sb.append("    default Function").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i).append(", ");
-        }
-        sb.append("Boolean> toFunction() {\n");
-        sb.append("        return this::test;\n");
-        sb.append("    }\n\n");
+    private static void appendConditionMethod(
+        CodeGenerator acg,
+        String thisName,
+        int n,
+        String methodName,
+        String condition
+    ) {
+        acg.newLine(2)
+            .append("default ", thisName)
+            .appendTypeParams(n, true)
+            .append(" " + methodName + "(", thisName, "<")
+            .appendSuperTypeParams(n)
+            .append("> other)")
+            .body(
+                cg2 -> cg2.append("return (")
+                    .appendNamesOnly(n)
+                    .append(") -> this.test(")
+                    .appendNamesOnly(n)
+                    .append(") " + condition + " other.test(")
+                    .appendNamesOnly(n)
+                    .append(");")
+            );
     }
 
-    private static void generateCurriedMethod(StringBuilder sb, int n) {
-        sb.append("    default ");
-        for (int i = 1; i <= n; i++) {
-            sb.append("Function<A").append(i).append(", ");
-        }
-        sb.append("Boolean");
-        for (int i = 0; i < n; i++) {
-            sb.append(">");
-        }
-        sb.append(" curried() {\n");
-
-        sb.append("        return ");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i).append(" -> ");
-        }
-
-        sb.append("this.test(");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n) {
-                sb.append(", ");
-            }
-        }
-        sb.append(");\n");
-
-        sb.append("    }\n\n");
+    private static void appendApplyMethod(CodeGenerator acg, int n) {
+        acg.newLine()
+            .appendAnnotation(Override.class, false)
+            .append("default Boolean apply(")
+            .appendArgsWithNames(n)
+            .append(")")
+            .body(cg2 -> cg2.append("return test(").appendNamesOnly(n).append(");"));
     }
-
-    private static void generateNamedMethod(StringBuilder sb, int n) {
-        sb.append("\n    static <");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> named(String name, Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> delegate) {\n");
-        sb.append("        return new Predicate").append(n).append("<>() {\n");
-        sb.append("            @Override\n");
-        sb.append("            public boolean test(");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i).append(" a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(") {\n");
-        sb.append("                return delegate.test(");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(");\n");
-        sb.append("            }\n\n");
-        sb.append("            @Override\n");
-        sb.append("            public String toString() {\n");
-        sb.append("                return name;\n");
-        sb.append("            }\n");
-        sb.append("        };\n");
-        sb.append("    }\n");
-    }
-
-    private static void generateLiftMethod(StringBuilder sb, int n) {
-        if (n <= 1)
-            return;
-
-        sb.append("    static <");
-        for (int i = 1; i <= n - 1; i++) {
-            sb.append("A").append(i).append(", ");
-        }
-        sb.append("A").append(n).append("> Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> lift(Predicate").append(n - 1).append("<");
-        for (int i = 1; i <= n - 1; i++) {
-            sb.append("A").append(i);
-            if (i < n - 1)
-                sb.append(", ");
-        }
-        sb.append("> predicate) {\n");
-
-        sb.append("        return (");
-        for (int i = 1; i <= n; i++) {
-            if (i == n) {
-                sb.append("_");
-            } else {
-                sb.append("a").append(i);
-            }
-
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(") -> predicate.test(");
-        for (int i = 1; i <= n - 1; i++) {
-            sb.append("a").append(i);
-            if (i < n - 1)
-                sb.append(", ");
-        }
-        sb.append(");\n    }\n\n");
-    }
-
-    private static void generateAlwaysMethods(StringBuilder sb, int n) {
-        // Always TRUE
-        sb.append("    static <");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> alwaysTrue() {\n");
-        sb.append("        return (");
-        for (int i = 1; i <= n; i++) {
-            sb.append("_");
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(") -> true;\n");
-        sb.append("    }\n");
-
-        // Always FALSE
-        sb.append("\n    static <");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> alwaysFalse() {\n");
-        sb.append("        return (");
-        for (int i = 1; i <= n; i++) {
-            sb.append("_");
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(") -> false;\n");
-        sb.append("    }\n");
-    }
-
-    private static void generateNotMethod(StringBuilder sb, int n) {
-        sb.append("\n    static <");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> not(Predicate").append(n).append("<");
-        for (int i = 1; i <= n; i++) {
-            sb.append("A").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append("> predicate) {\n");
-
-        sb.append("        return (");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(") -> !predicate.test(");
-        for (int i = 1; i <= n; i++) {
-            sb.append("a").append(i);
-            if (i < n)
-                sb.append(", ");
-        }
-        sb.append(");\n");
-
-        sb.append("    }\n");
-    }
-
 }

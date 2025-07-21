@@ -1,12 +1,16 @@
 package com.bvanseg.just.functional.function.predicate;
 
-import com.bvanseg.just.functional.function.Function;
 import com.bvanseg.just.functional.function.Function4;
 
 @FunctionalInterface
-public interface Predicate4<A1, A2, A3, A4> {
+public interface Predicate4<A1, A2, A3, A4> extends Function4<A1, A2, A3, A4, Boolean> {
 
     boolean test(A1 a1, A2 a2, A3 a3, A4 a4);
+
+    @Override
+    default Boolean apply(A1 a1, A2 a2, A3 a3, A4 a4) {
+        return test(a1, a2, a3, a4);
+    }
 
     default Predicate4<A1, A2, A3, A4> and(Predicate4<? super A1, ? super A2, ? super A3, ? super A4> other) {
         return (a1, a2, a3, a4) -> this.test(a1, a2, a3, a4) && other.test(a1, a2, a3, a4);
@@ -18,14 +22,6 @@ public interface Predicate4<A1, A2, A3, A4> {
 
     default Predicate4<A1, A2, A3, A4> negate() {
         return (a1, a2, a3, a4) -> !this.test(a1, a2, a3, a4);
-    }
-
-    default Function4<A1, A2, A3, A4, Boolean> toFunction() {
-        return this::test;
-    }
-
-    default Function<A1, Function<A2, Function<A3, Function<A4, Boolean>>>> curried() {
-        return a1 -> a2 -> a3 -> a4 -> this.test(a1, a2, a3, a4);
     }
 
     static <A1, A2, A3, A4> Predicate4<A1, A2, A3, A4> lift(Predicate3<A1, A2, A3> predicate) {
@@ -58,4 +54,5 @@ public interface Predicate4<A1, A2, A3, A4> {
             }
         };
     }
+
 }
