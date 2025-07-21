@@ -40,6 +40,14 @@ build {
     dependsOn spotlessApply
 }
 
+tasks.register('generateFunctions', JavaExec) {
+    group = 'codegen'
+    description = 'Generate Function2-16 interfaces'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set('com.bvanseg.just.internal.codegen.FunctionGenerator')
+    args 'src/main/java'
+}
+
 tasks.register('generateTuples', JavaExec) {
     group = 'codegen'
     description = 'Generate Tuple2–16 records into src/main/java'
