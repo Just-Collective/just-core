@@ -12,6 +12,18 @@ public interface Predicate11<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> exten
         return test(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11);
     }
 
+    @Override
+    default Predicate10<A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> partialFirst(A1 fixed) {
+        var base = Function11.super.partialFirst(fixed);
+        return base::apply;
+    }
+
+    @Override
+    default Predicate10<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10> partialLast(A11 fixed) {
+        var base = Function11.super.partialLast(fixed);
+        return base::apply;
+    }
+
     default Predicate11<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> and(
         Predicate11<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9, ? super A10, ? super A11> other
     ) {
@@ -82,14 +94,6 @@ public interface Predicate11<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> exten
         Predicate10<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9, ? super A10> predicate
     ) {
         return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, _) -> predicate.test(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10);
-    }
-
-    default Predicate10<A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> partialFirst(A1 fixed) {
-        return (a2, a3, a4, a5, a6, a7, a8, a9, a10, a11) -> this.test(fixed, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11);
-    }
-
-    default Predicate10<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10> partialLast(A11 fixed) {
-        return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10) -> this.test(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, fixed);
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> Predicate11<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> alwaysTrue() {

@@ -15,6 +15,18 @@ public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean>, java.uti
         return test(a1, a2);
     }
 
+    @Override
+    default Predicate<A2> partialFirst(A1 fixed) {
+        var base = Function2.super.partialFirst(fixed);
+        return base::apply;
+    }
+
+    @Override
+    default Predicate<A1> partialLast(A2 fixed) {
+        var base = Function2.super.partialLast(fixed);
+        return base::apply;
+    }
+
     default Predicate2<A1, A2> and(Predicate2<? super A1, ? super A2> other) {
         return (a1, a2) -> this.test(a1, a2) && other.test(a1, a2);
     }
@@ -38,14 +50,6 @@ public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean>, java.uti
 
     static <A1, A2> Predicate2<A1, A2> lift(Predicate<? super A1> predicate) {
         return (a1, _) -> predicate.test(a1);
-    }
-
-    default Predicate<A2> partialFirst(A1 fixed) {
-        return (a2) -> this.test(fixed, a2);
-    }
-
-    default Predicate<A1> partialLast(A2 fixed) {
-        return (a1) -> this.test(a1, fixed);
     }
 
     static <A1, A2> Predicate2<A1, A2> alwaysTrue() {

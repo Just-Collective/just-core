@@ -12,6 +12,18 @@ public interface Predicate5<A1, A2, A3, A4, A5> extends Function5<A1, A2, A3, A4
         return test(a1, a2, a3, a4, a5);
     }
 
+    @Override
+    default Predicate4<A2, A3, A4, A5> partialFirst(A1 fixed) {
+        var base = Function5.super.partialFirst(fixed);
+        return base::apply;
+    }
+
+    @Override
+    default Predicate4<A1, A2, A3, A4> partialLast(A5 fixed) {
+        var base = Function5.super.partialLast(fixed);
+        return base::apply;
+    }
+
     default Predicate5<A1, A2, A3, A4, A5> and(
         Predicate5<? super A1, ? super A2, ? super A3, ? super A4, ? super A5> other
     ) {
@@ -44,14 +56,6 @@ public interface Predicate5<A1, A2, A3, A4, A5> extends Function5<A1, A2, A3, A4
         Predicate4<? super A1, ? super A2, ? super A3, ? super A4> predicate
     ) {
         return (a1, a2, a3, a4, _) -> predicate.test(a1, a2, a3, a4);
-    }
-
-    default Predicate4<A2, A3, A4, A5> partialFirst(A1 fixed) {
-        return (a2, a3, a4, a5) -> this.test(fixed, a2, a3, a4, a5);
-    }
-
-    default Predicate4<A1, A2, A3, A4> partialLast(A5 fixed) {
-        return (a1, a2, a3, a4) -> this.test(a1, a2, a3, a4, fixed);
     }
 
     static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> alwaysTrue() {

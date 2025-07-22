@@ -65,13 +65,13 @@ public class PredicateGenerator {
                         .newLine()
                         .apply(acg -> {
                             appendApplyMethod(acg, n);
+                            appendPredicatePartialOverrides(acg, functionName, n, precedingName);
                             appendLogicalMethod(acg, thisName, n, "and");
                             appendLogicalMethod(acg, thisName, n, "or");
                             appendLogicalMethod(acg, thisName, n, "xor");
                             appendLogicalMethod(acg, thisName, n, "implies");
                             appendNegateMethod(acg, thisName, n);
                             appendLiftMethod(acg, thisName, n, precedingName);
-                            appendPartialFirstAndLastMethods(acg, n, precedingName);
                             appendAlwaysMethod(acg, thisName, n, true);
                             appendAlwaysMethod(acg, thisName, n, false);
                             appendNotMethod(acg, thisName, n);
@@ -181,7 +181,12 @@ public class PredicateGenerator {
             );
     }
 
-    private static void appendPartialFirstAndLastMethods(CodeGenerator acg, int n, String precedingName) {
+    private static void appendPredicatePartialOverrides(
+        CodeGenerator acg,
+        String functionName,
+        int n,
+        String precedingName
+    ) {
         if (n == 1) {
             return;
         }
@@ -189,55 +194,29 @@ public class PredicateGenerator {
         var firstType = "A1";
         var lastType = "A" + n;
 
-        // partialFirst
+        // partialFirst override
         acg.newLine(2)
+            .appendAnnotation(Override.class, false)
             .append("default ", precedingName)
-            .append("<");
-        for (int i = 2; i <= n; i++) {
-            acg.append("A").append(i);
-            if (i != n)
-                acg.append(", ");
-        }
-        acg.append("> partialFirst(", firstType, " fixed)")
-            .body(cg -> {
-                cg.append("return (");
-                for (int i = 2; i <= n; i++) {
-                    cg.append("a").append(i);
-                    if (i != n)
-                        cg.append(", ");
-                }
-                cg.append(") -> this.test(fixed, ");
-                for (int i = 2; i <= n; i++) {
-                    cg.append("a").append(i);
-                    if (i != n)
-                        cg.append(", ");
-                }
-                cg.append(");");
-            });
+            .appendTypeParams(n, 1, true)
+            .append(" partialFirst(", firstType, " fixed)")
+            .body(
+                cg -> cg.append("var base = ", functionName, ".super.partialFirst(fixed);")
+                    .newLine()
+                    .append("return base::apply;")
+            );
 
-        // partialLast
+        // partialLast override
         acg.newLine(2)
+            .appendAnnotation(Override.class, false)
             .append("default ", precedingName)
-            .append("<");
-        for (int i = 1; i < n; i++) {
-            acg.append("A").append(i);
-            if (i != n - 1)
-                acg.append(", ");
-        }
-        acg.append("> partialLast(", lastType, " fixed)")
-            .body(cg -> {
-                cg.append("return (");
-                for (int i = 1; i < n; i++) {
-                    cg.append("a").append(i);
-                    if (i != n - 1)
-                        cg.append(", ");
-                }
-                cg.append(") -> this.test(");
-                for (int i = 1; i < n; i++) {
-                    cg.append("a").append(i).append(", ");
-                }
-                cg.append("fixed);");
-            });
+            .appendTypeParams(n - 1, true)
+            .append(" partialLast(", lastType, " fixed)")
+            .body(
+                cg -> cg.append("var base = ", functionName, ".super.partialLast(fixed);")
+                    .newLine()
+                    .append("return base::apply;")
+            );
     }
 
     private static void appendNegateMethod(CodeGenerator acg, String thisName, int n) {
