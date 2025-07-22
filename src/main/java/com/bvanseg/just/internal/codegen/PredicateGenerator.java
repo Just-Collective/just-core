@@ -175,7 +175,7 @@ public class PredicateGenerator {
             .body(
                 cg2 -> cg2.append("return (")
                     .appendNamesOnly(n - 1)
-                    .append(", _) -> predicate.test(")
+                    .append(", $", n, ") -> predicate.test(")
                     .appendNamesOnly(n - 1)
                     .append(");")
             );

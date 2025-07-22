@@ -85,15 +85,15 @@ public interface Predicate7<A1, A2, A3, A4, A5, A6, A7> extends Function7<A1, A2
     static <A1, A2, A3, A4, A5, A6, A7> Predicate7<A1, A2, A3, A4, A5, A6, A7> lift(
         Predicate6<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6> predicate
     ) {
-        return (a1, a2, a3, a4, a5, a6, _) -> predicate.test(a1, a2, a3, a4, a5, a6);
+        return (a1, a2, a3, a4, a5, a6, $7) -> predicate.test(a1, a2, a3, a4, a5, a6);
     }
 
     static <A1, A2, A3, A4, A5, A6, A7> Predicate7<A1, A2, A3, A4, A5, A6, A7> alwaysTrue() {
-        return (_, _, _, _, _, _, _) -> true;
+        return ($1, $2, $3, $4, $5, $6, $7) -> true;
     }
 
     static <A1, A2, A3, A4, A5, A6, A7> Predicate7<A1, A2, A3, A4, A5, A6, A7> alwaysFalse() {
-        return (_, _, _, _, _, _, _) -> false;
+        return ($1, $2, $3, $4, $5, $6, $7) -> false;
     }
 
     static <A1, A2, A3, A4, A5, A6, A7> Predicate7<A1, A2, A3, A4, A5, A6, A7> not(

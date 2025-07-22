@@ -53,15 +53,15 @@ public interface Predicate5<A1, A2, A3, A4, A5> extends Function5<A1, A2, A3, A4
     static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> lift(
         Predicate4<? super A1, ? super A2, ? super A3, ? super A4> predicate
     ) {
-        return (a1, a2, a3, a4, _) -> predicate.test(a1, a2, a3, a4);
+        return (a1, a2, a3, a4, $5) -> predicate.test(a1, a2, a3, a4);
     }
 
     static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> alwaysTrue() {
-        return (_, _, _, _, _) -> true;
+        return ($1, $2, $3, $4, $5) -> true;
     }
 
     static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> alwaysFalse() {
-        return (_, _, _, _, _) -> false;
+        return ($1, $2, $3, $4, $5) -> false;
     }
 
     static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> not(

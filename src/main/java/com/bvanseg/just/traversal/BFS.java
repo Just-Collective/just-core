@@ -39,7 +39,7 @@ public class BFS {
     }
 
     public static <T> void traverse(T start, Function<T, Collection<T>> neighborProvider, Consumer<T> onVisit) {
-        traverse(start, neighborProvider, onVisit, _ -> false);
+        traverse(start, neighborProvider, onVisit, $1 -> false);
     }
 
     BFS() {

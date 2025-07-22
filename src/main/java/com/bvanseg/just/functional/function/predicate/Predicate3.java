@@ -43,15 +43,15 @@ public interface Predicate3<A1, A2, A3> extends Function3<A1, A2, A3, Boolean> {
     }
 
     static <A1, A2, A3> Predicate3<A1, A2, A3> lift(Predicate2<? super A1, ? super A2> predicate) {
-        return (a1, a2, _) -> predicate.test(a1, a2);
+        return (a1, a2, $3) -> predicate.test(a1, a2);
     }
 
     static <A1, A2, A3> Predicate3<A1, A2, A3> alwaysTrue() {
-        return (_, _, _) -> true;
+        return ($1, $2, $3) -> true;
     }
 
     static <A1, A2, A3> Predicate3<A1, A2, A3> alwaysFalse() {
-        return (_, _, _) -> false;
+        return ($1, $2, $3) -> false;
     }
 
     static <A1, A2, A3> Predicate3<A1, A2, A3> not(Predicate3<? super A1, ? super A2, ? super A3> predicate) {

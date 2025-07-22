@@ -114,7 +114,7 @@ public class BFSTest {
         BFS.traverse(
             "X",
             // no neighbors
-            _ -> List.of(),
+            $1 -> List.of(),
             visited::add
         );
 

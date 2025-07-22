@@ -47,15 +47,15 @@ public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean>, java.uti
     }
 
     static <A1, A2> Predicate2<A1, A2> lift(Predicate<? super A1> predicate) {
-        return (a1, _) -> predicate.test(a1);
+        return (a1, $2) -> predicate.test(a1);
     }
 
     static <A1, A2> Predicate2<A1, A2> alwaysTrue() {
-        return (_, _) -> true;
+        return ($1, $2) -> true;
     }
 
     static <A1, A2> Predicate2<A1, A2> alwaysFalse() {
-        return (_, _) -> false;
+        return ($1, $2) -> false;
     }
 
     static <A1, A2> Predicate2<A1, A2> not(Predicate2<? super A1, ? super A2> predicate) {

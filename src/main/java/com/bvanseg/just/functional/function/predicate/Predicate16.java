@@ -172,7 +172,7 @@ public interface Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> lift(
         Predicate15<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9, ? super A10, ? super A11, ? super A12, ? super A13, ? super A14, ? super A15> predicate
     ) {
-        return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, _) -> predicate.test(
+        return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, $16) -> predicate.test(
             a1,
             a2,
             a3,
@@ -192,11 +192,11 @@ public interface Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, 
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> alwaysTrue() {
-        return (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> true;
+        return ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) -> true;
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> alwaysFalse() {
-        return (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> false;
+        return ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) -> false;
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> not(

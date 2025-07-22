@@ -31,7 +31,7 @@ public class DebouncedRunnable implements Runnable {
                 if (generation.get() == currentGeneration) {
                     task.run();
                 }
-            } catch (InterruptedException _) {
+            } catch (InterruptedException $1) {
                 // Shouldn't happen.
             }
         });

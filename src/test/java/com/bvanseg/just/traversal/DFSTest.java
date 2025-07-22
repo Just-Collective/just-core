@@ -115,7 +115,7 @@ public class DFSTest {
         // Act
         DFS.traverse(
             "X",
-            _ -> List.of(),
+            $1 -> List.of(),
             visited::add
         );
 

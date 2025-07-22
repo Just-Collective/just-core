@@ -9,7 +9,7 @@ group = 'com.bvanseg.just'
 version = '0.1.0'
 
 java {
-    var version = JavaVersion.VERSION_23
+    var version = JavaVersion.VERSION_21
 
     sourceCompatibility = version
     targetCompatibility = version

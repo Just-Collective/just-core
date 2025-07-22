@@ -165,7 +165,7 @@ class OkTest {
         // Arrange
         var ok = Result.ok(100);
         // Act
-        var result = ok.match(v -> v + 1, _ -> -1);
+        var result = ok.match(v -> v + 1, $1 -> -1);
         // Assert
         assertEquals(101, result);
     }
@@ -197,7 +197,7 @@ class OkTest {
         // Arrange
         var ok = Result.ok("final");
         // Act
-        var result = ok.orElse(_ -> Result.ok("should not be used"));
+        var result = ok.orElse($1 -> Result.ok("should not be used"));
         // Assert
         assertEquals(ok, result);
     }

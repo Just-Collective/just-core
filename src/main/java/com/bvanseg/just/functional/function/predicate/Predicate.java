@@ -37,11 +37,11 @@ public interface Predicate<A1> extends Function<A1, Boolean>, java.util.function
     }
 
     static <A1> Predicate<A1> alwaysTrue() {
-        return (_) -> true;
+        return ($1) -> true;
     }
 
     static <A1> Predicate<A1> alwaysFalse() {
-        return (_) -> false;
+        return ($1) -> false;
     }
 
     static <A1> Predicate<A1> not(Predicate<? super A1> predicate) {

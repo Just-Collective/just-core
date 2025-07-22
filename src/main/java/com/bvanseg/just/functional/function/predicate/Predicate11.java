@@ -91,15 +91,26 @@ public interface Predicate11<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> exten
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> Predicate11<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> lift(
         Predicate10<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9, ? super A10> predicate
     ) {
-        return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, _) -> predicate.test(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10);
+        return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, $11) -> predicate.test(
+            a1,
+            a2,
+            a3,
+            a4,
+            a5,
+            a6,
+            a7,
+            a8,
+            a9,
+            a10
+        );
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> Predicate11<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> alwaysTrue() {
-        return (_, _, _, _, _, _, _, _, _, _, _) -> true;
+        return ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) -> true;
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> Predicate11<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> alwaysFalse() {
-        return (_, _, _, _, _, _, _, _, _, _, _) -> false;
+        return ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) -> false;
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> Predicate11<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11> not(

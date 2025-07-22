@@ -137,7 +137,7 @@ public class CodeGenerator {
     }
 
     public CodeGenerator appendWildcardArgs(int n, int offset) {
-        var range = rangeJoin(n, offset, _ -> "_");
+        var range = rangeJoin(n, offset, $1 -> "$" + $1);
         append(range);
         return this;
     }

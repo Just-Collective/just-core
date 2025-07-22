@@ -43,15 +43,15 @@ public interface Predicate4<A1, A2, A3, A4> extends Function4<A1, A2, A3, A4, Bo
     }
 
     static <A1, A2, A3, A4> Predicate4<A1, A2, A3, A4> lift(Predicate3<? super A1, ? super A2, ? super A3> predicate) {
-        return (a1, a2, a3, _) -> predicate.test(a1, a2, a3);
+        return (a1, a2, a3, $4) -> predicate.test(a1, a2, a3);
     }
 
     static <A1, A2, A3, A4> Predicate4<A1, A2, A3, A4> alwaysTrue() {
-        return (_, _, _, _) -> true;
+        return ($1, $2, $3, $4) -> true;
     }
 
     static <A1, A2, A3, A4> Predicate4<A1, A2, A3, A4> alwaysFalse() {
-        return (_, _, _, _) -> false;
+        return ($1, $2, $3, $4) -> false;
     }
 
     static <A1, A2, A3, A4> Predicate4<A1, A2, A3, A4> not(
