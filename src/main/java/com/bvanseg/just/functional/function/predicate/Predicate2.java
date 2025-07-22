@@ -17,14 +17,12 @@ public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean>, java.uti
 
     @Override
     default Predicate<A2> partialFirst(A1 fixed) {
-        var base = Function2.super.partialFirst(fixed);
-        return base::apply;
+        return Function2.super.partialFirst(fixed)::apply;
     }
 
     @Override
     default Predicate<A1> partialLast(A2 fixed) {
-        var base = Function2.super.partialLast(fixed);
-        return base::apply;
+        return Function2.super.partialLast(fixed)::apply;
     }
 
     default Predicate2<A1, A2> and(Predicate2<? super A1, ? super A2> other) {

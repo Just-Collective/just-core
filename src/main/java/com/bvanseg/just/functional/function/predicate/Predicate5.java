@@ -14,14 +14,12 @@ public interface Predicate5<A1, A2, A3, A4, A5> extends Function5<A1, A2, A3, A4
 
     @Override
     default Predicate4<A2, A3, A4, A5> partialFirst(A1 fixed) {
-        var base = Function5.super.partialFirst(fixed);
-        return base::apply;
+        return Function5.super.partialFirst(fixed)::apply;
     }
 
     @Override
     default Predicate4<A1, A2, A3, A4> partialLast(A5 fixed) {
-        var base = Function5.super.partialLast(fixed);
-        return base::apply;
+        return Function5.super.partialLast(fixed)::apply;
     }
 
     default Predicate5<A1, A2, A3, A4, A5> and(

@@ -46,14 +46,12 @@ public interface Predicate15<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, 
 
     @Override
     default Predicate14<A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15> partialFirst(A1 fixed) {
-        var base = Function15.super.partialFirst(fixed);
-        return base::apply;
+        return Function15.super.partialFirst(fixed)::apply;
     }
 
     @Override
     default Predicate14<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14> partialLast(A15 fixed) {
-        var base = Function15.super.partialLast(fixed);
-        return base::apply;
+        return Function15.super.partialLast(fixed)::apply;
     }
 
     default Predicate15<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15> and(

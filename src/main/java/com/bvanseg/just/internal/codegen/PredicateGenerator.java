@@ -201,9 +201,7 @@ public class PredicateGenerator {
             .appendTypeParams(n, 1, true)
             .append(" partialFirst(", firstType, " fixed)")
             .body(
-                cg -> cg.append("var base = ", functionName, ".super.partialFirst(fixed);")
-                    .newLine()
-                    .append("return base::apply;")
+                cg -> cg.append("return ", functionName, ".super.partialFirst(fixed)::apply;")
             );
 
         // partialLast override
@@ -213,9 +211,7 @@ public class PredicateGenerator {
             .appendTypeParams(n - 1, true)
             .append(" partialLast(", lastType, " fixed)")
             .body(
-                cg -> cg.append("var base = ", functionName, ".super.partialLast(fixed);")
-                    .newLine()
-                    .append("return base::apply;")
+                cg -> cg.append("return ", functionName, ".super.partialLast(fixed)::apply;")
             );
     }
 
