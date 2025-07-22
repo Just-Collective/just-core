@@ -66,9 +66,13 @@ public class PredicateGenerator {
                         // 'apply' method
                         .apply(acg -> appendApplyMethod(acg, n))
                         // 'and' method
-                        .apply(acg -> appendConditionMethod(acg, thisName, n, "and", "&&"))
+                        .apply(acg -> appendLogicalMethod(acg, thisName, n, "and"))
                         // 'or' method
-                        .apply(acg -> appendConditionMethod(acg, thisName, n, "or", "||"))
+                        .apply(acg -> appendLogicalMethod(acg, thisName, n, "or"))
+                        // 'xor' method
+                        .apply(acg -> appendLogicalMethod(acg, thisName, n, "xor"))
+                        // 'implies' method
+                        .apply(acg -> appendLogicalMethod(acg, thisName, n, "implies"))
                         // 'negate' method
                         .apply(acg -> appendNegateMethod(acg, thisName, n))
                         // 'lift' method
@@ -206,13 +210,19 @@ public class PredicateGenerator {
             );
     }
 
-    private static void appendConditionMethod(
+    private static void appendLogicalMethod(
         CodeGenerator acg,
         String thisName,
         int n,
-        String methodName,
-        String condition
+        String methodName
     ) {
+        var operator = switch (methodName) {
+            case "and" -> "&&";
+            case "or", "implies" -> "||";
+            case "xor" -> "^";
+            default -> throw new UnsupportedOperationException("Unsupported operation: '" + methodName + "'.");
+        };
+
         acg.newLine(2)
             .append("default ", thisName)
             .appendTypeParams(n, true)
@@ -222,9 +232,9 @@ public class PredicateGenerator {
             .body(
                 cg2 -> cg2.append("return (")
                     .appendNamesOnly(n)
-                    .append(") -> this.test(")
+                    .append(") -> ", (methodName.equals("implies") ? "!" : ""), "this.test(")
                     .appendNamesOnly(n)
-                    .append(") " + condition + " other.test(")
+                    .append(") " + operator + " other.test(")
                     .appendNamesOnly(n)
                     .append(");")
             );

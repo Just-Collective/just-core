@@ -44,6 +44,38 @@ public interface Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> extends Function
         );
     }
 
+    default Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> xor(
+        Predicate9<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9> other
+    ) {
+        return (a1, a2, a3, a4, a5, a6, a7, a8, a9) -> this.test(a1, a2, a3, a4, a5, a6, a7, a8, a9) ^ other.test(
+            a1,
+            a2,
+            a3,
+            a4,
+            a5,
+            a6,
+            a7,
+            a8,
+            a9
+        );
+    }
+
+    default Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> implies(
+        Predicate9<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9> other
+    ) {
+        return (a1, a2, a3, a4, a5, a6, a7, a8, a9) -> !this.test(a1, a2, a3, a4, a5, a6, a7, a8, a9) || other.test(
+            a1,
+            a2,
+            a3,
+            a4,
+            a5,
+            a6,
+            a7,
+            a8,
+            a9
+        );
+    }
+
     default Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> negate() {
         return (a1, a2, a3, a4, a5, a6, a7, a8, a9) -> !this.test(a1, a2, a3, a4, a5, a6, a7, a8, a9);
     }

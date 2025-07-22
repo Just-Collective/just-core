@@ -23,6 +23,14 @@ public interface Predicate<A1> extends Function<A1, Boolean>, java.util.function
         return (a1) -> this.test(a1) || other.test(a1);
     }
 
+    default Predicate<A1> xor(Predicate<? super A1> other) {
+        return (a1) -> this.test(a1) ^ other.test(a1);
+    }
+
+    default Predicate<A1> implies(Predicate<? super A1> other) {
+        return (a1) -> !this.test(a1) || other.test(a1);
+    }
+
     @Override
     default @NotNull Predicate<A1> negate() {
         return (a1) -> !this.test(a1);

@@ -20,6 +20,14 @@ public interface Predicate3<A1, A2, A3> extends Function3<A1, A2, A3, Boolean> {
         return (a1, a2, a3) -> this.test(a1, a2, a3) || other.test(a1, a2, a3);
     }
 
+    default Predicate3<A1, A2, A3> xor(Predicate3<? super A1, ? super A2, ? super A3> other) {
+        return (a1, a2, a3) -> this.test(a1, a2, a3) ^ other.test(a1, a2, a3);
+    }
+
+    default Predicate3<A1, A2, A3> implies(Predicate3<? super A1, ? super A2, ? super A3> other) {
+        return (a1, a2, a3) -> !this.test(a1, a2, a3) || other.test(a1, a2, a3);
+    }
+
     default Predicate3<A1, A2, A3> negate() {
         return (a1, a2, a3) -> !this.test(a1, a2, a3);
     }

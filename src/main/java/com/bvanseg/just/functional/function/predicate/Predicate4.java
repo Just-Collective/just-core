@@ -20,6 +20,14 @@ public interface Predicate4<A1, A2, A3, A4> extends Function4<A1, A2, A3, A4, Bo
         return (a1, a2, a3, a4) -> this.test(a1, a2, a3, a4) || other.test(a1, a2, a3, a4);
     }
 
+    default Predicate4<A1, A2, A3, A4> xor(Predicate4<? super A1, ? super A2, ? super A3, ? super A4> other) {
+        return (a1, a2, a3, a4) -> this.test(a1, a2, a3, a4) ^ other.test(a1, a2, a3, a4);
+    }
+
+    default Predicate4<A1, A2, A3, A4> implies(Predicate4<? super A1, ? super A2, ? super A3, ? super A4> other) {
+        return (a1, a2, a3, a4) -> !this.test(a1, a2, a3, a4) || other.test(a1, a2, a3, a4);
+    }
+
     default Predicate4<A1, A2, A3, A4> negate() {
         return (a1, a2, a3, a4) -> !this.test(a1, a2, a3, a4);
     }

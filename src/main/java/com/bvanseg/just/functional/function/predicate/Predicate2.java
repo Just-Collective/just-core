@@ -23,6 +23,14 @@ public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean>, java.uti
         return (a1, a2) -> this.test(a1, a2) || other.test(a1, a2);
     }
 
+    default Predicate2<A1, A2> xor(Predicate2<? super A1, ? super A2> other) {
+        return (a1, a2) -> this.test(a1, a2) ^ other.test(a1, a2);
+    }
+
+    default Predicate2<A1, A2> implies(Predicate2<? super A1, ? super A2> other) {
+        return (a1, a2) -> !this.test(a1, a2) || other.test(a1, a2);
+    }
+
     @Override
     default @NotNull Predicate2<A1, A2> negate() {
         return (a1, a2) -> !this.test(a1, a2);
