@@ -49,7 +49,7 @@ public interface Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> extends Function
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9> Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> lift(
-        Predicate8<A1, A2, A3, A4, A5, A6, A7, A8> predicate
+        Predicate8<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8> predicate
     ) {
         return (a1, a2, a3, a4, a5, a6, a7, a8, _) -> predicate.test(a1, a2, a3, a4, a5, a6, a7, a8);
     }
@@ -63,13 +63,13 @@ public interface Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> extends Function
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9> Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> not(
-        Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> predicate
+        Predicate9<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9> predicate
     ) {
         return (a1, a2, a3, a4, a5, a6, a7, a8, a9) -> !predicate.test(a1, a2, a3, a4, a5, a6, a7, a8, a9);
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9> Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> from(
-        java.util.function.Function<A1, ? extends java.util.function.Function<A2, ? extends java.util.function.Function<A3, ? extends java.util.function.Function<A4, ? extends java.util.function.Function<A5, ? extends java.util.function.Function<A6, ? extends java.util.function.Function<A7, ? extends java.util.function.Function<A8, ? extends java.util.function.Function<A9, Boolean>>>>>>>>> fn
+        java.util.function.Function<? super A1, ? extends java.util.function.Function<? super A2, ? extends java.util.function.Function<? super A3, ? extends java.util.function.Function<? super A4, ? extends java.util.function.Function<? super A5, ? extends java.util.function.Function<? super A6, ? extends java.util.function.Function<? super A7, ? extends java.util.function.Function<? super A8, ? extends java.util.function.Function<? super A9, Boolean>>>>>>>>> fn
     ) {
         return (a1, a2, a3, a4, a5, a6, a7, a8, a9) -> fn.apply(a1)
             .apply(a2)
@@ -90,7 +90,7 @@ public interface Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> extends Function
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9> Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> named(
         String name,
-        Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> delegate
+        Predicate9<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9> delegate
     ) {
         return new Predicate9<>() {
 

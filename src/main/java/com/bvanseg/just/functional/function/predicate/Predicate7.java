@@ -45,7 +45,7 @@ public interface Predicate7<A1, A2, A3, A4, A5, A6, A7> extends Function7<A1, A2
     }
 
     static <A1, A2, A3, A4, A5, A6, A7> Predicate7<A1, A2, A3, A4, A5, A6, A7> lift(
-        Predicate6<A1, A2, A3, A4, A5, A6> predicate
+        Predicate6<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6> predicate
     ) {
         return (a1, a2, a3, a4, a5, a6, _) -> predicate.test(a1, a2, a3, a4, a5, a6);
     }
@@ -59,13 +59,13 @@ public interface Predicate7<A1, A2, A3, A4, A5, A6, A7> extends Function7<A1, A2
     }
 
     static <A1, A2, A3, A4, A5, A6, A7> Predicate7<A1, A2, A3, A4, A5, A6, A7> not(
-        Predicate7<A1, A2, A3, A4, A5, A6, A7> predicate
+        Predicate7<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7> predicate
     ) {
         return (a1, a2, a3, a4, a5, a6, a7) -> !predicate.test(a1, a2, a3, a4, a5, a6, a7);
     }
 
     static <A1, A2, A3, A4, A5, A6, A7> Predicate7<A1, A2, A3, A4, A5, A6, A7> from(
-        java.util.function.Function<A1, ? extends java.util.function.Function<A2, ? extends java.util.function.Function<A3, ? extends java.util.function.Function<A4, ? extends java.util.function.Function<A5, ? extends java.util.function.Function<A6, ? extends java.util.function.Function<A7, Boolean>>>>>>> fn
+        java.util.function.Function<? super A1, ? extends java.util.function.Function<? super A2, ? extends java.util.function.Function<? super A3, ? extends java.util.function.Function<? super A4, ? extends java.util.function.Function<? super A5, ? extends java.util.function.Function<? super A6, ? extends java.util.function.Function<? super A7, Boolean>>>>>>> fn
     ) {
         return (a1, a2, a3, a4, a5, a6, a7) -> fn.apply(a1).apply(a2).apply(a3).apply(a4).apply(a5).apply(a6).apply(a7);
     }
@@ -78,7 +78,7 @@ public interface Predicate7<A1, A2, A3, A4, A5, A6, A7> extends Function7<A1, A2
 
     static <A1, A2, A3, A4, A5, A6, A7> Predicate7<A1, A2, A3, A4, A5, A6, A7> named(
         String name,
-        Predicate7<A1, A2, A3, A4, A5, A6, A7> delegate
+        Predicate7<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7> delegate
     ) {
         return new Predicate7<>() {
 

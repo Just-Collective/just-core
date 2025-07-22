@@ -28,7 +28,9 @@ public interface Predicate6<A1, A2, A3, A4, A5, A6> extends Function6<A1, A2, A3
         return (a1, a2, a3, a4, a5, a6) -> !this.test(a1, a2, a3, a4, a5, a6);
     }
 
-    static <A1, A2, A3, A4, A5, A6> Predicate6<A1, A2, A3, A4, A5, A6> lift(Predicate5<A1, A2, A3, A4, A5> predicate) {
+    static <A1, A2, A3, A4, A5, A6> Predicate6<A1, A2, A3, A4, A5, A6> lift(
+        Predicate5<? super A1, ? super A2, ? super A3, ? super A4, ? super A5> predicate
+    ) {
         return (a1, a2, a3, a4, a5, _) -> predicate.test(a1, a2, a3, a4, a5);
     }
 
@@ -41,13 +43,13 @@ public interface Predicate6<A1, A2, A3, A4, A5, A6> extends Function6<A1, A2, A3
     }
 
     static <A1, A2, A3, A4, A5, A6> Predicate6<A1, A2, A3, A4, A5, A6> not(
-        Predicate6<A1, A2, A3, A4, A5, A6> predicate
+        Predicate6<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6> predicate
     ) {
         return (a1, a2, a3, a4, a5, a6) -> !predicate.test(a1, a2, a3, a4, a5, a6);
     }
 
     static <A1, A2, A3, A4, A5, A6> Predicate6<A1, A2, A3, A4, A5, A6> from(
-        java.util.function.Function<A1, ? extends java.util.function.Function<A2, ? extends java.util.function.Function<A3, ? extends java.util.function.Function<A4, ? extends java.util.function.Function<A5, ? extends java.util.function.Function<A6, Boolean>>>>>> fn
+        java.util.function.Function<? super A1, ? extends java.util.function.Function<? super A2, ? extends java.util.function.Function<? super A3, ? extends java.util.function.Function<? super A4, ? extends java.util.function.Function<? super A5, ? extends java.util.function.Function<? super A6, Boolean>>>>>> fn
     ) {
         return (a1, a2, a3, a4, a5, a6) -> fn.apply(a1).apply(a2).apply(a3).apply(a4).apply(a5).apply(a6);
     }
@@ -60,7 +62,7 @@ public interface Predicate6<A1, A2, A3, A4, A5, A6> extends Function6<A1, A2, A3
 
     static <A1, A2, A3, A4, A5, A6> Predicate6<A1, A2, A3, A4, A5, A6> named(
         String name,
-        Predicate6<A1, A2, A3, A4, A5, A6> delegate
+        Predicate6<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6> delegate
     ) {
         return new Predicate6<>() {
 

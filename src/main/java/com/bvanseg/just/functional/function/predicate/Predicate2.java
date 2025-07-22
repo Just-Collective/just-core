@@ -28,7 +28,7 @@ public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean>, java.uti
         return (a1, a2) -> !this.test(a1, a2);
     }
 
-    static <A1, A2> Predicate2<A1, A2> lift(Predicate<A1> predicate) {
+    static <A1, A2> Predicate2<A1, A2> lift(Predicate<? super A1> predicate) {
         return (a1, _) -> predicate.test(a1);
     }
 
@@ -40,12 +40,12 @@ public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean>, java.uti
         return (_, _) -> false;
     }
 
-    static <A1, A2> Predicate2<A1, A2> not(Predicate2<A1, A2> predicate) {
+    static <A1, A2> Predicate2<A1, A2> not(Predicate2<? super A1, ? super A2> predicate) {
         return (a1, a2) -> !predicate.test(a1, a2);
     }
 
     static <A1, A2> Predicate2<A1, A2> from(
-        java.util.function.Function<A1, ? extends java.util.function.Function<A2, Boolean>> fn
+        java.util.function.Function<? super A1, ? extends java.util.function.Function<? super A2, Boolean>> fn
     ) {
         return (a1, a2) -> fn.apply(a1).apply(a2);
     }
@@ -54,7 +54,7 @@ public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean>, java.uti
         return fn::apply;
     }
 
-    static <A1, A2> Predicate2<A1, A2> named(String name, Predicate2<A1, A2> delegate) {
+    static <A1, A2> Predicate2<A1, A2> named(String name, Predicate2<? super A1, ? super A2> delegate) {
         return new Predicate2<>() {
 
             @Override

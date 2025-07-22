@@ -28,7 +28,9 @@ public interface Predicate5<A1, A2, A3, A4, A5> extends Function5<A1, A2, A3, A4
         return (a1, a2, a3, a4, a5) -> !this.test(a1, a2, a3, a4, a5);
     }
 
-    static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> lift(Predicate4<A1, A2, A3, A4> predicate) {
+    static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> lift(
+        Predicate4<? super A1, ? super A2, ? super A3, ? super A4> predicate
+    ) {
         return (a1, a2, a3, a4, _) -> predicate.test(a1, a2, a3, a4);
     }
 
@@ -40,12 +42,14 @@ public interface Predicate5<A1, A2, A3, A4, A5> extends Function5<A1, A2, A3, A4
         return (_, _, _, _, _) -> false;
     }
 
-    static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> not(Predicate5<A1, A2, A3, A4, A5> predicate) {
+    static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> not(
+        Predicate5<? super A1, ? super A2, ? super A3, ? super A4, ? super A5> predicate
+    ) {
         return (a1, a2, a3, a4, a5) -> !predicate.test(a1, a2, a3, a4, a5);
     }
 
     static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> from(
-        java.util.function.Function<A1, ? extends java.util.function.Function<A2, ? extends java.util.function.Function<A3, ? extends java.util.function.Function<A4, ? extends java.util.function.Function<A5, Boolean>>>>> fn
+        java.util.function.Function<? super A1, ? extends java.util.function.Function<? super A2, ? extends java.util.function.Function<? super A3, ? extends java.util.function.Function<? super A4, ? extends java.util.function.Function<? super A5, Boolean>>>>> fn
     ) {
         return (a1, a2, a3, a4, a5) -> fn.apply(a1).apply(a2).apply(a3).apply(a4).apply(a5);
     }
@@ -58,7 +62,7 @@ public interface Predicate5<A1, A2, A3, A4, A5> extends Function5<A1, A2, A3, A4
 
     static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> named(
         String name,
-        Predicate5<A1, A2, A3, A4, A5> delegate
+        Predicate5<? super A1, ? super A2, ? super A3, ? super A4, ? super A5> delegate
     ) {
         return new Predicate5<>() {
 

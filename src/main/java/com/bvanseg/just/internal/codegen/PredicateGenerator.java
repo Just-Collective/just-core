@@ -106,7 +106,7 @@ public class PredicateGenerator {
             .append(" ", thisName)
             .appendTypeParams(n, true)
             .append(" named(String name, ", thisName)
-            .appendTypeParams(n, true)
+            .appendSuperTypeParams(n, true)
             .append(" delegate)")
             .body(
                 cg2 -> cg2.append("return new ", thisName)
@@ -140,7 +140,7 @@ public class PredicateGenerator {
             .append(" ", thisName)
             .appendTypeParams(n, true)
             .append(" not(", thisName)
-            .appendTypeParams(n, true)
+            .appendSuperTypeParams(n, true)
             .append(" predicate)")
             .body(
                 cg2 -> cg2.append("return (")
@@ -176,7 +176,7 @@ public class PredicateGenerator {
             .append(" ", thisName)
             .appendTypeParams(n, true)
             .append(" lift(", precedingName)
-            .appendTypeParams(n - 1, true)
+            .appendSuperTypeParams(n - 1, true)
             .append(" predicate)")
             .body(
                 cg2 -> cg2.append("return (")
@@ -216,9 +216,9 @@ public class PredicateGenerator {
         acg.newLine(2)
             .append("default ", thisName)
             .appendTypeParams(n, true)
-            .append(" " + methodName + "(", thisName, "<")
-            .appendSuperTypeParams(n)
-            .append("> other)")
+            .append(" " + methodName + "(", thisName)
+            .appendSuperTypeParams(n, true)
+            .append(" other)")
             .body(
                 cg2 -> cg2.append("return (")
                     .appendNamesOnly(n)
@@ -246,10 +246,10 @@ public class PredicateGenerator {
             .append(" ", thisName)
             .appendTypeParams(n, true)
             .append(" from(")
-            .append("java.util.function.Function<A1, ")
+            .append("java.util.function.Function<? super A1, ")
             .apply(cg -> {
                 for (var i = 2; i <= n; i++) {
-                    cg.append("? extends java.util.function.Function<A" + i + ", ");
+                    cg.append("? extends java.util.function.Function<? super A" + i + ", ");
                 }
 
                 cg.append("Boolean");
@@ -282,15 +282,9 @@ public class PredicateGenerator {
             .appendTypeParams(n, true)
             .append(" ", thisName)
             .appendTypeParams(n, true)
-            .append(" from(")
-            .append(functionName)
-            .append("<");
-
-        for (int i = 1; i <= n; i++) {
-            acg.append("? super A").append(i).append(", ");
-        }
-
-        acg.append("Boolean> fn)")
+            .append(" from(", functionName)
+            .appendSuperTypeParams(n, false)
+            .append(", Boolean> fn)")
             .body(cg -> cg.append("return fn::apply;"));
     }
 }

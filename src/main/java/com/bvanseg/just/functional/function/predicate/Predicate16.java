@@ -114,7 +114,7 @@ public interface Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, 
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> lift(
-        Predicate15<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15> predicate
+        Predicate15<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9, ? super A10, ? super A11, ? super A12, ? super A13, ? super A14, ? super A15> predicate
     ) {
         return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, _) -> predicate.test(
             a1,
@@ -144,7 +144,7 @@ public interface Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, 
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> not(
-        Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> predicate
+        Predicate16<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9, ? super A10, ? super A11, ? super A12, ? super A13, ? super A14, ? super A15, ? super A16> predicate
     ) {
         return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16) -> !predicate.test(
             a1,
@@ -167,7 +167,7 @@ public interface Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, 
     }
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> from(
-        java.util.function.Function<A1, ? extends java.util.function.Function<A2, ? extends java.util.function.Function<A3, ? extends java.util.function.Function<A4, ? extends java.util.function.Function<A5, ? extends java.util.function.Function<A6, ? extends java.util.function.Function<A7, ? extends java.util.function.Function<A8, ? extends java.util.function.Function<A9, ? extends java.util.function.Function<A10, ? extends java.util.function.Function<A11, ? extends java.util.function.Function<A12, ? extends java.util.function.Function<A13, ? extends java.util.function.Function<A14, ? extends java.util.function.Function<A15, ? extends java.util.function.Function<A16, Boolean>>>>>>>>>>>>>>>> fn
+        java.util.function.Function<? super A1, ? extends java.util.function.Function<? super A2, ? extends java.util.function.Function<? super A3, ? extends java.util.function.Function<? super A4, ? extends java.util.function.Function<? super A5, ? extends java.util.function.Function<? super A6, ? extends java.util.function.Function<? super A7, ? extends java.util.function.Function<? super A8, ? extends java.util.function.Function<? super A9, ? extends java.util.function.Function<? super A10, ? extends java.util.function.Function<? super A11, ? extends java.util.function.Function<? super A12, ? extends java.util.function.Function<? super A13, ? extends java.util.function.Function<? super A14, ? extends java.util.function.Function<? super A15, ? extends java.util.function.Function<? super A16, Boolean>>>>>>>>>>>>>>>> fn
     ) {
         return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16) -> fn.apply(a1)
             .apply(a2)
@@ -195,7 +195,7 @@ public interface Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, 
 
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> named(
         String name,
-        Predicate16<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16> delegate
+        Predicate16<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9, ? super A10, ? super A11, ? super A12, ? super A13, ? super A14, ? super A15, ? super A16> delegate
     ) {
         return new Predicate16<>() {
 

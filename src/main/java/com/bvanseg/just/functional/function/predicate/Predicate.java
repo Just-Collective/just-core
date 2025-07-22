@@ -36,11 +36,11 @@ public interface Predicate<A1> extends Function<A1, Boolean>, java.util.function
         return (_) -> false;
     }
 
-    static <A1> Predicate<A1> not(Predicate<A1> predicate) {
+    static <A1> Predicate<A1> not(Predicate<? super A1> predicate) {
         return (a1) -> !predicate.test(a1);
     }
 
-    static <A1> Predicate<A1> from(java.util.function.Function<A1, Boolean> fn) {
+    static <A1> Predicate<A1> from(java.util.function.Function<? super A1, Boolean> fn) {
         return fn::apply;
     }
 
@@ -48,7 +48,7 @@ public interface Predicate<A1> extends Function<A1, Boolean>, java.util.function
         return fn::apply;
     }
 
-    static <A1> Predicate<A1> named(String name, Predicate<A1> delegate) {
+    static <A1> Predicate<A1> named(String name, Predicate<? super A1> delegate) {
         return new Predicate<>() {
 
             @Override

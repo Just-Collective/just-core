@@ -122,9 +122,15 @@ public class CodeGenerator {
         return this;
     }
 
-    public CodeGenerator appendSuperTypeParams(int n) {
+    public CodeGenerator appendSuperTypeParams(int n, boolean closed) {
         var range = rangeJoin(n, i -> "? super A" + i);
+        append("<");
         append(range);
+
+        if (closed) {
+            append(">");
+        }
+
         return this;
     }
 
