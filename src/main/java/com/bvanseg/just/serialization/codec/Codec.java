@@ -1,5 +1,7 @@
 package com.bvanseg.just.serialization.codec;
 
+import java.util.Optional;
+
 import com.bvanseg.just.functional.function.Function;
 import com.bvanseg.just.functional.option.Option;
 import com.bvanseg.just.functional.result.Result;
@@ -70,6 +72,13 @@ public interface Codec<A> extends Encoder<A>, Decoder<A> {
                 return Codec.this.encode(codecSchema, value.unwrap());
             }
         };
+    }
+
+    default Codec<Optional<A>> asOptional() {
+        return asOption().xmap(
+            Option::toOptional,
+            optional -> optional.isEmpty() ? Option.none() : Option.some(optional.get())
+        );
     }
 
     default ListCodec<A> asList() {
