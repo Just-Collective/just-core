@@ -63,34 +63,22 @@ public class PredicateGenerator {
                         .appendArgsWithNames(n)
                         .append(");")
                         .newLine()
-                        // 'apply' method
-                        .apply(acg -> appendApplyMethod(acg, n))
-                        // 'and' method
-                        .apply(acg -> appendLogicalMethod(acg, thisName, n, "and"))
-                        // 'or' method
-                        .apply(acg -> appendLogicalMethod(acg, thisName, n, "or"))
-                        // 'xor' method
-                        .apply(acg -> appendLogicalMethod(acg, thisName, n, "xor"))
-                        // 'implies' method
-                        .apply(acg -> appendLogicalMethod(acg, thisName, n, "implies"))
-                        // 'negate' method
-                        .apply(acg -> appendNegateMethod(acg, thisName, n))
-                        // 'lift' method
-                        .apply(acg -> appendLiftMethod(acg, thisName, n, precedingName))
-                        // 'partial' method
-                        .apply(acg -> appendPartialFirstAndLastMethods(acg, n, precedingName))
-                        // 'alwaysTrue' method
-                        .apply(acg -> appendAlwaysMethod(acg, thisName, n, true))
-                        // 'alwaysFalse' method
-                        .apply(acg -> appendAlwaysMethod(acg, thisName, n, false))
-                        // 'not' method
-                        .apply(acg -> appendNotMethod(acg, thisName, n))
-                        // 'from' method
-                        .apply(acg -> appendFromMethod(acg, thisName, n))
-                        // 'from' method
-                        .apply(acg -> appendFromFunctionMethod(acg, thisName, functionName, n))
-                        // 'named' method
-                        .apply(acg -> appendNamedMethod(acg, thisName, n))
+                        .apply(acg -> {
+                            appendApplyMethod(acg, n);
+                            appendLogicalMethod(acg, thisName, n, "and");
+                            appendLogicalMethod(acg, thisName, n, "or");
+                            appendLogicalMethod(acg, thisName, n, "xor");
+                            appendLogicalMethod(acg, thisName, n, "implies");
+                            appendNegateMethod(acg, thisName, n);
+                            appendLiftMethod(acg, thisName, n, precedingName);
+                            appendPartialFirstAndLastMethods(acg, n, precedingName);
+                            appendAlwaysMethod(acg, thisName, n, true);
+                            appendAlwaysMethod(acg, thisName, n, false);
+                            appendNotMethod(acg, thisName, n);
+                            appendFromMethod(acg, thisName, n);
+                            appendFromFunctionMethod(acg, thisName, functionName, n);
+                            appendNamedMethod(acg, thisName, n);
+                        })
                         .newLine()
                 );
 
