@@ -77,11 +77,7 @@ public class JacksonCodecSchema implements CodecSchema<JsonNode> {
             return Result.err(map);
         }
 
-        var node = map.get(key);
-
-        return node != null
-            ? Result.ok(node)
-            : Result.err(map);
+        return Result.ok(map.get(key));
     }
 
     @Override
