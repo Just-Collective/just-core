@@ -93,7 +93,12 @@ public class CodeGenerator {
     }
 
     public CodeGenerator appendTypeParams(int n, boolean closed) {
-        var range = rangeJoin(n, i -> "A" + i);
+        appendTypeParams(n, 0, closed);
+        return this;
+    }
+
+    public CodeGenerator appendTypeParams(int n, int offset, boolean closed) {
+        var range = rangeJoin(n, offset, i -> "A" + i);
         append("<");
         append(range);
 
@@ -105,25 +110,45 @@ public class CodeGenerator {
     }
 
     public CodeGenerator appendArgsWithNames(int n) {
-        var range = rangeJoin(n, i -> "A" + i + " a" + i);
+        appendArgsWithNames(n, 0);
+        return this;
+    }
+
+    public CodeGenerator appendArgsWithNames(int n, int offset) {
+        var range = rangeJoin(n, offset, i -> "A" + i + " a" + i);
         append(range);
         return this;
     }
 
     public CodeGenerator appendNamesOnly(int n) {
-        var range = rangeJoin(n, i -> "a" + i);
+        appendNamesOnly(n, 0);
+        return this;
+    }
+
+    public CodeGenerator appendNamesOnly(int n, int offset) {
+        var range = rangeJoin(n, offset, i -> "a" + i);
         append(range);
         return this;
     }
 
     public CodeGenerator appendWildcardArgs(int n) {
-        var range = rangeJoin(n, _ -> "_");
+        appendWildcardArgs(n, 0);
+        return this;
+    }
+
+    public CodeGenerator appendWildcardArgs(int n, int offset) {
+        var range = rangeJoin(n, offset, _ -> "_");
         append(range);
         return this;
     }
 
     public CodeGenerator appendSuperTypeParams(int n, boolean closed) {
-        var range = rangeJoin(n, i -> "? super A" + i);
+        appendSuperTypeParams(n, 0, closed);
+        return this;
+    }
+
+    public CodeGenerator appendSuperTypeParams(int n, int offset, boolean closed) {
+        var range = rangeJoin(n, offset, i -> "? super A" + i);
         append("<");
         append(range);
 
@@ -134,8 +159,8 @@ public class CodeGenerator {
         return this;
     }
 
-    private String rangeJoin(int n, IntFunction<String> mapper) {
-        return IntStream.rangeClosed(1, n)
+    private String rangeJoin(int n, int offset, IntFunction<String> mapper) {
+        return IntStream.rangeClosed(1 + offset, n)
             .mapToObj(mapper)
             .collect(Collectors.joining(", "));
     }
