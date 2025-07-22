@@ -12,6 +12,18 @@ public interface Predicate3<A1, A2, A3> extends Function3<A1, A2, A3, Boolean> {
         return test(a1, a2, a3);
     }
 
+    @Override
+    default Predicate2<A2, A3> partialFirst(A1 fixed) {
+        var base = Function3.super.partialFirst(fixed);
+        return base::apply;
+    }
+
+    @Override
+    default Predicate2<A1, A2> partialLast(A3 fixed) {
+        var base = Function3.super.partialLast(fixed);
+        return base::apply;
+    }
+
     default Predicate3<A1, A2, A3> and(Predicate3<? super A1, ? super A2, ? super A3> other) {
         return (a1, a2, a3) -> this.test(a1, a2, a3) && other.test(a1, a2, a3);
     }
@@ -34,14 +46,6 @@ public interface Predicate3<A1, A2, A3> extends Function3<A1, A2, A3, Boolean> {
 
     static <A1, A2, A3> Predicate3<A1, A2, A3> lift(Predicate2<? super A1, ? super A2> predicate) {
         return (a1, a2, _) -> predicate.test(a1, a2);
-    }
-
-    default Predicate2<A2, A3> partialFirst(A1 fixed) {
-        return (a2, a3) -> this.test(fixed, a2, a3);
-    }
-
-    default Predicate2<A1, A2> partialLast(A3 fixed) {
-        return (a1, a2) -> this.test(a1, a2, fixed);
     }
 
     static <A1, A2, A3> Predicate3<A1, A2, A3> alwaysTrue() {
