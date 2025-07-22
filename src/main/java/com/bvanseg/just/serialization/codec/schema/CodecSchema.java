@@ -11,6 +11,10 @@ public interface CodecSchema<T> {
 
     T empty();
 
+    default T emptyMap() {
+        return createMap(Stream.of());
+    }
+
     Result<Boolean, T> getBooleanValue(T input);
 
     Result<Number, T> getNumberValue(T input);
@@ -37,6 +41,9 @@ public interface CodecSchema<T> {
 
     Result<Stream<Tuple2<T, T>>, T> getMap(T input);
 
+    // Retrieves a field from a map-like object.
+    Result<T, T> getField(T map, String key);
+
     T createBooleanValue(boolean value);
 
     T createNumber(Number value);
@@ -46,6 +53,8 @@ public interface CodecSchema<T> {
     T createList(Stream<T> elements);
 
     T createMap(Stream<Tuple2<T, T>> entries);
+
+    T createField(T map, String key, T value);
 
     default T createByteValue(byte value) {
         return createNumber(value);

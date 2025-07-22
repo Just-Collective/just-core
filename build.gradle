@@ -64,6 +64,14 @@ tasks.register('generatePredicates', JavaExec) {
     args 'src/main/java'
 }
 
+tasks.register('generateRecordCodec', JavaExec) {
+    group = 'codegen'
+    description = 'Generate RecordCodec class'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set('com.bvanseg.just.internal.codegen.RecordCodecGenerator')
+    args 'src/main/java'
+}
+
 tasks.register('generateTuples', JavaExec) {
     group = 'codegen'
     description = 'Generate Tuple2–16 records into src/main/java'

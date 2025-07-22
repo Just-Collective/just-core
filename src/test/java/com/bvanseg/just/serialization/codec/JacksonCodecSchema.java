@@ -72,6 +72,19 @@ public class JacksonCodecSchema implements CodecSchema<JsonNode> {
     }
 
     @Override
+    public Result<JsonNode, JsonNode> getField(JsonNode map, String key) {
+        if (!map.isObject()) {
+            return Result.err(map);
+        }
+
+        var node = map.get(key);
+
+        return node != null
+            ? Result.ok(node)
+            : Result.err(map);
+    }
+
+    @Override
     public JsonNode createBooleanValue(boolean value) {
         return objectMapper.valueToTree(value);
     }
@@ -114,6 +127,24 @@ public class JacksonCodecSchema implements CodecSchema<JsonNode> {
                     : valueNode
             );
         });
+
+        return objectNode;
+    }
+
+    @Override
+    public JsonNode createField(JsonNode map, String key, JsonNode value) {
+        if (!map.isObject()) {
+            throw new IllegalArgumentException("createField expects an object node.");
+        }
+
+        var objectNode = (com.fasterxml.jackson.databind.node.ObjectNode) map;
+
+        objectNode.set(
+            key,
+            value == null
+                ? objectMapper.nullNode()
+                : value
+        );
 
         return objectNode;
     }

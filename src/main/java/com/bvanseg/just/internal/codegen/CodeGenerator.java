@@ -159,7 +159,7 @@ public class CodeGenerator {
         return this;
     }
 
-    private String rangeJoin(int n, int offset, IntFunction<String> mapper) {
+    public String rangeJoin(int n, int offset, IntFunction<String> mapper) {
         return IntStream.rangeClosed(1 + offset, n)
             .mapToObj(mapper)
             .collect(Collectors.joining(", "));
