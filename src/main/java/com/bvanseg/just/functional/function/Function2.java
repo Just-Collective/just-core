@@ -22,7 +22,9 @@ public interface Function2<A1, A2, R> extends BiFunction<A1, A2, R> {
         return a1 -> a2 -> this.apply(a1, a2);
     }
 
-    static <A1, A2, R> Function2<A1, A2, R> fromCurried(Function<A1, Function<A2, R>> curried) {
-        return (a1, a2) -> curried.apply(a1).apply(a2);
+    static <A1, A2, R> Function2<A1, A2, R> from(
+        Function<? super A1, ? extends Function<? super A2, ? extends R>> curried
+    ) {
+        return (A1 a1, A2 a2) -> curried.apply(a1).apply(a2);
     }
 }

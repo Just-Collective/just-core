@@ -19,7 +19,9 @@ public interface Function3<A1, A2, A3, R> {
         return a1 -> a2 -> a3 -> this.apply(a1, a2, a3);
     }
 
-    static <A1, A2, A3, R> Function3<A1, A2, A3, R> fromCurried(Function<A1, Function<A2, Function<A3, R>>> curried) {
-        return (a1, a2, a3) -> curried.apply(a1).apply(a2).apply(a3);
+    static <A1, A2, A3, R> Function3<A1, A2, A3, R> from(
+        Function<? super A1, ? extends Function<? super A2, ? extends Function<? super A3, ? extends R>>> curried
+    ) {
+        return (A1 a1, A2 a2, A3 a3) -> curried.apply(a1).apply(a2).apply(a3);
     }
 }
