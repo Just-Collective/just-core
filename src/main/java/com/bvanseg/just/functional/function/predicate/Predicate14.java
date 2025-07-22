@@ -165,6 +165,44 @@ public interface Predicate14<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, 
         );
     }
 
+    default Predicate13<A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14> partialFirst(A1 fixed) {
+        return (a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14) -> this.test(
+            fixed,
+            a2,
+            a3,
+            a4,
+            a5,
+            a6,
+            a7,
+            a8,
+            a9,
+            a10,
+            a11,
+            a12,
+            a13,
+            a14
+        );
+    }
+
+    default Predicate13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13> partialLast(A14 fixed) {
+        return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13) -> this.test(
+            a1,
+            a2,
+            a3,
+            a4,
+            a5,
+            a6,
+            a7,
+            a8,
+            a9,
+            a10,
+            a11,
+            a12,
+            a13,
+            fixed
+        );
+    }
+
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14> Predicate14<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14> alwaysTrue() {
         return (_, _, _, _, _, _, _, _, _, _, _, _, _, _) -> true;
     }

@@ -36,6 +36,14 @@ public interface Predicate3<A1, A2, A3> extends Function3<A1, A2, A3, Boolean> {
         return (a1, a2, _) -> predicate.test(a1, a2);
     }
 
+    default Predicate2<A2, A3> partialFirst(A1 fixed) {
+        return (a2, a3) -> this.test(fixed, a2, a3);
+    }
+
+    default Predicate2<A1, A2> partialLast(A3 fixed) {
+        return (a1, a2) -> this.test(a1, a2, fixed);
+    }
+
     static <A1, A2, A3> Predicate3<A1, A2, A3> alwaysTrue() {
         return (_, _, _) -> true;
     }

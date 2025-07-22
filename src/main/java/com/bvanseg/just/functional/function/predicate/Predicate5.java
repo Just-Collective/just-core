@@ -46,6 +46,14 @@ public interface Predicate5<A1, A2, A3, A4, A5> extends Function5<A1, A2, A3, A4
         return (a1, a2, a3, a4, _) -> predicate.test(a1, a2, a3, a4);
     }
 
+    default Predicate4<A2, A3, A4, A5> partialFirst(A1 fixed) {
+        return (a2, a3, a4, a5) -> this.test(fixed, a2, a3, a4, a5);
+    }
+
+    default Predicate4<A1, A2, A3, A4> partialLast(A5 fixed) {
+        return (a1, a2, a3, a4) -> this.test(a1, a2, a3, a4, fixed);
+    }
+
     static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> alwaysTrue() {
         return (_, _, _, _, _) -> true;
     }

@@ -78,6 +78,14 @@ public interface Predicate7<A1, A2, A3, A4, A5, A6, A7> extends Function7<A1, A2
         return (a1, a2, a3, a4, a5, a6, _) -> predicate.test(a1, a2, a3, a4, a5, a6);
     }
 
+    default Predicate6<A2, A3, A4, A5, A6, A7> partialFirst(A1 fixed) {
+        return (a2, a3, a4, a5, a6, a7) -> this.test(fixed, a2, a3, a4, a5, a6, a7);
+    }
+
+    default Predicate6<A1, A2, A3, A4, A5, A6> partialLast(A7 fixed) {
+        return (a1, a2, a3, a4, a5, a6) -> this.test(a1, a2, a3, a4, a5, a6, fixed);
+    }
+
     static <A1, A2, A3, A4, A5, A6, A7> Predicate7<A1, A2, A3, A4, A5, A6, A7> alwaysTrue() {
         return (_, _, _, _, _, _, _) -> true;
     }

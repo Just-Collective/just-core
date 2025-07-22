@@ -77,6 +77,8 @@ public class PredicateGenerator {
                         .apply(acg -> appendNegateMethod(acg, thisName, n))
                         // 'lift' method
                         .apply(acg -> appendLiftMethod(acg, thisName, n, precedingName))
+                        // 'partial' method
+                        .apply(acg -> appendPartialFirstAndLastMethods(acg, n, precedingName))
                         // 'alwaysTrue' method
                         .apply(acg -> appendAlwaysMethod(acg, thisName, n, true))
                         // 'alwaysFalse' method
@@ -189,6 +191,65 @@ public class PredicateGenerator {
                     .appendNamesOnly(n - 1)
                     .append(");")
             );
+    }
+
+    private static void appendPartialFirstAndLastMethods(CodeGenerator acg, int n, String precedingName) {
+        if (n == 1) {
+            return;
+        }
+
+        var firstType = "A1";
+        var lastType = "A" + n;
+
+        // partialFirst
+        acg.newLine(2)
+            .append("default ", precedingName)
+            .append("<");
+        for (int i = 2; i <= n; i++) {
+            acg.append("A").append(i);
+            if (i != n)
+                acg.append(", ");
+        }
+        acg.append("> partialFirst(", firstType, " fixed)")
+            .body(cg -> {
+                cg.append("return (");
+                for (int i = 2; i <= n; i++) {
+                    cg.append("a").append(i);
+                    if (i != n)
+                        cg.append(", ");
+                }
+                cg.append(") -> this.test(fixed, ");
+                for (int i = 2; i <= n; i++) {
+                    cg.append("a").append(i);
+                    if (i != n)
+                        cg.append(", ");
+                }
+                cg.append(");");
+            });
+
+        // partialLast
+        acg.newLine(2)
+            .append("default ", precedingName)
+            .append("<");
+        for (int i = 1; i < n; i++) {
+            acg.append("A").append(i);
+            if (i != n - 1)
+                acg.append(", ");
+        }
+        acg.append("> partialLast(", lastType, " fixed)")
+            .body(cg -> {
+                cg.append("return (");
+                for (int i = 1; i < n; i++) {
+                    cg.append("a").append(i);
+                    if (i != n - 1)
+                        cg.append(", ");
+                }
+                cg.append(") -> this.test(");
+                for (int i = 1; i < n; i++) {
+                    cg.append("a").append(i).append(", ");
+                }
+                cg.append("fixed);");
+            });
     }
 
     private static void appendNegateMethod(CodeGenerator acg, String thisName, int n) {

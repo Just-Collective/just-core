@@ -50,6 +50,14 @@ public interface Predicate10<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10> extends Fu
         return (a1, a2, a3, a4, a5, a6, a7, a8, a9, _) -> predicate.test(a1, a2, a3, a4, a5, a6, a7, a8, a9);
     }
 
+    default Predicate9<A2, A3, A4, A5, A6, A7, A8, A9, A10> partialFirst(A1 fixed) {
+        return (a2, a3, a4, a5, a6, a7, a8, a9, a10) -> this.test(fixed, a2, a3, a4, a5, a6, a7, a8, a9, a10);
+    }
+
+    default Predicate9<A1, A2, A3, A4, A5, A6, A7, A8, A9> partialLast(A10 fixed) {
+        return (a1, a2, a3, a4, a5, a6, a7, a8, a9) -> this.test(a1, a2, a3, a4, a5, a6, a7, a8, a9, fixed);
+    }
+
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10> Predicate10<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10> alwaysTrue() {
         return (_, _, _, _, _, _, _, _, _, _) -> true;
     }
