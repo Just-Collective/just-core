@@ -40,6 +40,14 @@ public interface Predicate2<A1, A2> extends Function2<A1, A2, Boolean>, java.uti
         return (a1, _) -> predicate.test(a1);
     }
 
+    default Predicate<A2> partialFirst(A1 fixed) {
+        return (a2) -> this.test(fixed, a2);
+    }
+
+    default Predicate<A1> partialLast(A2 fixed) {
+        return (a1) -> this.test(a1, fixed);
+    }
+
     static <A1, A2> Predicate2<A1, A2> alwaysTrue() {
         return (_, _) -> true;
     }
