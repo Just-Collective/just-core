@@ -8,6 +8,13 @@ plugins {
 group = 'com.bvanseg.just'
 version = '0.1.0'
 
+java {
+    var version = JavaVersion.VERSION_23
+
+    sourceCompatibility = version
+    targetCompatibility = version
+}
+
 repositories {
     mavenCentral()
 }
