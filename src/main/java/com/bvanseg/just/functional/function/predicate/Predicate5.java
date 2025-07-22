@@ -44,6 +44,18 @@ public interface Predicate5<A1, A2, A3, A4, A5> extends Function5<A1, A2, A3, A4
         return (a1, a2, a3, a4, a5) -> !predicate.test(a1, a2, a3, a4, a5);
     }
 
+    static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> from(
+        java.util.function.Function<A1, ? extends java.util.function.Function<A2, ? extends java.util.function.Function<A3, ? extends java.util.function.Function<A4, ? extends java.util.function.Function<A5, Boolean>>>>> fn
+    ) {
+        return (a1, a2, a3, a4, a5) -> fn.apply(a1).apply(a2).apply(a3).apply(a4).apply(a5);
+    }
+
+    static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> from(
+        Function5<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, Boolean> fn
+    ) {
+        return fn::apply;
+    }
+
     static <A1, A2, A3, A4, A5> Predicate5<A1, A2, A3, A4, A5> named(
         String name,
         Predicate5<A1, A2, A3, A4, A5> delegate
@@ -57,7 +69,7 @@ public interface Predicate5<A1, A2, A3, A4, A5> extends Function5<A1, A2, A3, A4
 
             @Override
             public String toString() {
-                return name;
+                return "Predicate5." + name;
             }
         };
     }

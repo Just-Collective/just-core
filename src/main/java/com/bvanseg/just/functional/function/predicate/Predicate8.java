@@ -66,6 +66,25 @@ public interface Predicate8<A1, A2, A3, A4, A5, A6, A7, A8> extends Function8<A1
         return (a1, a2, a3, a4, a5, a6, a7, a8) -> !predicate.test(a1, a2, a3, a4, a5, a6, a7, a8);
     }
 
+    static <A1, A2, A3, A4, A5, A6, A7, A8> Predicate8<A1, A2, A3, A4, A5, A6, A7, A8> from(
+        java.util.function.Function<A1, ? extends java.util.function.Function<A2, ? extends java.util.function.Function<A3, ? extends java.util.function.Function<A4, ? extends java.util.function.Function<A5, ? extends java.util.function.Function<A6, ? extends java.util.function.Function<A7, ? extends java.util.function.Function<A8, Boolean>>>>>>>> fn
+    ) {
+        return (a1, a2, a3, a4, a5, a6, a7, a8) -> fn.apply(a1)
+            .apply(a2)
+            .apply(a3)
+            .apply(a4)
+            .apply(a5)
+            .apply(a6)
+            .apply(a7)
+            .apply(a8);
+    }
+
+    static <A1, A2, A3, A4, A5, A6, A7, A8> Predicate8<A1, A2, A3, A4, A5, A6, A7, A8> from(
+        Function8<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, Boolean> fn
+    ) {
+        return fn::apply;
+    }
+
     static <A1, A2, A3, A4, A5, A6, A7, A8> Predicate8<A1, A2, A3, A4, A5, A6, A7, A8> named(
         String name,
         Predicate8<A1, A2, A3, A4, A5, A6, A7, A8> delegate
@@ -79,7 +98,7 @@ public interface Predicate8<A1, A2, A3, A4, A5, A6, A7, A8> extends Function8<A1
 
             @Override
             public String toString() {
-                return name;
+                return "Predicate8." + name;
             }
         };
     }

@@ -40,6 +40,14 @@ public interface Predicate<A1> extends Function<A1, Boolean>, java.util.function
         return (a1) -> !predicate.test(a1);
     }
 
+    static <A1> Predicate<A1> from(java.util.function.Function<A1, Boolean> fn) {
+        return fn::apply;
+    }
+
+    static <A1> Predicate<A1> from(Function<? super A1, Boolean> fn) {
+        return fn::apply;
+    }
+
     static <A1> Predicate<A1> named(String name, Predicate<A1> delegate) {
         return new Predicate<>() {
 
@@ -50,7 +58,7 @@ public interface Predicate<A1> extends Function<A1, Boolean>, java.util.function
 
             @Override
             public String toString() {
-                return name;
+                return "Predicate." + name;
             }
         };
     }

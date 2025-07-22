@@ -40,6 +40,16 @@ public interface Predicate3<A1, A2, A3> extends Function3<A1, A2, A3, Boolean> {
         return (a1, a2, a3) -> !predicate.test(a1, a2, a3);
     }
 
+    static <A1, A2, A3> Predicate3<A1, A2, A3> from(
+        java.util.function.Function<A1, ? extends java.util.function.Function<A2, ? extends java.util.function.Function<A3, Boolean>>> fn
+    ) {
+        return (a1, a2, a3) -> fn.apply(a1).apply(a2).apply(a3);
+    }
+
+    static <A1, A2, A3> Predicate3<A1, A2, A3> from(Function3<? super A1, ? super A2, ? super A3, Boolean> fn) {
+        return fn::apply;
+    }
+
     static <A1, A2, A3> Predicate3<A1, A2, A3> named(String name, Predicate3<A1, A2, A3> delegate) {
         return new Predicate3<>() {
 
@@ -50,7 +60,7 @@ public interface Predicate3<A1, A2, A3> extends Function3<A1, A2, A3, Boolean> {
 
             @Override
             public String toString() {
-                return name;
+                return "Predicate3." + name;
             }
         };
     }

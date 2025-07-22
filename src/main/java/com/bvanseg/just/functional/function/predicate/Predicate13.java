@@ -131,6 +131,30 @@ public interface Predicate13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, 
         );
     }
 
+    static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13> Predicate13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13> from(
+        java.util.function.Function<A1, ? extends java.util.function.Function<A2, ? extends java.util.function.Function<A3, ? extends java.util.function.Function<A4, ? extends java.util.function.Function<A5, ? extends java.util.function.Function<A6, ? extends java.util.function.Function<A7, ? extends java.util.function.Function<A8, ? extends java.util.function.Function<A9, ? extends java.util.function.Function<A10, ? extends java.util.function.Function<A11, ? extends java.util.function.Function<A12, ? extends java.util.function.Function<A13, Boolean>>>>>>>>>>>>> fn
+    ) {
+        return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13) -> fn.apply(a1)
+            .apply(a2)
+            .apply(a3)
+            .apply(a4)
+            .apply(a5)
+            .apply(a6)
+            .apply(a7)
+            .apply(a8)
+            .apply(a9)
+            .apply(a10)
+            .apply(a11)
+            .apply(a12)
+            .apply(a13);
+    }
+
+    static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13> Predicate13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13> from(
+        Function13<? super A1, ? super A2, ? super A3, ? super A4, ? super A5, ? super A6, ? super A7, ? super A8, ? super A9, ? super A10, ? super A11, ? super A12, ? super A13, Boolean> fn
+    ) {
+        return fn::apply;
+    }
+
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13> Predicate13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13> named(
         String name,
         Predicate13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13> delegate
@@ -158,7 +182,7 @@ public interface Predicate13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, 
 
             @Override
             public String toString() {
-                return name;
+                return "Predicate13." + name;
             }
         };
     }

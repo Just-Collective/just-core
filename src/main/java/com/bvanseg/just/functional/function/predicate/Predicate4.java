@@ -40,6 +40,18 @@ public interface Predicate4<A1, A2, A3, A4> extends Function4<A1, A2, A3, A4, Bo
         return (a1, a2, a3, a4) -> !predicate.test(a1, a2, a3, a4);
     }
 
+    static <A1, A2, A3, A4> Predicate4<A1, A2, A3, A4> from(
+        java.util.function.Function<A1, ? extends java.util.function.Function<A2, ? extends java.util.function.Function<A3, ? extends java.util.function.Function<A4, Boolean>>>> fn
+    ) {
+        return (a1, a2, a3, a4) -> fn.apply(a1).apply(a2).apply(a3).apply(a4);
+    }
+
+    static <A1, A2, A3, A4> Predicate4<A1, A2, A3, A4> from(
+        Function4<? super A1, ? super A2, ? super A3, ? super A4, Boolean> fn
+    ) {
+        return fn::apply;
+    }
+
     static <A1, A2, A3, A4> Predicate4<A1, A2, A3, A4> named(String name, Predicate4<A1, A2, A3, A4> delegate) {
         return new Predicate4<>() {
 
@@ -50,7 +62,7 @@ public interface Predicate4<A1, A2, A3, A4> extends Function4<A1, A2, A3, A4, Bo
 
             @Override
             public String toString() {
-                return name;
+                return "Predicate4." + name;
             }
         };
     }

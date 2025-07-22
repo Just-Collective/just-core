@@ -79,6 +79,10 @@ public class PredicateGenerator {
                         .apply(acg -> appendAlwaysMethod(acg, thisName, n, false))
                         // 'not' method
                         .apply(acg -> appendNotMethod(acg, thisName, n))
+                        // 'from' method
+                        .apply(acg -> appendFromMethod(acg, thisName, n))
+                        // 'from' method
+                        .apply(acg -> appendFromFunctionMethod(acg, thisName, functionName, n))
                         // 'named' method
                         .apply(acg -> appendNamedMethod(acg, thisName, n))
                         .newLine()
@@ -123,7 +127,7 @@ public class PredicateGenerator {
                             .newLine(2)
                             .appendAnnotation(Override.class, false)
                             .append("public String toString()")
-                            .body(cg4 -> cg4.append("return name;"))
+                            .body(cg4 -> cg4.append("return \"" + thisName + ".\" + name;"))
                     )
                     .append(";")
             );
@@ -233,5 +237,60 @@ public class PredicateGenerator {
             .appendArgsWithNames(n)
             .append(")")
             .body(cg2 -> cg2.append("return test(").appendNamesOnly(n).append(");"));
+    }
+
+    private static void appendFromMethod(CodeGenerator acg, String thisName, int n) {
+        acg.newLine(2)
+            .append("static ")
+            .appendTypeParams(n, true)
+            .append(" ", thisName)
+            .appendTypeParams(n, true)
+            .append(" from(")
+            .append("java.util.function.Function<A1, ")
+            .apply(cg -> {
+                for (var i = 2; i <= n; i++) {
+                    cg.append("? extends java.util.function.Function<A" + i + ", ");
+                }
+
+                cg.append("Boolean");
+                cg.append(">".repeat(n));
+            })
+            .append(" fn)")
+            .body(cg -> {
+                if (n == 1) {
+                    cg.append("return fn::apply;");
+                    return;
+                }
+
+                cg.append("return (")
+                    .appendNamesOnly(n)
+                    .append(") -> ");
+
+                // Build nested calls: fn.apply(a1).apply(a2)...
+                cg.append("fn");
+                for (int i = 1; i <= n; i++) {
+                    cg.append(".apply(a" + i + ")");
+                }
+
+                cg.append(";");
+            });
+    }
+
+    private static void appendFromFunctionMethod(CodeGenerator acg, String thisName, String functionName, int n) {
+        acg.newLine(2)
+            .append("static ")
+            .appendTypeParams(n, true)
+            .append(" ", thisName)
+            .appendTypeParams(n, true)
+            .append(" from(")
+            .append(functionName)
+            .append("<");
+
+        for (int i = 1; i <= n; i++) {
+            acg.append("? super A").append(i).append(", ");
+        }
+
+        acg.append("Boolean> fn)")
+            .body(cg -> cg.append("return fn::apply;"));
     }
 }
