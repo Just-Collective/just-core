@@ -20,7 +20,9 @@ public class FunctionGenerator {
 
         for (int i = 1; i <= 16; i++) {
             var n = i;
+            var prev = n - 1;
             var thisName = n == 1 ? "Function" : "Function" + n;
+            var precedingName = prev > 1 ? "Function" + prev : "Function";
             var memoName = n == 1 ? "Memo" : "Memo" + n;
 
             var cg = new CodeGenerator()
@@ -49,6 +51,7 @@ public class FunctionGenerator {
                     appendAndThenMethod(cg2, thisName, n);
                     appendMemoizeMethod(cg2, memoName, n);
                     appendCurriedMethod(cg2, n);
+                    appendPartialFirstAndLastMethods(cg2, precedingName, n);
                     appendFromMethod(cg2, thisName, n);
                 });
 
@@ -165,6 +168,66 @@ public class FunctionGenerator {
                 }
 
                 cg2.append(";");
+            });
+    }
+
+    private static void appendPartialFirstAndLastMethods(CodeGenerator acg, String precedingName, int n) {
+        if (n == 1) {
+            return;
+        }
+
+        var firstType = "A1";
+        var lastType = "A" + n;
+
+        // partialFirst
+        acg.newLine(2)
+            .append("default ", precedingName)
+            .append("<");
+        for (int i = 2; i <= n; i++) {
+            acg.append("A").append(i);
+            if (i != n) {
+                acg.append(", ");
+            }
+        }
+        acg.append(", R> partialFirst(", firstType, " fixed)")
+            .body(cg -> {
+                cg.append("return (");
+                for (int i = 2; i <= n; i++) {
+                    cg.append("a").append(i);
+                    if (i != n)
+                        cg.append(", ");
+                }
+                cg.append(") -> this.apply(fixed, ");
+                for (int i = 2; i <= n; i++) {
+                    cg.append("a").append(i);
+                    if (i != n)
+                        cg.append(", ");
+                }
+                cg.append(");");
+            });
+
+        // partialLast
+        acg.newLine(2)
+            .append("default ", precedingName)
+            .append("<");
+        for (int i = 1; i < n; i++) {
+            acg.append("A").append(i);
+            if (i != n - 1)
+                acg.append(", ");
+        }
+        acg.append(", R> partialLast(", lastType, " fixed)")
+            .body(cg -> {
+                cg.append("return (");
+                for (int i = 1; i < n; i++) {
+                    cg.append("a").append(i);
+                    if (i != n - 1)
+                        cg.append(", ");
+                }
+                cg.append(") -> this.apply(");
+                for (int i = 1; i < n; i++) {
+                    cg.append("a").append(i).append(", ");
+                }
+                cg.append("fixed);");
             });
     }
 }

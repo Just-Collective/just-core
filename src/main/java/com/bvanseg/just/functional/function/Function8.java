@@ -19,6 +19,14 @@ public interface Function8<A1, A2, A3, A4, A5, A6, A7, A8, R> {
         return a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> a7 -> a8 -> this.apply(a1, a2, a3, a4, a5, a6, a7, a8);
     }
 
+    default Function7<A2, A3, A4, A5, A6, A7, A8, R> partialFirst(A1 fixed) {
+        return (a2, a3, a4, a5, a6, a7, a8) -> this.apply(fixed, a2, a3, a4, a5, a6, a7, a8);
+    }
+
+    default Function7<A1, A2, A3, A4, A5, A6, A7, R> partialLast(A8 fixed) {
+        return (a1, a2, a3, a4, a5, a6, a7) -> this.apply(a1, a2, a3, a4, a5, a6, a7, fixed);
+    }
+
     static <A1, A2, A3, A4, A5, A6, A7, A8, R> Function8<A1, A2, A3, A4, A5, A6, A7, A8, R> from(
         Function<? super A1, ? extends Function<? super A2, ? extends Function<? super A3, ? extends Function<? super A4, ? extends Function<? super A5, ? extends Function<? super A6, ? extends Function<? super A7, ? extends Function<? super A8, ? extends R>>>>>>>> curried
     ) {

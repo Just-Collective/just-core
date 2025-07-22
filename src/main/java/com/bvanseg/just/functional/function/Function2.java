@@ -22,6 +22,14 @@ public interface Function2<A1, A2, R> extends BiFunction<A1, A2, R> {
         return a1 -> a2 -> this.apply(a1, a2);
     }
 
+    default Function<A2, R> partialFirst(A1 fixed) {
+        return (a2) -> this.apply(fixed, a2);
+    }
+
+    default Function<A1, R> partialLast(A2 fixed) {
+        return (a1) -> this.apply(a1, fixed);
+    }
+
     static <A1, A2, R> Function2<A1, A2, R> from(
         Function<? super A1, ? extends Function<? super A2, ? extends R>> curried
     ) {

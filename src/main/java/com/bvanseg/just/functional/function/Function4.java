@@ -19,6 +19,14 @@ public interface Function4<A1, A2, A3, A4, R> {
         return a1 -> a2 -> a3 -> a4 -> this.apply(a1, a2, a3, a4);
     }
 
+    default Function3<A2, A3, A4, R> partialFirst(A1 fixed) {
+        return (a2, a3, a4) -> this.apply(fixed, a2, a3, a4);
+    }
+
+    default Function3<A1, A2, A3, R> partialLast(A4 fixed) {
+        return (a1, a2, a3) -> this.apply(a1, a2, a3, fixed);
+    }
+
     static <A1, A2, A3, A4, R> Function4<A1, A2, A3, A4, R> from(
         Function<? super A1, ? extends Function<? super A2, ? extends Function<? super A3, ? extends Function<? super A4, ? extends R>>>> curried
     ) {

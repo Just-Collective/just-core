@@ -37,6 +37,42 @@ public interface Function13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A
         );
     }
 
+    default Function12<A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, R> partialFirst(A1 fixed) {
+        return (a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13) -> this.apply(
+            fixed,
+            a2,
+            a3,
+            a4,
+            a5,
+            a6,
+            a7,
+            a8,
+            a9,
+            a10,
+            a11,
+            a12,
+            a13
+        );
+    }
+
+    default Function12<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, R> partialLast(A13 fixed) {
+        return (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12) -> this.apply(
+            a1,
+            a2,
+            a3,
+            a4,
+            a5,
+            a6,
+            a7,
+            a8,
+            a9,
+            a10,
+            a11,
+            a12,
+            fixed
+        );
+    }
+
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, R> Function13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, R> from(
         Function<? super A1, ? extends Function<? super A2, ? extends Function<? super A3, ? extends Function<? super A4, ? extends Function<? super A5, ? extends Function<? super A6, ? extends Function<? super A7, ? extends Function<? super A8, ? extends Function<? super A9, ? extends Function<? super A10, ? extends Function<? super A11, ? extends Function<? super A12, ? extends Function<? super A13, ? extends R>>>>>>>>>>>>> curried
     ) {

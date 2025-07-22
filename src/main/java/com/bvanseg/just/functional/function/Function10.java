@@ -32,6 +32,14 @@ public interface Function10<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, R> {
         );
     }
 
+    default Function9<A2, A3, A4, A5, A6, A7, A8, A9, A10, R> partialFirst(A1 fixed) {
+        return (a2, a3, a4, a5, a6, a7, a8, a9, a10) -> this.apply(fixed, a2, a3, a4, a5, a6, a7, a8, a9, a10);
+    }
+
+    default Function9<A1, A2, A3, A4, A5, A6, A7, A8, A9, R> partialLast(A10 fixed) {
+        return (a1, a2, a3, a4, a5, a6, a7, a8, a9) -> this.apply(a1, a2, a3, a4, a5, a6, a7, a8, a9, fixed);
+    }
+
     static <A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, R> Function10<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, R> from(
         Function<? super A1, ? extends Function<? super A2, ? extends Function<? super A3, ? extends Function<? super A4, ? extends Function<? super A5, ? extends Function<? super A6, ? extends Function<? super A7, ? extends Function<? super A8, ? extends Function<? super A9, ? extends Function<? super A10, ? extends R>>>>>>>>>> curried
     ) {
