@@ -47,15 +47,18 @@ public interface Codec<A> extends Encoder<A>, Decoder<A> {
 
     default Codec<Option<A>> asOption() {
         return new Codec<>() {
+
             @Override
             public <T> Result<Option<A>, T> decode(CodecSchema<T> codecSchema, T input) {
-                var result = Codec.this.decode(codecSchema, input);
-
-                if (result.isErr()) {
+                if (input == null) {
                     return Result.ok(Option.none());
                 }
 
-                return result.map(Option::ofNullable);
+                var result = Codec.this.decode(codecSchema, input);
+
+                return result.isErr()
+                    ? Result.ok(Option.none())
+                    : result.map(Option::ofNullable);
             }
 
             @Override
