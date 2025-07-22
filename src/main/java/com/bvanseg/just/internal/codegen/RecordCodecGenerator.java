@@ -20,40 +20,30 @@ public class RecordCodecGenerator {
         var cg = new CodeGenerator();
 
         cg.packageLine("com.bvanseg.just.serialization.codec")
-            .newLine()
-            .importLine("java.util.Map")
-            .newLine()
+            .importLine("com.bvanseg.just.functional.function.*")
             .importLine("com.bvanseg.just.functional.result.Result")
             .importLine("com.bvanseg.just.serialization.codec.schema.CodecSchema")
-            .importLine("com.bvanseg.just.functional.function.*")
             .newLine()
             .append("public class RecordCodec")
             .body(cg2 -> {
-                cg2.newLine();
-                cg2.append(
-                    "private static <R, A, T> T encodeField(CodecSchema<T> schema, T map, FieldCodec<R, A> field, R value) "
-                )
-                    .body(
-                        b -> b.append(
-                            "return schema.createField(map, field.fieldName(), field.codec().encode(schema, field.getter().apply(value)));"
-                        )
-                    )
-                    .newLine(2);
+                cg2.newLine()
+                    .append(
+                        """
+                            private static <R, A, T> T encodeField(CodecSchema<T> schema, T map, FieldCodec<R, A> field, R value) {
+                                    return schema.createField(map, field.fieldName(), field.codec().encode(schema, field.getter().apply(value)));
+                                }
 
-                cg2.append(
-                    "private static <R, A, T> Result<A, T> decodeField(CodecSchema<T> schema, T input, FieldCodec<R, A> field) "
-                )
-                    .body(
-                        b -> b.append(
-                            "return schema.getField(input, field.fieldName()).andThen(val -> field.codec().decode(schema, val));"
-                        )
+                                private static <R, A, T> Result<A, T> decodeField(CodecSchema<T> schema, T input, FieldCodec<R, A> field) {
+                                    return schema.getField(input, field.fieldName()).andThen(val -> field.codec().decode(schema, val));
+                                }
+                            """
                     );
 
                 for (var i = 1; i <= 16; i++) {
                     var n = i;
                     var functionName = n > 1 ? "Function" + n : "Function";
 
-                    cg2.newLine(2)
+                    cg2.newLine()
                         .append(
                             "public static <",
                             cg2.rangeJoin(n, 0, j -> "A" + j),

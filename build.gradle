@@ -108,7 +108,9 @@ jacocoTestReport {
 
     classDirectories.setFrom(files(classDirectories.files.collect { dir ->
         fileTree(dir) {
-            exclude()
+            exclude(
+                "${project.group.toString().replace('.', '/')}/**/internal",
+            )
         }
     }))
 
