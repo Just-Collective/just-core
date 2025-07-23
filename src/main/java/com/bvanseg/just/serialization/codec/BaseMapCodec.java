@@ -7,12 +7,13 @@ import com.bvanseg.just.functional.result.Result;
 import com.bvanseg.just.functional.tuple.Tuple2;
 import com.bvanseg.just.serialization.codec.schema.CodecSchema;
 
-public interface BaseMapCodec<K, V> {
+public interface BaseMapCodec<K, V> extends Codec<Map<K, V>> {
 
     Codec<K> keyCodec();
 
     Codec<V> valueCodec();
 
+    @Override
     default <T> Result<Map<K, V>, T> decode(CodecSchema<T> schema, T input) {
         return schema.getMap(input)
             .andThen(stream -> {
@@ -34,6 +35,7 @@ public interface BaseMapCodec<K, V> {
             });
     }
 
+    @Override
     default <T> T encode(CodecSchema<T> schema, Map<K, V> input) {
         var stream = input.entrySet().stream().map(entry -> {
             var key = keyCodec().encode(schema, entry.getKey());
