@@ -1,6 +1,7 @@
 package com.bvanseg.just.functional.function;
 
 import com.bvanseg.just.functional.function.memo.Memo13;
+import com.bvanseg.just.functional.tuple.Tuple13;
 
 @FunctionalInterface
 public interface Function13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, R> {
@@ -34,6 +35,24 @@ public interface Function13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A
             a11,
             a12,
             a13
+        );
+    }
+
+    default Function<Tuple13<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13>, R> tupled() {
+        return tuple -> this.apply(
+            tuple.v1(),
+            tuple.v2(),
+            tuple.v3(),
+            tuple.v4(),
+            tuple.v5(),
+            tuple.v6(),
+            tuple.v7(),
+            tuple.v8(),
+            tuple.v9(),
+            tuple.v10(),
+            tuple.v11(),
+            tuple.v12(),
+            tuple.v13()
         );
     }
 

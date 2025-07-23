@@ -1,6 +1,7 @@
 package com.bvanseg.just.functional.function;
 
 import com.bvanseg.just.functional.function.memo.Memo3;
+import com.bvanseg.just.functional.tuple.Tuple3;
 
 @FunctionalInterface
 public interface Function3<A1, A2, A3, R> {
@@ -17,6 +18,10 @@ public interface Function3<A1, A2, A3, R> {
 
     default Function<A1, Function<A2, Function<A3, R>>> curried() {
         return a1 -> a2 -> a3 -> this.apply(a1, a2, a3);
+    }
+
+    default Function<Tuple3<A1, A2, A3>, R> tupled() {
+        return tuple -> this.apply(tuple.v1(), tuple.v2(), tuple.v3());
     }
 
     default Function2<A2, A3, R> partialFirst(A1 fixed) {

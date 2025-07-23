@@ -1,6 +1,7 @@
 package com.bvanseg.just.functional.function;
 
 import com.bvanseg.just.functional.function.memo.Memo15;
+import com.bvanseg.just.functional.tuple.Tuple15;
 
 @FunctionalInterface
 public interface Function15<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, R> {
@@ -38,6 +39,26 @@ public interface Function15<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A
     default Function<A1, Function<A2, Function<A3, Function<A4, Function<A5, Function<A6, Function<A7, Function<A8, Function<A9, Function<A10, Function<A11, Function<A12, Function<A13, Function<A14, Function<A15, R>>>>>>>>>>>>>>> curried() {
         return a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> a7 -> a8 -> a9 -> a10 -> a11 -> a12 -> a13 -> a14 -> a15 -> this
             .apply(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15);
+    }
+
+    default Function<Tuple15<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15>, R> tupled() {
+        return tuple -> this.apply(
+            tuple.v1(),
+            tuple.v2(),
+            tuple.v3(),
+            tuple.v4(),
+            tuple.v5(),
+            tuple.v6(),
+            tuple.v7(),
+            tuple.v8(),
+            tuple.v9(),
+            tuple.v10(),
+            tuple.v11(),
+            tuple.v12(),
+            tuple.v13(),
+            tuple.v14(),
+            tuple.v15()
+        );
     }
 
     default Function14<A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, R> partialFirst(A1 fixed) {

@@ -29,6 +29,10 @@ public class FunctionGenerator {
                 .packageLine("com.bvanseg.just.functional.function")
                 .importLine("com.bvanseg.just.functional.function.memo." + memoName)
                 .apply(acg -> {
+                    if (n > 1) {
+                        acg.importLine("com.bvanseg.just.functional.tuple.Tuple" + n);
+                    }
+
                     if (n == 2) {
                         acg.importLine("java.util.function.BiFunction");
                     }
@@ -51,6 +55,7 @@ public class FunctionGenerator {
                     appendAndThenMethod(cg2, thisName, n);
                     appendMemoizeMethod(cg2, memoName, n);
                     appendCurriedMethod(cg2, n);
+                    appendTupledMethod(cg2, n);
                     appendPartialFirstAndLastMethods(cg2, precedingName, n);
                     appendFromMethod(cg2, thisName, n);
                 });
@@ -130,6 +135,34 @@ public class FunctionGenerator {
 
                 cg2.append("this.apply(").appendNamesOnly(n).append(");");
             });
+    }
+
+    private static void appendTupledMethod(CodeGenerator cg, int n) {
+        if (n == 1) {
+            return;
+        }
+
+        cg.newLine(2)
+            .append("default Function<Tuple")
+            .append(String.valueOf(n))
+            .append("<");
+
+        for (int i = 1; i <= n; i++) {
+            cg.append("A").append(String.valueOf(i));
+            if (i != n)
+                cg.append(", ");
+        }
+
+        cg.append(">, R> tupled()").body(cg2 -> {
+            cg2.append("return tuple -> this.apply(");
+            for (int i = 1; i <= n; i++) {
+                cg2.append("tuple.v").append(i).append("()");
+                if (i != n) {
+                    cg2.append(", ");
+                }
+            }
+            cg2.append(");");
+        });
     }
 
     private static void appendFromMethod(CodeGenerator cg, String thisName, int n) {

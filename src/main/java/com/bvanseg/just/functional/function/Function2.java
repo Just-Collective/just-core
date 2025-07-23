@@ -3,6 +3,7 @@ package com.bvanseg.just.functional.function;
 import java.util.function.BiFunction;
 
 import com.bvanseg.just.functional.function.memo.Memo2;
+import com.bvanseg.just.functional.tuple.Tuple2;
 
 @FunctionalInterface
 public interface Function2<A1, A2, R> extends BiFunction<A1, A2, R> {
@@ -20,6 +21,10 @@ public interface Function2<A1, A2, R> extends BiFunction<A1, A2, R> {
 
     default Function<A1, Function<A2, R>> curried() {
         return a1 -> a2 -> this.apply(a1, a2);
+    }
+
+    default Function<Tuple2<A1, A2>, R> tupled() {
+        return tuple -> this.apply(tuple.v1(), tuple.v2());
     }
 
     default Function<A2, R> partialFirst(A1 fixed) {
