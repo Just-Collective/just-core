@@ -1,9 +1,10 @@
-package com.bvanseg.just.serialization.codec.stream;
+package com.bvanseg.just.serialization.codec.stream.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.bvanseg.just.functional.function.Function;
+import com.bvanseg.just.serialization.codec.stream.StreamCodec;
 import com.bvanseg.just.serialization.codec.stream.schema.StreamCodecSchema;
 
 public class NullWrapperStreamCodec<ValueType, WrapperType> implements StreamCodec<WrapperType> {
@@ -14,7 +15,7 @@ public class NullWrapperStreamCodec<ValueType, WrapperType> implements StreamCod
 
     private final Function<WrapperType, @Nullable ValueType> unwrap;
 
-    protected NullWrapperStreamCodec(
+    public NullWrapperStreamCodec(
         @NotNull StreamCodec<ValueType> streamCodec,
         Function<@Nullable ValueType, WrapperType> wrap,
         Function<WrapperType, @Nullable ValueType> unwrap
