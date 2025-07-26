@@ -12,6 +12,23 @@ import com.bvanseg.just.serialization.codec.stream.schema.StreamCodecSchema;
 
 public interface StreamCodec<A> extends StreamEncoder<A>, StreamDecoder<A> {
 
+    static <V> StreamCodec<V> unit(V value) {
+        return new StreamCodec<>() {
+
+            @Override
+            public <T> @NotNull V decode(@NotNull StreamCodecSchema<T> streamCodecSchema, @NotNull T input) {
+                return value;
+            }
+
+            @Override
+            public <T> void encode(
+                @NotNull StreamCodecSchema<T> streamCodecSchema,
+                @NotNull T input,
+                @NotNull V value
+            ) {}
+        };
+    }
+
     static <V> StreamCodec<V> of(
         StreamDecoder<V> streamDecoder,
         StreamEncoder<V> streamEncoder
