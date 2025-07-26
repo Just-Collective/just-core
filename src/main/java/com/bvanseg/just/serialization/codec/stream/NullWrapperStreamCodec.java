@@ -3,22 +3,21 @@ package com.bvanseg.just.serialization.codec.stream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.ByteBuffer;
-
 import com.bvanseg.just.functional.function.Function;
+import com.bvanseg.just.serialization.codec.stream.schema.StreamCodecSchema;
 
-public class NullWrapperStreamCodec<B extends ByteBuffer, V, O> implements StreamCodec<B, O> {
+public class NullWrapperStreamCodec<ValueType, WrapperType> implements StreamCodec<WrapperType> {
 
-    private final StreamCodec<B, V> streamCodec;
+    private final StreamCodec<ValueType> streamCodec;
 
-    private final Function<@Nullable V, O> wrap;
+    private final Function<@Nullable ValueType, WrapperType> wrap;
 
-    private final Function<O, @Nullable V> unwrap;
+    private final Function<WrapperType, @Nullable ValueType> unwrap;
 
     protected NullWrapperStreamCodec(
-        @NotNull StreamCodec<B, V> streamCodec,
-        Function<@Nullable V, O> wrap,
-        Function<O, @Nullable V> unwrap
+        @NotNull StreamCodec<ValueType> streamCodec,
+        Function<@Nullable ValueType, WrapperType> wrap,
+        Function<WrapperType, @Nullable ValueType> unwrap
     ) {
         this.streamCodec = streamCodec;
         this.wrap = wrap;
@@ -26,30 +25,34 @@ public class NullWrapperStreamCodec<B extends ByteBuffer, V, O> implements Strea
     }
 
     @Override
-    public void encode(@NotNull B buffer, @NotNull O value) {
-        encodeNullable(buffer, unwrap.apply(value));
+    public <T> @NotNull WrapperType decode(@NotNull StreamCodecSchema<T> streamCodecSchema, @NotNull T input) {
+        return wrap.apply(decodeOrNull(streamCodecSchema, input));
     }
 
     @Override
-    public @NotNull O decode(@NotNull B buffer) {
-        return wrap.apply(decodeOrNull(buffer));
+    public <T> void encode(
+        @NotNull StreamCodecSchema<T> streamCodecSchema,
+        @NotNull T input,
+        @NotNull WrapperType value
+    ) {
+        encodeNullable(streamCodecSchema, input, unwrap.apply(value));
     }
 
-    private void encodeNullable(@NotNull B buffer, @Nullable V value) {
-        if (value != null) {
-            // Mark as present.
-            buffer.put((byte) 1);
+    private <T> void encodeNullable(StreamCodecSchema<T> streamCodecSchema, T input, @Nullable ValueType value) {
+        var isPresent = value != null;
+
+        // Mark as present.
+        streamCodecSchema.writeBoolean(input, isPresent);
+
+        if (isPresent) {
             // Encode value normally.
-            streamCodec.encode(buffer, value);
-        } else {
-            // Mark as absent.
-            buffer.put((byte) 0);
+            streamCodec.encode(streamCodecSchema, input, value);
         }
     }
 
-    public @Nullable V decodeOrNull(@NotNull B buffer) {
-        return buffer.get() == 1
-            ? streamCodec.decode(buffer)
+    public <T> @Nullable ValueType decodeOrNull(StreamCodecSchema<T> streamCodecSchema, T input) {
+        return streamCodecSchema.readBoolean(input)
+            ? streamCodec.decode(streamCodecSchema, input)
             : null;
     }
 }

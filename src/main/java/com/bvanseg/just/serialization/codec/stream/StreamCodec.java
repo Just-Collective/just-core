@@ -2,7 +2,6 @@ package com.bvanseg.just.serialization.codec.stream;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,38 +10,43 @@ import java.util.function.Function;
 
 import com.bvanseg.just.functional.option.Option;
 import com.bvanseg.just.serialization.codec.stream.impl.StreamCodecs;
+import com.bvanseg.just.serialization.codec.stream.schema.StreamCodecSchema;
 
-public interface StreamCodec<B extends ByteBuffer, V> extends StreamEncoder<B, V>, StreamDecoder<B, V> {
+public interface StreamCodec<A> extends StreamEncoder<A>, StreamDecoder<A> {
 
-    default NullWrapperStreamCodec<B, V, Option<V>> asOption() {
+    default NullWrapperStreamCodec<A, Option<A>> asOption() {
         return new NullWrapperStreamCodec<>(this, Option::ofNullable, option -> option.unwrapOr(null));
     }
 
-    default NullWrapperStreamCodec<B, V, Optional<V>> asOptional() {
+    default NullWrapperStreamCodec<A, Optional<A>> asOptional() {
         return new NullWrapperStreamCodec<>(this, Optional::ofNullable, optional -> optional.orElse(null));
     }
 
-    default <C extends Collection<V>> StreamCodec<B, C> asCollection(
+    default <C extends Collection<A>> StreamCodec<C> asCollection(
         Function<Integer, C> collectionFactory
     ) {
         return new StreamCodec<>() {
 
             @Override
-            public void encode(@NotNull B buffer, @NotNull C collection) {
-                StreamCodecs.VAR_INT.encode(buffer, collection.size());
+            public <T> void encode(
+                @NotNull StreamCodecSchema<T> streamCodecSchema,
+                @NotNull T input,
+                @NotNull C value
+            ) {
+                StreamCodecs.VAR_INT.encode(streamCodecSchema, input, value.size());
 
-                for (var item : collection) {
-                    StreamCodec.this.encode(buffer, item);
+                for (var item : value) {
+                    StreamCodec.this.encode(streamCodecSchema, input, item);
                 }
             }
 
             @Override
-            public @NotNull C decode(@NotNull B buffer) {
-                int size = StreamCodecs.VAR_INT.decode(buffer);
+            public <T> @NotNull C decode(@NotNull StreamCodecSchema<T> streamCodecSchema, @NotNull T input) {
+                int size = StreamCodecs.VAR_INT.decode(streamCodecSchema, input);
                 var collection = collectionFactory.apply(size);
 
                 for (var i = 0; i < size; i++) {
-                    collection.add(StreamCodec.this.decode(buffer));
+                    collection.add(StreamCodec.this.decode(streamCodecSchema, input));
                 }
 
                 return collection;
@@ -50,24 +54,28 @@ public interface StreamCodec<B extends ByteBuffer, V> extends StreamEncoder<B, V
         };
     }
 
-    default StreamCodec<B, List<V>> asList() {
+    default StreamCodec<List<A>> asList() {
         return asCollection(ArrayList::new);
     }
 
-    static <B extends ByteBuffer, V> StreamCodec<B, V> of(
-        StreamEncoder<B, V> streamEncoder,
-        StreamDecoder<B, V> decoder
+    static <V> StreamCodec<V> of(
+        StreamDecoder<V> streamDecoder,
+        StreamEncoder<V> streamEncoder
     ) {
         return new StreamCodec<>() {
 
             @Override
-            public void encode(@NotNull B buffer, @NotNull V value) {
-                streamEncoder.encode(buffer, value);
+            public <T> @NotNull V decode(@NotNull StreamCodecSchema<T> streamCodecSchema, @NotNull T input) {
+                return streamDecoder.decode(streamCodecSchema, input);
             }
 
             @Override
-            public @NotNull V decode(@NotNull B buffer) {
-                return decoder.decode(buffer);
+            public <T> void encode(
+                @NotNull StreamCodecSchema<T> streamCodecSchema,
+                @NotNull T input,
+                @NotNull V value
+            ) {
+                streamEncoder.encode(streamCodecSchema, input, value);
             }
         };
     }

@@ -22,7 +22,7 @@ public class RecordStreamCodecGenerator {
             .packageLine("com.bvanseg.just.serialization.codec.stream")
             .importLine("org.jetbrains.annotations.NotNull")
             .newLine()
-            .importLine("java.nio.ByteBuffer")
+            .importLine("com.bvanseg.just.serialization.codec.stream.schema.StreamCodecSchema")
             .newLine()
             .importLine("com.bvanseg.just.functional.function.*")
             .newLine()
@@ -49,10 +49,10 @@ public class RecordStreamCodecGenerator {
             .append("public static ")
             .appendTypeParams(n, false);
 
-        g.append(", R> StreamCodec<ByteBuffer, R> of(").newLine();
+        g.append(", R> StreamCodec<R> of(").newLine();
 
         for (int i = 1; i <= n; i++) {
-            g.append("    StreamCodec<ByteBuffer, A", i, "> codec", i, ",")
+            g.append("    StreamCodec<A", i, "> codec", i, ",")
                 .newLine()
                 .append("    Function<R, A", i, "> getter", i, ",")
                 .newLine();
@@ -67,12 +67,14 @@ public class RecordStreamCodecGenerator {
                 g2 -> g2.append("return new StreamCodec<>()")
                     .body(g3 -> {
                         g3.appendAnnotation(Override.class, false)
-                            .append("public void encode(@NotNull ByteBuffer buffer, @NotNull R value)")
+                            .append(
+                                "public <T> void encode(@NotNull StreamCodecSchema<T> streamCodecSchema, @NotNull T input, @NotNull R value)"
+                            )
                             .body(g4 -> {
                                 for (int i = 1; i <= n; i++) {
                                     g4.append("codec")
                                         .append(i)
-                                        .append(".encode(buffer, getter")
+                                        .append(".encode(streamCodecSchema, input, getter")
                                         .append(i)
                                         .append(".apply(value));");
 
@@ -84,10 +86,12 @@ public class RecordStreamCodecGenerator {
 
                         g3.newLine(2)
                             .appendAnnotation(Override.class, false)
-                            .append("public @NotNull R decode(@NotNull ByteBuffer buffer)")
+                            .append(
+                                "public <T> @NotNull R decode(@NotNull StreamCodecSchema<T> streamCodecSchema, @NotNull T input)"
+                            )
                             .body(g4 -> {
                                 for (int i = 1; i <= n; i++) {
-                                    g4.append("var a", i, " = codec", i, ".decode(buffer);")
+                                    g4.append("var a", i, " = codec", i, ".decode(streamCodecSchema, input);")
                                         .newLine();
                                 }
 

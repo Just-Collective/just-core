@@ -2,8 +2,10 @@ package com.bvanseg.just.serialization.codec.stream;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface StreamDecoder<B, V> {
+import com.bvanseg.just.serialization.codec.stream.schema.StreamCodecSchema;
+
+public interface StreamDecoder<A> {
 
     @NotNull
-    V decode(@NotNull B buffer);
+    <T> A decode(@NotNull StreamCodecSchema<T> streamCodecSchema, @NotNull T input);
 }

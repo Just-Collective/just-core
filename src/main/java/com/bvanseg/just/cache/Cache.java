@@ -1,6 +1,5 @@
 package com.bvanseg.just.cache;
 
-import com.bvanseg.just.functional.option.Option;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -8,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import com.bvanseg.just.functional.option.Option;
 
 public abstract class Cache<K, T> {
 
