@@ -6,129 +6,159 @@ import java.util.UUID;
 import com.bvanseg.just.functional.option.Option;
 import com.bvanseg.just.functional.result.Result;
 import com.bvanseg.just.serialization.codec.Codec;
-import com.bvanseg.just.serialization.codec.Decoder;
-import com.bvanseg.just.serialization.codec.Encoder;
 import com.bvanseg.just.serialization.codec.schema.CodecSchema;
 
 public class Codecs {
 
-    public static final Codec<Boolean> BOOLEAN = Codec.of("Boolean", new Decoder<>() {
+    public static final Codec<Boolean> BOOLEAN = new Codec<>() {
 
         @Override
         public <T> Result<Boolean, T> decode(CodecSchema<T> codecSchema, T input) {
             return codecSchema.getBooleanValue(input);
         }
-    }, new Encoder<>() {
 
         @Override
         public <T> T encode(CodecSchema<T> codecSchema, Boolean value) {
             return codecSchema.createBooleanValue(value);
         }
-    });
 
-    public static final Codec<Byte> BYTE = Codec.of("Byte", new Decoder<>() {
+        @Override
+        public String toString() {
+            return "Boolean";
+        }
+    };
+
+    public static final Codec<Byte> BYTE = new Codec<>() {
 
         @Override
         public <T> Result<Byte, T> decode(CodecSchema<T> codecSchema, T input) {
             return codecSchema.getNumberValue(input)
                 .map(Number::byteValue);
         }
-    }, new Encoder<>() {
 
         @Override
         public <T> T encode(CodecSchema<T> codecSchema, Byte value) {
             return codecSchema.createByteValue(value);
         }
-    });
 
-    public static final Codec<Short> SHORT = Codec.of("Short", new Decoder<>() {
+        @Override
+        public String toString() {
+            return "Byte";
+        }
+    };
+
+    public static final Codec<Short> SHORT = new Codec<>() {
 
         @Override
         public <T> Result<Short, T> decode(CodecSchema<T> codecSchema, T input) {
             return codecSchema.getNumberValue(input)
                 .map(Number::shortValue);
         }
-    }, new Encoder<>() {
 
         @Override
         public <T> T encode(CodecSchema<T> codecSchema, Short value) {
             return codecSchema.createShortValue(value);
         }
-    });
 
-    public static final Codec<Integer> INT = Codec.of("Int", new Decoder<>() {
+        @Override
+        public String toString() {
+            return "Short";
+        }
+    };
+
+    public static final Codec<Integer> INT = new Codec<>() {
 
         @Override
         public <T> Result<Integer, T> decode(CodecSchema<T> codecSchema, T input) {
             return codecSchema.getNumberValue(input)
                 .map(Number::intValue);
         }
-    }, new Encoder<>() {
 
         @Override
         public <T> T encode(CodecSchema<T> codecSchema, Integer value) {
             return codecSchema.createIntValue(value);
         }
-    });
 
-    public static final Codec<Float> FLOAT = Codec.of("Float", new Decoder<>() {
+        @Override
+        public String toString() {
+            return "Int";
+        }
+    };
+
+    public static final Codec<Float> FLOAT = new Codec<>() {
 
         @Override
         public <T> Result<Float, T> decode(CodecSchema<T> codecSchema, T input) {
             return codecSchema.getNumberValue(input)
                 .map(Number::floatValue);
         }
-    }, new Encoder<>() {
 
         @Override
         public <T> T encode(CodecSchema<T> codecSchema, Float value) {
             return codecSchema.createFloatValue(value);
         }
-    });
 
-    public static final Codec<Long> LONG = Codec.of("Long", new Decoder<>() {
+        @Override
+        public String toString() {
+            return "Float";
+        }
+    };
+
+    public static final Codec<Long> LONG = new Codec<>() {
 
         @Override
         public <T> Result<Long, T> decode(CodecSchema<T> codecSchema, T input) {
             return codecSchema.getNumberValue(input)
                 .map(Number::longValue);
         }
-    }, new Encoder<>() {
 
         @Override
         public <T> T encode(CodecSchema<T> codecSchema, Long value) {
             return codecSchema.createLongValue(value);
         }
-    });
 
-    public static final Codec<Double> DOUBLE = Codec.of("Double", new Decoder<>() {
+        @Override
+        public String toString() {
+            return "Long";
+        }
+    };
+
+    public static final Codec<Double> DOUBLE = new Codec<>() {
 
         @Override
         public <T> Result<Double, T> decode(CodecSchema<T> codecSchema, T input) {
             return codecSchema.getNumberValue(input)
                 .map(Number::doubleValue);
         }
-    }, new Encoder<>() {
 
         @Override
         public <T> T encode(CodecSchema<T> codecSchema, Double value) {
             return codecSchema.createDoubleValue(value);
         }
-    });
 
-    public static final Codec<String> STRING = Codec.of("String", new Decoder<>() {
+        @Override
+        public String toString() {
+            return "Double";
+        }
+    };
+
+    public static final Codec<String> STRING = new Codec<>() {
 
         @Override
         public <T> Result<String, T> decode(CodecSchema<T> codecSchema, T input) {
             return codecSchema.getStringValue(input);
         }
-    }, new Encoder<>() {
 
         @Override
         public <T> T encode(CodecSchema<T> codecSchema, String value) {
             return codecSchema.createStringValue(value);
         }
-    });
+
+        @Override
+        public String toString() {
+            return "String";
+        }
+    };
 
     public static final Codec<UUID> UUID = new UUIDCodec();
 
