@@ -12,6 +12,23 @@ import com.bvanseg.just.serialization.codec.stream.schema.StreamCodecSchema;
 
 public class StreamCodecs {
 
+    public static final StreamCodec<Boolean> BOOLEAN = new StreamCodec<>() {
+
+        @Override
+        public @NotNull <T> Boolean decode(@NotNull StreamCodecSchema<T> streamCodecSchema, @NotNull T input) {
+            return streamCodecSchema.readBoolean(input);
+        }
+
+        @Override
+        public <T> void encode(
+            @NotNull StreamCodecSchema<T> streamCodecSchema,
+            @NotNull T input,
+            @NotNull Boolean value
+        ) {
+            streamCodecSchema.writeBoolean(input, value);
+        }
+    };
+
     public static final StreamCodec<Byte> BYTE = new StreamCodec<>() {
 
         @Override
