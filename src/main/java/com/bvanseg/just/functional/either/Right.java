@@ -87,6 +87,14 @@ public final class Right<L, R> extends Either<L, R> {
         return Option.none();
     }
 
+    @Override
+    public <U> @NotNull U map(
+        @NotNull Function<? super @NotNull L, ? extends U> f,
+        @NotNull Function<? super @NotNull R, ? extends U> g
+    ) {
+        return g.apply(value);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public @NotNull <U> Either<U, R> mapLeft(@NotNull Function<? super @NotNull L, ? extends U> f) {
