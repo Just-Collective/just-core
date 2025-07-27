@@ -1,10 +1,9 @@
 package com.bvanseg.just.serialization.codec.stream.schema;
 
 import com.bvanseg.just.serialization.codec.stream.StreamCodec;
+import com.bvanseg.just.serialization.codec.stream.impl.StreamCodecs;
 
 public interface StreamCodecSchema<T> {
-
-    boolean readBoolean(T input);
 
     byte readByte(T input);
 
@@ -13,8 +12,6 @@ public interface StreamCodecSchema<T> {
     char readChar(T input);
 
     short readShort(T input);
-
-    int readVarInt(T input);
 
     int readInt(T input);
 
@@ -28,7 +25,13 @@ public interface StreamCodecSchema<T> {
         return codec.decode(this, input);
     }
 
-    void writeBoolean(T input, boolean value);
+    default boolean readBoolean(T input) {
+        return readByte(input) == 1;
+    }
+
+    default int readVarInt(T input) {
+        return read(input, StreamCodecs.VAR_INT);
+    }
 
     void writeByte(T input, byte value);
 
@@ -37,8 +40,6 @@ public interface StreamCodecSchema<T> {
     void writeChar(T input, char value);
 
     void writeShort(T input, short value);
-
-    void writeVarInt(T input, int value);
 
     void writeInt(T input, int value);
 
@@ -50,5 +51,13 @@ public interface StreamCodecSchema<T> {
 
     default <T2> void write(T input, StreamCodec<T2> codec, T2 value) {
         codec.encode(this, input, value);
+    }
+
+    default void writeBoolean(T input, boolean value) {
+        writeByte(input, (byte) (value ? 1 : 0));
+    }
+
+    default void writeVarInt(T input, int value) {
+        write(input, StreamCodecs.VAR_INT, value);
     }
 }

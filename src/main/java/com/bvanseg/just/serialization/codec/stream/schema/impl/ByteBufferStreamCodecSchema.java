@@ -2,15 +2,9 @@ package com.bvanseg.just.serialization.codec.stream.schema.impl;
 
 import java.nio.ByteBuffer;
 
-import com.bvanseg.just.serialization.codec.stream.impl.StreamCodecs;
 import com.bvanseg.just.serialization.codec.stream.schema.StreamCodecSchema;
 
 public class ByteBufferStreamCodecSchema implements StreamCodecSchema<ByteBuffer> {
-
-    @Override
-    public boolean readBoolean(ByteBuffer input) {
-        return input.get() == 1;
-    }
 
     @Override
     public byte readByte(ByteBuffer input) {
@@ -33,11 +27,6 @@ public class ByteBufferStreamCodecSchema implements StreamCodecSchema<ByteBuffer
     @Override
     public short readShort(ByteBuffer input) {
         return input.getShort();
-    }
-
-    @Override
-    public int readVarInt(ByteBuffer input) {
-        return read(input, StreamCodecs.VAR_INT);
     }
 
     @Override
@@ -83,11 +72,6 @@ public class ByteBufferStreamCodecSchema implements StreamCodecSchema<ByteBuffer
     @Override
     public void writeShort(ByteBuffer input, short value) {
         input.putShort(value);
-    }
-
-    @Override
-    public void writeVarInt(ByteBuffer input, int value) {
-        write(input, StreamCodecs.VAR_INT, value);
     }
 
     @Override
