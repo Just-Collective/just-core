@@ -127,6 +127,14 @@ public final class Left<L, R> extends Either<L, R> {
     }
 
     @Override
+    public @NotNull <U, V> Either<U, V> mapEither(
+        @NotNull Function<? super @NotNull L, ? extends U> f,
+        @NotNull Function<? super @NotNull R, ? extends V> g
+    ) {
+        return Either.left(f.apply(value));
+    }
+
+    @Override
     public @NotNull R unwrapRight() throws NoSuchElementException {
         throw new NoSuchElementException("No right value present.");
     }

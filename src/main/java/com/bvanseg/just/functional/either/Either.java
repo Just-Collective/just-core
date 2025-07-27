@@ -57,6 +57,11 @@ public sealed abstract class Either<L, R> permits Left, Right {
         @NotNull Function<? super @NotNull R, ? extends U> g
     );
 
+    public abstract <U, V> @NotNull Either<U, V> mapEither(
+        @NotNull Function<? super @NotNull L, ? extends U> f,
+        @NotNull Function<? super @NotNull R, ? extends V> g
+    );
+
     public abstract <U> @NotNull Either<U, R> mapLeft(@NotNull Function<? super @NotNull L, ? extends U> f);
 
     public abstract <U> @NotNull Either<L, U> mapRight(@NotNull Function<? super @NotNull R, ? extends U> f);

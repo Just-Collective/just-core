@@ -95,6 +95,14 @@ public final class Right<L, R> extends Either<L, R> {
         return g.apply(value);
     }
 
+    @Override
+    public @NotNull <U, V> Either<U, V> mapEither(
+        @NotNull Function<? super @NotNull L, ? extends U> f,
+        @NotNull Function<? super @NotNull R, ? extends V> g
+    ) {
+        return Either.right(g.apply(value));
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public @NotNull <U> Either<U, R> mapLeft(@NotNull Function<? super @NotNull L, ? extends U> f) {
