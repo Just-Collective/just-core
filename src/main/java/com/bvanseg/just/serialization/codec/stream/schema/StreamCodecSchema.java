@@ -14,6 +14,8 @@ public interface StreamCodecSchema<T> {
 
     short readShort(T input);
 
+    int readVarInt(T input);
+
     int readInt(T input);
 
     float readFloat(T input);
@@ -35,6 +37,8 @@ public interface StreamCodecSchema<T> {
     void writeChar(T input, char value);
 
     void writeShort(T input, short value);
+
+    void writeVarInt(T input, int value);
 
     void writeInt(T input, int value);
 
