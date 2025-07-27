@@ -148,4 +148,9 @@ public final class Left<L, R> extends Either<L, R> {
     public R rightOrElse(@NotNull Supplier<? extends R> supplier) {
         return supplier.get();
     }
+
+    @Override
+    public String toString() {
+        return "Left(" + value + ")";
+    }
 }

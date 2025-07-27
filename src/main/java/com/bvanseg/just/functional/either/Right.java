@@ -148,4 +148,9 @@ public final class Right<L, R> extends Either<L, R> {
     public R rightOrElse(@NotNull Supplier<? extends R> supplier) {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return "Right(" + value + ")";
+    }
 }
