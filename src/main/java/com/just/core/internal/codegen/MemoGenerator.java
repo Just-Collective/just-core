@@ -21,13 +21,13 @@ public class MemoGenerator {
             var sb = new StringBuilder();
 
             // --- Package and Imports ---
-            sb.append("package com.bvanseg.just.functional.function.memo;\n\n");
+            sb.append("package com.just.core.functional.function.memo;\n\n");
 
             if (n == 1) {
                 sb.append("import java.util.function.Function;\n");
                 sb.append("import java.util.function.BiPredicate;\n\n");
             } else {
-                sb.append("import com.bvanseg.just.functional.function.Function").append(n).append(";\n");
+                sb.append("import com.just.core.functional.function.Function").append(n).append(";\n");
                 sb.append("import java.util.function.BiPredicate;\n\n");
             }
 

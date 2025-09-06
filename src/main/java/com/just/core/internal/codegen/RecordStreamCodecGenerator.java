@@ -19,12 +19,12 @@ public class RecordStreamCodecGenerator {
         }
 
         var cg = new CodeGenerator()
-            .packageLine("com.bvanseg.just.serialization.codec.stream")
+            .packageLine("com.just.core.serialization.codec.stream")
             .importLine("org.jetbrains.annotations.NotNull")
             .newLine()
-            .importLine("com.bvanseg.just.serialization.codec.stream.schema.StreamCodecSchema")
+            .importLine("com.just.core.serialization.codec.stream.schema.StreamCodecSchema")
             .newLine()
-            .importLine("com.bvanseg.just.functional.function.*")
+            .importLine("com.just.core.functional.function.*")
             .newLine()
             .append("public final class RecordStreamCodec")
             .body(g -> {

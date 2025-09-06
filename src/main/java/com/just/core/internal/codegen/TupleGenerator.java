@@ -20,7 +20,7 @@ public class TupleGenerator {
 
         for (int i = 2; i <= 16; i++) {
             StringBuilder sb = new StringBuilder();
-            sb.append("package com.bvanseg.just.functional.tuple;\n\n");
+            sb.append("package com.just.core.functional.tuple;\n\n");
 
             sb.append("public record Tuple").append(i).append("<");
             for (int j = 1; j <= i; j++) {

@@ -26,11 +26,11 @@ public class FunctionGenerator {
             var memoName = n == 1 ? "Memo" : "Memo" + n;
 
             var cg = new CodeGenerator()
-                .packageLine("com.bvanseg.just.functional.function")
-                .importLine("com.bvanseg.just.functional.function.memo." + memoName)
+                .packageLine("com.just.core.functional.function")
+                .importLine("com.just.core.functional.function.memo." + memoName)
                 .apply(acg -> {
                     if (n > 1) {
-                        acg.importLine("com.bvanseg.just.functional.tuple.Tuple" + n);
+                        acg.importLine("com.just.core.functional.tuple.Tuple" + n);
                     }
 
                     if (n == 2) {

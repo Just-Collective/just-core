@@ -25,14 +25,14 @@ public class PredicateGenerator {
             var precedingName = prev > 1 ? "Predicate" + prev : "Predicate";
 
             var codeGenerator = new CodeGenerator()
-                .packageLine("com.bvanseg.just.functional.function.predicate")
+                .packageLine("com.just.core.functional.function.predicate")
                 .apply(acg -> {
                     if (n == 1 || n == 2) {
                         acg.importLine("org.jetbrains.annotations.NotNull");
                         acg.newLine();
                     }
                 })
-                .importLine("com.bvanseg.just.functional.function." + functionName)
+                .importLine("com.just.core.functional.function." + functionName)
                 .newLine()
                 .appendAnnotation(FunctionalInterface.class, false)
                 .append("public interface ", thisName)

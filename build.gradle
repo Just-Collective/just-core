@@ -5,7 +5,7 @@ plugins {
     id 'com.github.ben-manes.versions'
 }
 
-group = 'com.bvanseg.just'
+group = 'com.just.core'
 version = '0.1.0'
 
 java {
@@ -51,7 +51,7 @@ tasks.register('generateFunctions', JavaExec) {
     group = 'codegen'
     description = 'Generate Function2-16 interfaces'
     classpath = sourceSets.main.runtimeClasspath
-    mainClass.set('com.bvanseg.just.internal.codegen.FunctionGenerator')
+    mainClass.set('com.just.core.internal.codegen.FunctionGenerator')
     args 'src/main/java'
 }
 
@@ -59,7 +59,7 @@ tasks.register('generateMemos', JavaExec) {
     group = 'codegen'
     description = 'Generate Memo3-16 types'
     classpath = sourceSets.main.runtimeClasspath
-    mainClass.set('com.bvanseg.just.internal.codegen.MemoGenerator')
+    mainClass.set('com.just.core.internal.codegen.MemoGenerator')
     args 'src/main/java'
 }
 
@@ -67,7 +67,7 @@ tasks.register('generatePredicates', JavaExec) {
     group = 'codegen'
     description = 'Generate Predicate2-16 interfaces'
     classpath = sourceSets.main.runtimeClasspath
-    mainClass.set('com.bvanseg.just.internal.codegen.PredicateGenerator')
+    mainClass.set('com.just.core.internal.codegen.PredicateGenerator')
     args 'src/main/java'
 }
 
@@ -75,7 +75,7 @@ tasks.register('generateRecordCodec', JavaExec) {
     group = 'codegen'
     description = 'Generate RecordCodec class'
     classpath = sourceSets.main.runtimeClasspath
-    mainClass.set('com.bvanseg.just.internal.codegen.RecordCodecGenerator')
+    mainClass.set('com.just.core.internal.codegen.RecordCodecGenerator')
     args 'src/main/java'
 }
 
@@ -83,7 +83,7 @@ tasks.register('generateRecordStreamCodec', JavaExec) {
     group = 'codegen'
     description = 'Generate RecordStreamCodec class'
     classpath = sourceSets.main.runtimeClasspath
-    mainClass.set('com.bvanseg.just.internal.codegen.RecordStreamCodecGenerator')
+    mainClass.set('com.just.core.internal.codegen.RecordStreamCodecGenerator')
     args 'src/main/java'
 }
 
@@ -91,7 +91,7 @@ tasks.register('generateTuples', JavaExec) {
     group = 'codegen'
     description = 'Generate Tuple2–16 records into src/main/java'
     classpath = sourceSets.main.runtimeClasspath
-    mainClass.set('com.bvanseg.just.internal.codegen.TupleGenerator')
+    mainClass.set('com.just.core.internal.codegen.TupleGenerator')
     args 'src/main/java'
 }
 

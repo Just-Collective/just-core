@@ -19,10 +19,10 @@ public class RecordCodecGenerator {
 
         var cg = new CodeGenerator();
 
-        cg.packageLine("com.bvanseg.just.serialization.codec")
-            .importLine("com.bvanseg.just.functional.function.*")
-            .importLine("com.bvanseg.just.functional.result.Result")
-            .importLine("com.bvanseg.just.serialization.codec.schema.CodecSchema")
+        cg.packageLine("com.just.core.serialization.codec")
+            .importLine("com.just.core.functional.function.*")
+            .importLine("com.just.core.functional.result.Result")
+            .importLine("com.just.core.serialization.codec.schema.CodecSchema")
             .newLine()
             .append("public class RecordCodec")
             .body(cg2 -> {

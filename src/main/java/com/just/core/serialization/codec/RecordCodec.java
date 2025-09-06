@@ -1,6 +1,6 @@
 package com.just.core.serialization.codec;
 
-import com.bvanseg.just.functional.function.*;
+import com.just.core.functional.function.*;
 import com.just.core.functional.function.Function;
 import com.just.core.functional.function.Function10;
 import com.just.core.functional.function.Function11;

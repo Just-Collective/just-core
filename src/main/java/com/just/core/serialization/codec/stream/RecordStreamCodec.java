@@ -1,5 +1,7 @@
 package com.just.core.serialization.codec.stream;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.just.core.functional.function.Function;
 import com.just.core.functional.function.Function10;
 import com.just.core.functional.function.Function11;
@@ -16,9 +18,6 @@ import com.just.core.functional.function.Function6;
 import com.just.core.functional.function.Function7;
 import com.just.core.functional.function.Function8;
 import com.just.core.functional.function.Function9;
-import org.jetbrains.annotations.NotNull;
-
-import com.bvanseg.just.functional.function.*;
 import com.just.core.serialization.codec.stream.schema.StreamCodecSchema;
 
 public final class RecordStreamCodec {
