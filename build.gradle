@@ -22,8 +22,6 @@ repositories {
 dependencies {
     compileOnly 'org.jetbrains:annotations:26.0.2'
 
-    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
-
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
@@ -68,22 +66,6 @@ tasks.register('generatePredicates', JavaExec) {
     description = 'Generate Predicate2-16 interfaces'
     classpath = sourceSets.main.runtimeClasspath
     mainClass.set('com.just.core.internal.codegen.PredicateGenerator')
-    args 'src/main/java'
-}
-
-tasks.register('generateRecordCodec', JavaExec) {
-    group = 'codegen'
-    description = 'Generate RecordCodec class'
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass.set('com.just.core.internal.codegen.RecordCodecGenerator')
-    args 'src/main/java'
-}
-
-tasks.register('generateRecordStreamCodec', JavaExec) {
-    group = 'codegen'
-    description = 'Generate RecordStreamCodec class'
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass.set('com.just.core.internal.codegen.RecordStreamCodecGenerator')
     args 'src/main/java'
 }
 
