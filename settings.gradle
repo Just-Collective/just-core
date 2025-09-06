@@ -10,5 +10,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'just'
+rootProject.name = 'just-core'
 
